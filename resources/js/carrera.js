@@ -1,9 +1,9 @@
-window.Vue = require('vue');
+// window.Vue = require('vue');
 
-import App from './components/Carrera'
+// import App from './components/Carrera'
 
-const app = new Vue({
-    el: '#app',
-    components: { App },
-    template: '<App/>'
-})
+// const app = new Vue({
+//     el: '#app',
+//     components: { App },
+//     template: '<App/>'
+// })

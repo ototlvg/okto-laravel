@@ -29,9 +29,9 @@
                                 <td>{{$carrera->nombre}}</td>
                                 <td>
                                     <a href="#">
-                                        <span class="material-icons">delete</span>
+                                        <span class="material-icons text-danger">delete</span>
                                     </a>
-                                    <a href="{{route("admin.showCarrera", $carrera->id)}}">
+                                    <a href="{{route("areas.show", $carrera->id)}}">
                                             <span class="material-icons">create</span>
                                     </a>
                                 </td>

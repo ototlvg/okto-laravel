@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin\Carreras;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -10,7 +10,7 @@ class CarrerasController extends Controller
 {
     public function index(){
         $carreras = Carrera::all();
-        return view("admin.carreras", compact('carreras'));
+        return view("admin.Carreras.index", compact('carreras'));
     }
 
     public function showAgregar(){
@@ -23,13 +23,18 @@ class CarrerasController extends Controller
     }
 
     public function storeCarrera(Request $request){
+
+        $this->validate($request, [
+            'carrera'=>'required',
+            'nocontrol'=>'required|numeric',
+        ]);
+
         $nombre = $request->get('carrera');
         $nocontrol = $request->get('nocontrol');
         $c = new Carrera;
         $c->nombre = $nombre;
         $c->nocontrol = $nocontrol;
         $c->save();
-        
         return redirect()->route('admin.carreras');
     }
 

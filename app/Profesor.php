@@ -9,14 +9,14 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 use App\Notifications\AdminResetPasswordNotification;
-
-class Coordinador extends Authenticatable
+class Profesor extends Authenticatable
 {
     use Notifiable;
 
-    protected $table = "coordinadores";
+    protected $table = "profesores";
 
-    protected $guard='coordinador';
+    protected $guard='profesor';
+
 
     /**
      * The attributes that are mass assignable.
@@ -49,5 +49,9 @@ class Coordinador extends Authenticatable
     {
         // use App\Notifications\AdminResetPasswordNotification;
         $this->notify(new AdminResetPasswordNotification($token));
+    }
+
+    public function carreras(){
+        return $this->belongsToMany("App\Carrera", 'carrera_profesor', 'profesor_id', 'carrera_id');
     }
 }

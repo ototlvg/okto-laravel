@@ -64,6 +64,11 @@ return [
             'driver' => 'session',
             'provider' => 'coordinadores',
         ],
+
+        'profesor' => [
+            'driver' => 'session',
+            'provider' => 'profesores',
+        ],
     ],
 
     /*
@@ -102,6 +107,11 @@ return [
         'coordinadores' => [
             'driver' => 'eloquent',
             'model' => App\Coordinador::class,
+        ],
+
+        'profesores' => [
+            'driver' => 'eloquent',
+            'model' => App\Profesor::class,
         ]
     ],
 
@@ -134,6 +144,11 @@ return [
         ],
         'coordinadores' => [
             'provider' => 'coordinadores',
+            'table' => 'password_resets',
+            'expire' => 15,
+        ],
+        'profesores' => [
+            'provider' => 'profesores',
             'table' => 'password_resets',
             'expire' => 15,
         ],

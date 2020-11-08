@@ -12,18 +12,17 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Auth\RedirectsUsers;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 
-
-class CoordinadorLoginController extends Controller
+class ProfesorLoginController extends Controller
 {
     use RedirectsUsers, ThrottlesLogins; // Agregados para Limitar el numero de Intentos
 
     public function __construct()
     {
-        // $this->middleware('guest:coordinador')->except('logout');
+        // $this->middleware('guest:profesor')->except('logout');
     }
 
     public function showLoginForm(){
-        return view('auth.login_coordinador');
+        return view('auth.login_profesor');
     }
 
     public function login(Request $request){
@@ -42,8 +41,9 @@ class CoordinadorLoginController extends Controller
         }
 
         // Attempt to log the user in
-        if(Auth::guard('coordinador')->attempt(['email'=>$request->email, 'password' => $request->password], $request->remember)){
-            return redirect()->intended(route('coordinador.dashboard'));
+        if(Auth::guard('profesor')->attempt(['email'=>$request->email, 'password' => $request->password], $request->remember)){
+            return 'Has accedo como profesor';
+            return redirect()->intended(route('profesor.dashboard'));
         }
 
         // return redirect()->back()->withInput($request->only('email')); // If unsuccesfull, the redirect to their intendet location
@@ -55,7 +55,6 @@ class CoordinadorLoginController extends Controller
 
         return $this->sendFailedLoginResponse($request);
     }
-
 
     protected function sendFailedLoginResponse(Request $request)
     {
@@ -70,9 +69,8 @@ class CoordinadorLoginController extends Controller
 
     public function logout()
     {
-        Auth::guard('coordinador')->logout();
+        Auth::guard('profesor')->logout();
         return redirect('/');
     }
-
 
 }

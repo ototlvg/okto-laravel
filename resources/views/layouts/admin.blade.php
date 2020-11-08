@@ -13,6 +13,9 @@
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    @yield('style-area')
+
 </head>
 <body>
 
@@ -29,6 +32,10 @@
 
                 <li class="nav-item active">
                     <a class="nav-link" href="{{route("admin.coordinadores")}}">Coordinadores<span class="sr-only">(current)</span></a>
+                </li>
+
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{route("admin.profesores")}}">Profesores<span class="sr-only">(current)</span></a>
                 </li>
 
                 <li class="nav-item active">
