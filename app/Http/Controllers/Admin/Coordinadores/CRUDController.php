@@ -92,7 +92,7 @@ class CRUDController extends Controller
      */
     public function edit($id)
     {
-        //
+        return 'Hla mundo';
     }
 
     /**
@@ -104,7 +104,7 @@ class CRUDController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        return 'Excelentisimo';
     }
 
     /**
@@ -116,5 +116,14 @@ class CRUDController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function deleteCoordinador($coordinadorid){
+        // return 'HOla';
+        $coordinador = Coordinador::find($coordinadorid);
+        // return $coordinador;
+        $coordinador->delete();
+        return redirect()->route('admin.coordinadores');
+
     }
 }

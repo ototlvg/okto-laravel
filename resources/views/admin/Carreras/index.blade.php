@@ -28,7 +28,7 @@
                                 <td>{{$carrera->nocontrol}}</td>
                                 <td>{{$carrera->nombre}}</td>
                                 <td>
-                                    <a href="#">
+                                    <a href="{{route("admin.deleteCarrera", $carrera->id)}}">
                                         <span class="material-icons text-danger">delete</span>
                                     </a>
                                     <a href="{{route("areas.show", $carrera->id)}}">

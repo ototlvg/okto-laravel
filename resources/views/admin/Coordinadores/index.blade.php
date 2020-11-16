@@ -28,7 +28,7 @@
                                 <td>{{$coordinador->name}}</td>
                             <td>{{$coordinador->apaterno}} {{$coordinador->amaterno}}</td>
                                 <td>
-                                    <a href="#">
+                                    <a href="{{route("admin.delete.coordinador", $coordinador->id)}}">
                                         <span class="material-icons text-danger">delete</span>
                                     </a>
                                     <a href="#">

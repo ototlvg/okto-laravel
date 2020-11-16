@@ -89,7 +89,9 @@ class ProfesoresCRUDController extends Controller
      */
     public function edit($id)
     {
-        //
+        $profesor = Profesor::find($id);
+        // return $profesor;
+        return view('admin.Profesores.editarProfesor', compact('profesor'));
     }
 
     /**
@@ -101,7 +103,37 @@ class ProfesoresCRUDController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // return 'Coco'
+        $email = $request->get('email');
+        $this->validate($request, [
+            'name'=>'required',
+            'apaterno'=>'required',
+            'amaterno'=>'required',
+            'noempleado'=>'required|numeric',
+            // 'carreraid'=>'required|numeric',
+            // 'edad'=>'required',
+            // 'sexo'=>'required',
+            "email'=>'required|email|unique:profesores,email,$email"
+        ]);
+
+        $name = $request->get('name');
+        $apaterno = $request->get('apaterno');
+        $amaterno = $request->get('amaterno');
+        $noempleado = $request->get('noempleado');
+        $email = $request->get('email');
+
+        $profesor = Profesor::find($id);
+
+        $profesor->name = $name;
+        $profesor->apaterno = $apaterno;
+        $profesor->amaterno = $amaterno;
+        $profesor->noempleado = $noempleado;
+        $profesor->email = $email;
+        // $profesor->password = Hash::make('password');
+        $profesor->save();
+
+
+        return redirect()->route('admin.profesores');
     }
 
     /**
@@ -113,5 +145,11 @@ class ProfesoresCRUDController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function deleteProfesor($profesorid){
+        $profesor = Profesor::find($profesorid);
+        $profesor->delete();
+        return redirect()->route('admin.profesores');
     }
 }

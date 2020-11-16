@@ -18,3 +18,5 @@ mix.js('resources/js/app.js', 'public/js')
 
 
 mix.js('resources/js/carreras.js', 'public/js');
+
+mix.js('resources/js/profesores.js', 'public/js');

@@ -30,3 +30,10 @@ Route::group(['prefix' => 'admin'], function(){
     Route::post('storecarrera', 'API\Admin\Profesores\CarrerasController@storeCarrera')->name('api.admin.profesores.carreras.storecarrera');
     Route::post('deletecarrera', 'API\Admin\Profesores\CarrerasController@deleteCarrera')->name('api.admin.profesores.carreras.deletecarrera');
 });
+
+Route::group(['prefix' => 'coordinador'], function(){
+    Route::get('getprofesores', 'API\ProfesoresController@getProfesores')->name('coordinador.profesores');
+    Route::get('getagregados', 'API\ProfesoresController@getAgregados')->name('coordinador.getagregados');
+    Route::post('addprofesortocarrera', 'API\ProfesoresController@addProfesorToCarrera')->name('coordinador.store');
+    Route::post('deletecarrerafromprofesor', 'API\ProfesoresController@deleteCarreraFromProfesor')->name('coordinador.delete');
+});

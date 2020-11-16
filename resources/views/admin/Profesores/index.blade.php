@@ -28,14 +28,13 @@
                                 <td>{{$profesor->name}}</td>
                             <td>{{$profesor->apaterno}} {{$profesor->amaterno}}</td>
                                 <td>
-                                    <a href="#">
+                                    <a href="{{route("profesorescrud.deleteprofesor", $profesor->id)}}">
                                         <span class="material-icons text-danger">delete</span>
                                     </a>
-                                    {{-- <a href="{{route("areas.show", $coordinador->id)}}"> --}}
-                                    <a href="{{route("admin.profesores.carreras", $profesor->id)}}">
+                                    {{-- <a href="{{route("admin.profesores.carreras", $profesor->id)}}">
                                         <span class="material-icons text-secondary">collections_bookmark</span>
-                                    </a>
-                                    <a href="">
+                                    </a> --}}
+                                    <a href="{{route("profesorescrud.edit", $profesor->id)}}">
                                         <span class="material-icons">create</span>
                                     </a>
                                 </td>

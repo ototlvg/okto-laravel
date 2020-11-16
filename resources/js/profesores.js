@@ -1,8 +1,8 @@
-console.log('Avatar')
+console.log('RE ZERO')
 
 window.Vue = require('vue');
 
-import App from './components/Carreras'
+import App from './components/Profesores'
 
 const app = new Vue({
     el: '#app',

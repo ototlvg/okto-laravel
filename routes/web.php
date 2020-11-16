@@ -39,6 +39,7 @@ Route::group(['prefix' => 'admin'], function(){
         // Rutas de carreras (Programas educativos)
         Route::get('/carreras/agregar', 'Admin\Carreras\CarrerasController@showAgregar')->name('admin.showAgregar');
         Route::post('/carreras', 'Admin\Carreras\CarrerasController@storeCarrera')->name('admin.storeCarrera');
+        Route::get('/carreras/{carreraid}', 'Admin\Carreras\CarrerasController@deleteCarrera')->name('admin.deleteCarrera');
         Route::resource('/areas', 'Admin\Carreras\AreasController');
         Route::get('/areas/agregar/{carreraid}', 'Admin\Carreras\AreasController@agregarAreaACarrera')->name('admin.carreras.area.agregar');
     
@@ -52,6 +53,9 @@ Route::group(['prefix' => 'admin'], function(){
             'crud' => Admin\Coordinadores\CRUDController::class,
             'profesorescrud' => Admin\Profesores\ProfesoresCRUDController::class,
         ]);
+        // Delete custom
+        Route::get('/coordinadores/delete/{carreraid}', 'Admin\Coordinadores\CRUDController@deleteCoordinador')->name('admin.delete.coordinador');
+        Route::get('/profesores/delete/{profesorid}', 'Admin\Profesores\ProfesoresCRUDController@deleteProfesor')->name('profesorescrud.deleteprofesor');
     
 
 
@@ -67,8 +71,15 @@ Route::group(['prefix' => 'admin'], function(){
 Route::group(['prefix' => 'coordinador'], function(){
     Route::get('/login', 'Auth\CoordinadorLoginController@showLoginForm')->name('coordinador.login');
     Route::post('/login', 'Auth\CoordinadorLoginController@login')->name('coordinador.login.submit');
-    // Route::get('/', 'Admin\Coordinador\CoordinadorController@index')->name('coordinador.dashboard');
+    Route::get('/', 'Coordinador\CoordinadorController@index')->name('coordinador.dashboard');
     Route::get('/logout', 'Auth\CoordinadorLoginController@logout')->name('coordinador.logout');
+
+    Route::get('/profesores', 'Coordinador\Profesores\ProfesoresCRUDController@index')->name('coordinador.profesores');
+
+    Route::resources([
+        'cprofesores' => Coordinador\Profesores\ProfesoresCRUDController::class,
+    ]);
+
 });
 
 

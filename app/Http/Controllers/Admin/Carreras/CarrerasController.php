@@ -22,6 +22,14 @@ class CarrerasController extends Controller
         return view("admin.carrera", compact("carrera"));
     }
 
+    public function deleteCarrera($carreraid){
+        $carrera = Carrera::find($carreraid);
+        $carrera->delete();
+        return redirect()->route('admin.carreras');
+        // $carrera = Carrera::find($idcarrera);
+        // return view("admin.carrera", compact("carrera"));
+    }
+
     public function storeCarrera(Request $request){
 
         $this->validate($request, [

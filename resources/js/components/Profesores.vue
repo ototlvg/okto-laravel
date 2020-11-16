@@ -2,20 +2,22 @@
     <div id="app">
         <div class="row mt-3">
             <div class="col-6">
-                <h1 class="mb-3"><span class="badge badge-primary">Programas Educativos</span></h1>
+                <h1 class="mb-3"><span class="badge badge-primary">Profesores</span></h1>
                 <table class="table">
                     <thead class="thead-dark">
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Carrera</th>
+                            <th scope="col">No. Empleado</th>
+                            <th scope="col">Nombre</th>
                             <th scope="col">Acciones</th>
                         </tr>
                     </thead>
-                    <tbody v-if="areas != null">
-                        <tr v-for="(area,index) in filteredAreas" :key="index">
-                        <!-- <tr v-for="(area,index) in areas" :key="index"> -->
-                            <th scope="row">{{area.id}}</th>
-                            <td>{{area.nombre}}</td>
+                    <tbody v-if="profesores != null">
+                        <tr v-for="(profesor,index) in filteredprofesores" :key="index">
+                        <!-- <tr v-for="(profesor,index) in profesores" :key="index"> -->
+                            <th scope="row">{{profesor.id}}</th>
+                            <td>{{profesor.noempleado}}</td>
+                            <td>{{profesor.name}} {{profesor.apaterno}}</td>
                             <td>
                                 <span class="material-icons text-primary pointer" @click="agregar(index)">add_circle</span>
                             </td>
@@ -24,19 +26,22 @@
                 </table>
             </div>
             <div class="col-6">
-                <h1 class="mb-3"><span class="badge badge-success">Programas educativos asignados</span></h1>
+                <h1 class="mb-3"><span class="badge badge-success">Profesores asignados</span></h1>
                 <table class="table">
                     <thead class="thead-dark">
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Area</th>
+                            <th scope="col">No. Empleado</th>
+                            <th scope="col">Nombre</th>
                             <th scope="col">Acciones</th>
                         </tr>
                     </thead>
                     <tbody v-if="agregados != null">
                         <tr v-for="(agregado, index) in agregados" :key="index">
                             <th scope="row">{{agregado.id}}</th>
-                            <td>{{agregado.nombre}}</td>
+                            <td>{{agregado.noempleado}}</td>
+                            <td>{{agregado.name}} {{agregado.apaterno}}</td>
+
                             <td>
                                 <span class="material-icons text-danger pointer" @click="eliminar(index)">remove_circle</span>
                             </td>
@@ -52,26 +57,29 @@
 import axios from 'axios'
 /* axios.defaults.baseURL = 'http://localhost:4200/api/admin' */
 export default {
-    name: "Carreras",
+    name: "Profesores",
     created(){
         /* console.log('Exitos') */
-        this.getAreas()
-        this.getAgregados()
+        this.getProfesores()
+        
+
+        
     },
     data(){
         return {
             sidebarOpen: false,
-            areas: null,
+            profesores: null,
             agregados: []
         }
     },
     methods: {
-        getAreas(){ // Deberia de llamarse getCarreras
+        getProfesores(){ // Deberia de llamarse getCarreras
             let este = this
-            axios.get('/api/admin/getcarreras')
+            axios.get('/api/coordinador/getprofesores')
                 .then(function (response) {
                     console.log(response);
-                    este.areas = response.data
+                    este.profesores = response.data
+                    este.getAgregados()
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -82,13 +90,14 @@ export default {
         },
         getAgregados(){
             let este= this
-            axios.get('/api/admin/getagregados', {params : {
-                profesorid: window.profesorid
+            axios.get('/api/coordinador/getagregados', {params : {
+                carreraid: window.carreraid
             }})
                 .then(function (response) {
                     console.log(response);
                     este.agregados = response.data
-                    // este.filterAreas()
+                    este.checkFilter()
+                    // este.filterprofesores()
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -97,18 +106,29 @@ export default {
                     // always executed
                 });
         },
+        checkFilter(){
+            let self = this
+            let i
+            if(!this.agregados.length == 0){
+                this.agregados.forEach( profesoragregado => {
+                    i= 0
+                    self.profesores.forEach( profesor => {
+                        if(profesoragregado.id == profesor.id){
+                            self.profesores.splice(i,1)
+                        }
+                        i++
+                    })
+                })
+            }
+        },
         agregar(index){
-            // let disponibles = this.agregados.length;
-            /* console.log(disponibles) */
-            // if(disponibles == 3){
-            //     console.log('Capacidad completa')
-            //     return false
-            // }
-            var removed = this.areas.splice(index,1);
+
+            var removed = this.profesores.splice(index,1);
+
             console.log(removed)
-            axios.post('/api/admin/storecarrera', {
-                carreraid: removed[0].id,
-                profesorid: window.profesorid
+            axios.post('/api/coordinador/addprofesortocarrera', {
+                profesorid: removed[0].id,
+                carreraid: window.carreraid
             })
             .then(function (response) {
                 console.log(response);
@@ -118,27 +138,36 @@ export default {
             });
             
             this.agregados.push(removed[0])
+
+
+
             // console.log(removed[0])
         },
         eliminar(index){
-            let elementForRemove = this.agregados[index];
-            let removedCarrera;
+            let elementForRemove = this.agregados[index]
+            let removedCarrera
             let este = this
             // console.log(elementForRemove)
-            axios.post('/api/admin/deletecarrera', {
-                carreraid: elementForRemove.id,
-                profesorid: window.profesorid
+
+            axios.post('/api/coordinador/deletecarrerafromprofesor', {
+                profesorid: elementForRemove.id,
+                carreraid: window.carreraid
             })
             .then(function (response) {
+
                 console.log('Retorno: ' + response.data);
                 let i = 0
                 este.agregados.forEach(element => {
                     console.log(element)
                     if(element.id == response.data){
                         console.log('Encontrado: ' + i)
-                        // este.areas.push(este.agregados[i])
-                        este.agregados.splice(i,1)
-                        este.getAreas()
+
+                        let removedProfesor = este.agregados.splice(i,1)
+                        
+                        
+                        
+                        // este.getProfesores()
+                        este.profesores.push(removedProfesor[0])
                     }
                     i++;
                 });
@@ -149,12 +178,12 @@ export default {
         },
     },
     computed:{
-        filteredAreas(){
+        filteredprofesores(){
             if(this.agregados.length == 0){
-                return this.areas
+                return this.profesores
             }else{
                 let agregados = this.agregados;
-                let filtered = this.areas.filter(function(value, index, arr){
+                let filtered = this.profesores.filter(function(value, index, arr){
                     
                     let flag = true
                     agregados.forEach(element => {
@@ -165,7 +194,9 @@ export default {
                     });
                     return flag;
                 });
+
                 return filtered
+
             }
         }
     }
