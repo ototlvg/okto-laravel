@@ -23,7 +23,8 @@
         </div>
         <div class="row d-flex justify-content-center">
             <div class="col-4">
-                <form class="w-100" method="POST" action="{{route('profesorescrud.store')}}">
+                {{-- <form class="w-100" method="POST" action="{{route('profesorescrud.store')}}"> --}}
+                <form class="w-100" method="POST" action="{{route('admin.profesores.store')}}">
                     @csrf
                     <div class="form-group">
                         <label for="name">Nombre</label>

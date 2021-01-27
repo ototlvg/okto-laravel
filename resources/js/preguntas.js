@@ -1,8 +1,6 @@
-console.log('RE ZERO')
-
 window.Vue = require('vue');
 
-import App from './components/Profesores'
+import App from './components/Questions'
 
 const app = new Vue({
     el: '#app',

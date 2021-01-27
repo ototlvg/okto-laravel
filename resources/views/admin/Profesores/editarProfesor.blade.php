@@ -23,8 +23,10 @@
         </div>
         <div class="row d-flex justify-content-center">
             <div class="col-4">
-                <form class="w-100" method="POST" action="{{route("profesorescrud.update",1)}}">
+                <form class="w-100" method="post" action="{{route("admin.profesores.update",$profesor->id)}}">
                     @csrf
+                    @method('PUT')
+                    {{-- {{ method_field('put') }} --}}
                     {{-- Esto se agrega para que funcione --}}
                     <input name="_method" type="hidden" value="PUT"> 
                     <div class="form-group">

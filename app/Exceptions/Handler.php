@@ -56,10 +56,12 @@ class Handler extends ExceptionHandler
             // dd($exception->guards()[0]);
             $guard = $exception->guards()[0];
             if($guard == 'web'){
-                return redirect(route('login'));
+                // return redirect(route('login'));
 //                dd($guard);
+                return redirect()->route('login');
             }elseif($guard == 'admin'){
-                return redirect(route('admin.login'));
+                // return redirect(route('admin.login'));
+                return redirect()->route('admin.login');
             }
         }
         return parent::render($request, $exception);

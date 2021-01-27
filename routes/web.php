@@ -34,7 +34,7 @@ Route::group(['prefix' => 'admin'], function(){
         // Rutas para mostrar los menus de arriba
         Route::get('/carreras', 'Admin\Carreras\CarrerasController@index')->name('admin.carreras');
         Route::get('/coordinadores', 'Admin\Coordinadores\CoordinadoresController@index')->name('admin.coordinadores');
-        Route::get('/profesores', 'Admin\Profesores\ProfesoresController@index')->name('admin.profesores');
+        // Route::get('/profesores', 'Admin\Profesores\ProfesoresController@index')->name('admin.profesores');
     
         // Rutas de carreras (Programas educativos)
         Route::get('/carreras/agregar', 'Admin\Carreras\CarrerasController@showAgregar')->name('admin.showAgregar');
@@ -44,18 +44,27 @@ Route::group(['prefix' => 'admin'], function(){
         Route::get('/areas/agregar/{carreraid}', 'Admin\Carreras\AreasController@agregarAreaACarrera')->name('admin.carreras.area.agregar');
     
         // Rutas de profesores
-        Route::get('/profesores/pe/{profesorid}', 'Admin\Profesores\ProfesoresController@indexCarreras')->name('admin.profesores.carreras');
+        // Route::get('/profesores/pe/{profesorid}', 'Admin\Profesores\ProfesoresController@indexCarreras')->name('admin.profesores.carreras');
         Route::get('/profesores/carreras', 'Admin\Carreras\CarrerasController@showCarrera')->name('admin.showCarrera');
     
 
         // Resources
-        Route::resources([
+        Route::resources([ // L1
             'crud' => Admin\Coordinadores\CRUDController::class,
-            'profesorescrud' => Admin\Profesores\ProfesoresCRUDController::class,
+            // 'profesorescrud' => Admin\Profesores\ProfesoresCRUDController::class,
         ]);
+
+        Route::resource('profesores', 'Admin\Profesores\ProfesoresController', [
+            'as' => 'admin',
+        ]); // L1
+
+        Route::resource('coordinadores', 'Admin\Coordinadores\CoordinadoresController', [
+            'as' => 'admin',
+        ]); // L1
+
         // Delete custom
         Route::get('/coordinadores/delete/{carreraid}', 'Admin\Coordinadores\CRUDController@deleteCoordinador')->name('admin.delete.coordinador');
-        Route::get('/profesores/delete/{profesorid}', 'Admin\Profesores\ProfesoresCRUDController@deleteProfesor')->name('profesorescrud.deleteprofesor');
+        // Route::get('/profesores/delete/{profesorid}', 'Admin\Profesores\ProfesoresCRUDController@deleteProfesor')->name('profesorescrud.deleteprofesor');
     
 
 
@@ -75,6 +84,7 @@ Route::group(['prefix' => 'coordinador'], function(){
     Route::get('/logout', 'Auth\CoordinadorLoginController@logout')->name('coordinador.logout');
 
     Route::get('/profesores', 'Coordinador\Profesores\ProfesoresCRUDController@index')->name('coordinador.profesores');
+    Route::get('/preguntas', 'Coordinador\Preguntas\PreguntasController@index')->name('coordinador.preguntas');
 
     Route::resources([
         'cprofesores' => Coordinador\Profesores\ProfesoresCRUDController::class,

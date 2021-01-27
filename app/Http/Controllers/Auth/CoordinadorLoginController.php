@@ -19,7 +19,7 @@ class CoordinadorLoginController extends Controller
 
     public function __construct()
     {
-        // $this->middleware('guest:coordinador')->except('logout');
+        $this->middleware('guest:coordinador')->except('logout');
     }
 
     public function showLoginForm(){

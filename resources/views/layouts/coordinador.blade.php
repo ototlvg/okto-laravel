@@ -29,6 +29,10 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="{{route("cprofesores.index")}}">Profesores<span class="sr-only">(current)</span></a>
                 </li>
+                
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{route("coordinador.preguntas")}}">Preguntas<span class="sr-only">(current)</span></a>
+                </li>
 
                 <li class="nav-item active">
                     <a class="nav-link" href="{{route("coordinador.logout")}}">Logout<span class="sr-only">(current)</span></a>

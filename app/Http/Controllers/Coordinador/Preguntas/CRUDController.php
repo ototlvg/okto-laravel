@@ -1,20 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Coordinadores;
+namespace App\Http\Controllers\Coordinador\Preguntas;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Coordinador;
-use Illuminate\Support\Facades\Hash;
-use App\Carrera;
-
-class CoordinadoresController extends Controller
+class CRUDController extends Controller
 {
-    public function __construct(){
-        // $this->middleware('guest:admin');
-        $this->middleware('auth:admin');
-    }
     /**
      * Display a listing of the resource.
      *
@@ -22,9 +14,7 @@ class CoordinadoresController extends Controller
      */
     public function index()
     {
-        $coordinadores = Coordinador::all();
-        // return $coordinadores;
-        return view('admin.Coordinadores.index', compact('coordinadores'));
+        //
     }
 
     /**

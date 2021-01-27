@@ -7,7 +7,8 @@
         <div class="row mt-3">
             <div class="h3 col align-items-center d-flex">Profesores</div>
             <div class="col justify-content-end d-flex">
-                <a href="{{route("profesorescrud.index")}}" class="btn btn-success">Agregar profesor</a>
+                {{-- <a href="{{route("profesorescrud.index")}}" class="btn btn-success">Agregar profesor</a> --}}
+                <a href="{{route("admin.profesores.create")}}" class="btn btn-success">Agregar profesor</a>
             </div>
         </div>
         <div class="row mt-3">
@@ -28,13 +29,14 @@
                                 <td>{{$profesor->name}}</td>
                             <td>{{$profesor->apaterno}} {{$profesor->amaterno}}</td>
                                 <td>
-                                    <a href="{{route("profesorescrud.deleteprofesor", $profesor->id)}}">
+                                    {{-- <a href="{{route("profesorescrud.deleteprofesor", $profesor->id)}}"> --}}
+                                    <a href="{{route("admin.profesores.destroy", $profesor->id)}}">
                                         <span class="material-icons text-danger">delete</span>
                                     </a>
                                     {{-- <a href="{{route("admin.profesores.carreras", $profesor->id)}}">
                                         <span class="material-icons text-secondary">collections_bookmark</span>
                                     </a> --}}
-                                    <a href="{{route("profesorescrud.edit", $profesor->id)}}">
+                                    <a href="{{route("admin.profesores.edit", $profesor->id)}}">
                                         <span class="material-icons">create</span>
                                     </a>
                                 </td>

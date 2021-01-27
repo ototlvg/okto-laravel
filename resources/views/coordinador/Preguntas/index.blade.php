@@ -4,16 +4,14 @@
 {{-- {{$coordinador}} --}}
     <div class="container">
         <div id="app">
-
+            <p>Coco</p>
         </div>
     </div>
 @endsection
 
 @section('script-area')
-    <script>
-        // window.coordinador = {!! json_encode($coordinador) !!};
-        // window.coordinador = {!! json_encode($coordinador->carrera_id) !!};
+    {{-- <script>
         window.carreraid = {!! json_encode($coordinador->carrera_id) !!};
-    </script>
-    <script src="{{asset('js/profesores.js')}}"></script>
+    </script> --}}
+    <script src="{{asset('js/preguntas.js')}}"></script>
 @endsection

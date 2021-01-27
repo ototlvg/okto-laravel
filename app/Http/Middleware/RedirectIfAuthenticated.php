@@ -22,7 +22,9 @@ class RedirectIfAuthenticated
             // return redirect(RouteServiceProvider::HOME);
             
             if($guard == 'admin'){
-                return redirect('/admin'); // La url directa
+                return redirect('/admin/carreras'); // La url directa
+            }else if($guard == 'coordinador'){
+                return redirect('/coordinador/profesores');
             }else{
                 return redirect('/home');
             }
