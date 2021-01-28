@@ -1,12 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\Coordinador\Preguntas;
+namespace App\Http\Controllers\Coordinador\Profesores;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class CRUDController extends Controller
+use App\Profesor;
+use Illuminate\Support\Facades\Auth;
+
+class ProfesoresController extends Controller
 {
+    public function __construct()    {
+        $this->middleware('auth:coordinador');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +20,9 @@ class CRUDController extends Controller
      */
     public function index()
     {
-        //
+        $coordinador = Auth::guard('coordinador')->user();
+        $profesores = Profesor::all();
+        return view('coordinador.Profesores.index', \compact('profesores', 'coordinador'));
     }
 
     /**

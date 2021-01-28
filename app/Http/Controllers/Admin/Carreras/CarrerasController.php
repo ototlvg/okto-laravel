@@ -4,40 +4,44 @@ namespace App\Http\Controllers\Admin\Carreras;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+
 use App\Carrera;
 
 class CarrerasController extends Controller
 {
-
     public function __construct(){
         // $this->middleware('guest:admin');
         $this->middleware('auth:admin');
     }
-
-    public function index(){
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
         $carreras = Carrera::all();
         return view("admin.Carreras.index", compact('carreras'));
     }
 
-    public function showAgregar(){
-        return view("admin.agregar_carrera");
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        return view("admin.Carreras.createCarrera");
     }
 
-    public function showCarrera($idcarrera){
-        $carrera = Carrera::find($idcarrera);
-        return view("admin.carrera", compact("carrera"));
-    }
-
-    public function deleteCarrera($carreraid){
-        $carrera = Carrera::find($carreraid);
-        $carrera->delete();
-        return redirect()->route('admin.carreras');
-        // $carrera = Carrera::find($idcarrera);
-        // return view("admin.carrera", compact("carrera"));
-    }
-
-    public function storeCarrera(Request $request){
-
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
         $this->validate($request, [
             'carrera'=>'required',
             'nocontrol'=>'required|numeric',
@@ -49,8 +53,53 @@ class CarrerasController extends Controller
         $c->nombre = $nombre;
         $c->nocontrol = $nocontrol;
         $c->save();
-        return redirect()->route('admin.carreras');
+        return redirect()->route('admin.carreras.index');
     }
 
-    
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        $carrera = Carrera::find($id)->delete();
+        // return $carrera;
+        return redirect()->route('admin.carreras.index');
+    }
 }

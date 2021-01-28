@@ -11,8 +11,9 @@
                 <div class="col pl-0">Areas - {{$carrera->nombre}}</div>
                 @if ($areascount < 3)
                     <div class="col d-flex justify-content-end pr-0">
-                        <a href="{{route('admin.carreras.area.agregar', $carreraid)}}" class="btn btn-success m0">Agregar area</a>
-                    </div>     
+                        {{-- <a href="{{route('admin.carreras.area.agregar', $carreraid)}}" class="btn btn-success m0">Agregar area</a> --}}
+                        <a href="{{route('admin.carreras.areas.create', ['carreraid' => $carreraid])}}" class="btn btn-success m0">Agregar area</a>
+                    </div>
                 @endif
             </h2>
 

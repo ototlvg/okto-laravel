@@ -48,7 +48,7 @@ class AdminLoginController extends Controller
             // return redirect()->intended(route('admin.carreras'));
             // return 'sdas';
             // return redirect('/admin/carreras');
-            return redirect()->route('admin.carreras');
+            return redirect()->route('admin.carreras.index');
             
         }
 

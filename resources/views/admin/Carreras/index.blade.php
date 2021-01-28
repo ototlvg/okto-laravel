@@ -7,7 +7,7 @@
         <div class="row mt-3">
             <div class="h3 col align-items-center d-flex">Carreras</div>
             <div class="col justify-content-end d-flex">
-                <a href="{{route("admin.showAgregar")}}" class="btn btn-success">Agregar carrera</a>
+                <a href="{{route("admin.carreras.create")}}" class="btn btn-success">Agregar carrera</a>
             </div>
         </div>
         <div class="row mt-3">
@@ -28,11 +28,23 @@
                                 <td>{{$carrera->nocontrol}}</td>
                                 <td>{{$carrera->nombre}}</td>
                                 <td>
-                                    <a href="{{route("admin.deleteCarrera", $carrera->id)}}">
+                                    {{-- <a href="{{route("admin.deleteCarrera", $carrera->id)}}">
+                                        <span class="material-icons text-danger">delete</span>
+                                    </a> --}}
+
+                                    <a href="#" onclick="document.getElementById('destroy-carrera-{{ $carrera->id }}').submit()">
                                         <span class="material-icons text-danger">delete</span>
                                     </a>
-                                    <a href="{{route("areas.show", $carrera->id)}}">
+                                    <form class="d-none" id="destroy-carrera-{{ $carrera->id }}" action="{{ route('admin.carreras.destroy', $carrera->id) }}" method="POST">
+                                       @csrf
+                                       @method('delete')
+                                    </form>
+
+                                    {{-- <a href="{{route("admin.carreras.areas.show", $carrera->id)}}">
                                             <span class="material-icons">create</span>
+                                    </a> --}}
+                                    <a href="{{route("admin.carreras.areas.index", ['carreraid'=>$carrera->id])}}">
+                                        <span class="material-icons">create</span>
                                     </a>
                                 </td>
                             </tr>

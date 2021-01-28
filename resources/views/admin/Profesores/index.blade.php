@@ -29,13 +29,19 @@
                                 <td>{{$profesor->name}}</td>
                             <td>{{$profesor->apaterno}} {{$profesor->amaterno}}</td>
                                 <td>
-                                    {{-- <a href="{{route("profesorescrud.deleteprofesor", $profesor->id)}}"> --}}
-                                    <a href="{{route("admin.profesores.destroy", $profesor->id)}}">
+                                    {{-- <a href="{{route("admin.profesores.destroy", $profesor->id)}}">
+                                        <span class="material-icons text-danger">delete</span>
+                                    </a> --}}
+
+                                    <a href="#" onclick="document.getElementById('destroy-profesor-{{ $profesor->id }}').submit()">
                                         <span class="material-icons text-danger">delete</span>
                                     </a>
-                                    {{-- <a href="{{route("admin.profesores.carreras", $profesor->id)}}">
-                                        <span class="material-icons text-secondary">collections_bookmark</span>
-                                    </a> --}}
+                                    <form class="d-none" id="destroy-profesor-{{ $profesor->id }}" action="{{ route('admin.profesores.destroy', $profesor->id) }}" method="POST">
+                                       @csrf
+                                       @method('delete')
+                                    </form>
+
+
                                     <a href="{{route("admin.profesores.edit", $profesor->id)}}">
                                         <span class="material-icons">create</span>
                                     </a>

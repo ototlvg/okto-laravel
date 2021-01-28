@@ -7,7 +7,7 @@
         <div class="row mt-3">
             <div class="h3 col align-items-center d-flex">Coordinadores</div>
             <div class="col justify-content-end d-flex">
-                <a href="{{route("crud.index")}}" class="btn btn-success">Agregar coordinador</a>
+                <a href="{{route("admin.coordinadores.create")}}" class="btn btn-success">Agregar coordinador</a>
             </div>
         </div>
         <div class="row mt-3">
@@ -28,11 +28,19 @@
                                 <td>{{$coordinador->name}}</td>
                             <td>{{$coordinador->apaterno}} {{$coordinador->amaterno}}</td>
                                 <td>
-                                    <a href="{{route("admin.delete.coordinador", $coordinador->id)}}">
+                                    {{-- <a href="{{route("admin.delete.coordinador", $coordinador->id)}}">
+                                        <span class="material-icons text-danger">delete</span>
+                                    </a> --}}
+                                    <a href="#" onclick="document.getElementById('destroy-coordinador-{{ $coordinador->id }}').submit()">
                                         <span class="material-icons text-danger">delete</span>
                                     </a>
+                                    <form class="d-none" id="destroy-coordinador-{{ $coordinador->id }}" action="{{ route('admin.coordinadores.destroy', $coordinador->id) }}" method="POST">
+                                       @csrf
+                                       @method('delete')
+                                    </form>
+
                                     <a href="#">
-                                            <span class="material-icons">create</span>
+                                        <span class="material-icons">create</span>
                                     </a>
                                 </td>
                             </tr>

@@ -156,6 +156,7 @@ class ProfesoresController extends Controller
         // return 'Hola';
         // Este requiere una peticion tipo DELETE para que funcione
         $profesor = Profesor::find($id);
+        // return $profesor;
         $profesor->delete();
         return redirect()->route('admin.profesores.index');
     }

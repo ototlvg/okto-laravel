@@ -34,7 +34,8 @@ class CoordinadoresController extends Controller
      */
     public function create()
     {
-        //
+        $carreras = Carrera::all();
+        return view('admin.Coordinadores.agregarCoordinador', compact('carreras'));
     }
 
     /**
@@ -45,7 +46,37 @@ class CoordinadoresController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'name'=>'required',
+            'apaterno'=>'required',
+            'amaterno'=>'required',
+            'noempleado'=>'required|numeric',
+            'carreraid'=>'required|numeric',
+            // 'edad'=>'required',
+            // 'sexo'=>'required',
+            'email'=>'required|email|unique:coordinadores,email,'
+        ]);
+
+        $name = $request->get('name');
+        $apaterno = $request->get('apaterno');
+        $amaterno = $request->get('amaterno');
+        $noempleado = $request->get('noempleado');
+        $email = $request->get('email');
+        $carreraid = $request->get('carreraid');
+
+        $coordinador = new Coordinador;
+
+        $coordinador->name = $name;
+        $coordinador->apaterno = $apaterno;
+        $coordinador->amaterno = $amaterno;
+        $coordinador->noempleado = $noempleado;
+        $coordinador->email = $email;
+        $coordinador->carrera_id = $carreraid;
+        $coordinador->password = Hash::make('password');
+        $coordinador->save();
+
+
+        return redirect()->route('admin.coordinadores.index');
     }
 
     /**
@@ -90,6 +121,9 @@ class CoordinadoresController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $coordinador = Coordinador::find($id);
+        // return $coordinador;
+        $coordinador->delete();
+        return redirect()->route('admin.coordinadores.index');
     }
 }

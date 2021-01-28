@@ -14,9 +14,17 @@ class AreasController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $id = $request->get('carreraid');
+        $areas = Area::where('carrera_id', $id)->get();
+        $areascount = $areas->count();
+        $carrera = Carrera::find($id);
+
+        $carreraid = $id;
+
+        return view('admin.Carreras.Areas.areas', compact('areas', 'carreraid', 'areascount', 'carrera'));
+        
     }
 
     /**
@@ -24,9 +32,11 @@ class AreasController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        return view('admin.Carreras.Areas.agregarArea');
+        $carreraid = $request->get('carreraid');
+        // return view('admin.Carreras.Areas.agregarArea');
+        return view('admin.Carreras.Areas.agregarArea', compact('carreraid'));
     }
 
     public function agregarAreaACarrera($carreraid){  // Esto es un get, retornna el form para agregar un area
@@ -59,7 +69,8 @@ class AreasController extends Controller
         $area->carrera_id = $carreraid;
         $area->save();
 
-        return redirect()->route('areas.show', ['area' => $carreraid]);
+        // return redirect()->route('areas.show', ['area' => $carreraid]);
+        return redirect()->route('admin.carreras.areas.index', ['carreraid'=>$carreraid]);
 
     }
 
@@ -71,13 +82,14 @@ class AreasController extends Controller
      */
     public function show($id)
     {
-        $areas = Area::where('carrera_id', $id)->get();
-        $areascount = $areas->count();
-        $carrera = Carrera::find($id);
+        return 'showsda';
+        // $areas = Area::where('carrera_id', $id)->get();
+        // $areascount = $areas->count();
+        // $carrera = Carrera::find($id);
 
-        $carreraid = $id;
+        // $carreraid = $id;
 
-        return view('admin.Carreras.Areas.areas', compact('areas', 'carreraid', 'areascount', 'carrera'));
+        // return view('admin.Carreras.Areas.areas', compact('areas', 'carreraid', 'areascount', 'carrera'));
     }
 
     /**

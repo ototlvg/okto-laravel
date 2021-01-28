@@ -24,48 +24,30 @@ Route::get('/user/logout', 'Auth\LoginController@userLogout')->name('user.logout
 
 Route::group(['prefix' => 'admin'], function(){
     // Login
-        Route::get('/login', 'Auth\AdminLoginController@showLoginForm')->name('admin.login');
-        Route::post('/login', 'Auth\AdminLoginController@login')->name('admin.login.submit');
-        Route::get('/', 'AdminController@index')->name('admin.dashboard');
-        Route::get('/logout', 'Auth\AdminLoginController@logout')->name('admin.logout');
+    Route::get('/login', 'Auth\AdminLoginController@showLoginForm')->name('admin.login');
+    Route::post('/login', 'Auth\AdminLoginController@login')->name('admin.login.submit');
+    Route::get('/', 'AdminController@index')->name('admin.dashboard');
+    Route::get('/logout', 'Auth\AdminLoginController@logout')->name('admin.logout');
 
 
     // Perzonalizado
-        // Rutas para mostrar los menus de arriba
-        Route::get('/carreras', 'Admin\Carreras\CarrerasController@index')->name('admin.carreras');
-        Route::get('/coordinadores', 'Admin\Coordinadores\CoordinadoresController@index')->name('admin.coordinadores');
-        // Route::get('/profesores', 'Admin\Profesores\ProfesoresController@index')->name('admin.profesores');
     
-        // Rutas de carreras (Programas educativos)
-        Route::get('/carreras/agregar', 'Admin\Carreras\CarrerasController@showAgregar')->name('admin.showAgregar');
-        Route::post('/carreras', 'Admin\Carreras\CarrerasController@storeCarrera')->name('admin.storeCarrera');
-        Route::get('/carreras/{carreraid}', 'Admin\Carreras\CarrerasController@deleteCarrera')->name('admin.deleteCarrera');
-        Route::resource('/areas', 'Admin\Carreras\AreasController');
-        Route::get('/areas/agregar/{carreraid}', 'Admin\Carreras\AreasController@agregarAreaACarrera')->name('admin.carreras.area.agregar');
-    
-        // Rutas de profesores
-        // Route::get('/profesores/pe/{profesorid}', 'Admin\Profesores\ProfesoresController@indexCarreras')->name('admin.profesores.carreras');
-        Route::get('/profesores/carreras', 'Admin\Carreras\CarrerasController@showCarrera')->name('admin.showCarrera');
-    
+    Route::resource('carreras/areas', 'Admin\Carreras\AreasController', [
+        'as' => 'admin.carreras',
+    ]);
 
-        // Resources
-        Route::resources([ // L1
-            'crud' => Admin\Coordinadores\CRUDController::class,
-            // 'profesorescrud' => Admin\Profesores\ProfesoresCRUDController::class,
-        ]);
 
-        Route::resource('profesores', 'Admin\Profesores\ProfesoresController', [
-            'as' => 'admin',
-        ]); // L1
+    Route::resource('carreras', 'Admin\Carreras\CarrerasController', [
+        'as' => 'admin',
+    ]);
 
-        Route::resource('coordinadores', 'Admin\Coordinadores\CoordinadoresController', [
-            'as' => 'admin',
-        ]); // L1
+    Route::resource('profesores', 'Admin\Profesores\ProfesoresController', [
+        'as' => 'admin',
+    ]);
 
-        // Delete custom
-        Route::get('/coordinadores/delete/{carreraid}', 'Admin\Coordinadores\CRUDController@deleteCoordinador')->name('admin.delete.coordinador');
-        // Route::get('/profesores/delete/{profesorid}', 'Admin\Profesores\ProfesoresCRUDController@deleteProfesor')->name('profesorescrud.deleteprofesor');
-    
+    Route::resource('coordinadores', 'Admin\Coordinadores\CoordinadoresController', [
+        'as' => 'admin',
+    ]);
 
 
 
@@ -82,12 +64,14 @@ Route::group(['prefix' => 'coordinador'], function(){
     Route::post('/login', 'Auth\CoordinadorLoginController@login')->name('coordinador.login.submit');
     Route::get('/', 'Coordinador\CoordinadorController@index')->name('coordinador.dashboard');
     Route::get('/logout', 'Auth\CoordinadorLoginController@logout')->name('coordinador.logout');
+    
 
-    Route::get('/profesores', 'Coordinador\Profesores\ProfesoresCRUDController@index')->name('coordinador.profesores');
-    Route::get('/preguntas', 'Coordinador\Preguntas\PreguntasController@index')->name('coordinador.preguntas');
+    Route::resource('preguntas', 'Coordinador\Preguntas\PreguntasController', [
+        'as' => 'coordinador',
+    ]);
 
-    Route::resources([
-        'cprofesores' => Coordinador\Profesores\ProfesoresCRUDController::class,
+    Route::resource('profesores', 'Coordinador\Profesores\ProfesoresController', [
+        'as' => 'coordinador',
     ]);
 
 });

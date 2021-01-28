@@ -1,10 +1,10 @@
-@extends('layouts.admin')
+@extends('../../layouts.admin')
 
 @section('container')
     <div class="container mt-5">
         <div class="row d-flex justify-content-center">
             <div class="col-4">
-                <form class="w-100" method="POST" action="{{route('admin.storeCarrera')}}">
+                <form class="w-100" method="POST" action="{{route('admin.carreras.store')}}">
                     @csrf
                     <div class="form-group">
                         <label for="exampleInputEmail1">Nombre de la carrera</label>
