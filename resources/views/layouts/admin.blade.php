@@ -40,7 +40,7 @@
                 </li>
 
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">Alumnos</a>
+                    <a class="nav-link" href="{{route('admin.alumnos.index')}}">Alumnos</a>
                 </li>
                 <li class="nav-item active">
                     <a class="nav-link" href="{{route("admin.logout")}}">Logout</a>

@@ -49,7 +49,11 @@ Route::group(['prefix' => 'admin'], function(){
         'as' => 'admin',
     ]);
 
+    Route::resource('alumnos', 'Admin\Alumnos\AlumnosController', [
+        'as' => 'admin',
+    ]);
 
+    Route::post('alumnos/excel', 'Admin\Alumnos\AlumnosController@readExcel')->name('admin.alumnos.excel');
 
 
     // Password resets routes

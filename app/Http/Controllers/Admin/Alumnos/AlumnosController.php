@@ -1,18 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Carreras;
+namespace App\Http\Controllers\Admin\Alumnos;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Carrera;
+use App\Imports\UsersImport;
 
-class CarrerasController extends Controller
+use Maatwebsite\Excel\Facades\Excel;
+
+class AlumnosController extends Controller
 {
-    public function __construct(){
-        // $this->middleware('guest:admin');
-        $this->middleware('auth:admin');
-    }
     /**
      * Display a listing of the resource.
      *
@@ -20,8 +18,7 @@ class CarrerasController extends Controller
      */
     public function index()
     {
-        $carreras = Carrera::all();
-        return view("admin.Carreras.index", compact('carreras'));
+        return view('admin.Alumnos.index');
     }
 
     /**
@@ -31,7 +28,7 @@ class CarrerasController extends Controller
      */
     public function create()
     {
-        return view("admin.Carreras.createCarrera");
+        //
     }
 
     /**
@@ -42,18 +39,7 @@ class CarrerasController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'carrera'=>'required',
-            'nocontrol'=>'required|numeric',
-        ]);
-
-        $nombre = $request->get('carrera');
-        $nocontrol = $request->get('nocontrol');
-        $c = new Carrera;
-        $c->nombre = $nombre;
-        $c->carrera = $nocontrol;
-        $c->save();
-        return redirect()->route('admin.carreras.index');
+        //
     }
 
     /**
@@ -98,8 +84,19 @@ class CarrerasController extends Controller
      */
     public function destroy($id)
     {
-        $carrera = Carrera::find($id)->delete();
-        // return $carrera;
-        return redirect()->route('admin.carreras.index');
+        //
+    }
+
+    public function readExcel(Request $request){
+        // return $request->file('file')->getRealPath();
+        $file = $request->file('file');
+
+        // $data = Excel::import(new UsersImport, $file);
+        $data = Excel::toArray([], $file);
+
+        // $x->move('/home/oto/Documents/salvar','keke.xlsx');
+        // sleep(8);
+        
+        return $data;
     }
 }

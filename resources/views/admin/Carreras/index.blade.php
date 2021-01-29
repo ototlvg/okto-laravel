@@ -16,7 +16,7 @@
                     <thead class="thead-dark">
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">No. Control</th>
+                            <th scope="col">Carrera</th>
                             <th scope="col">Nombre</th>
                             <th scope="col">Acciones</th>
                         </tr>
@@ -25,7 +25,7 @@
                         @foreach ($carreras as $carrera)
                             <tr>
                                 <th scope="row">{{$carrera->id}}</th>
-                                <td>{{$carrera->nocontrol}}</td>
+                                <td>{{$carrera->carrera}}</td>
                                 <td>{{$carrera->nombre}}</td>
                                 <td>
                                     {{-- <a href="{{route("admin.deleteCarrera", $carrera->id)}}">
