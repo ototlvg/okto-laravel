@@ -3,9 +3,13 @@
 @section('container')
 {{-- {{$coordinador}} --}}
     <div class="container">
-        <div id="app">
-            <p>Coco</p>
-        </div>
+        @foreach ($areas as $area)
+            {{-- <p>{{$area->nombre}}</p>    --}}
+            <a href="{{route('coordinador.areas.edit',$area->id)}}">{{$area->nombre}}</a>
+        @endforeach
+        
+
+        
     </div>
 @endsection
 

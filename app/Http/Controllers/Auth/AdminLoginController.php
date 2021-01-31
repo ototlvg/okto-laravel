@@ -34,7 +34,7 @@ class AdminLoginController extends Controller
         $this->validate($request, [
             'email' => 'required|email',
              'password' => 'required|min:6'
-         ]);
+        ]);
 
          // Limitar el intento de Accesos
         if ($this->hasTooManyLoginAttempts($request)) {

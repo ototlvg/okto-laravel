@@ -50,4 +50,8 @@ class Coordinador extends Authenticatable
         // use App\Notifications\AdminResetPasswordNotification;
         $this->notify(new AdminResetPasswordNotification($token));
     }
+
+    public function carrera(){
+        return $this->hasOne('App\Carrera', 'id', 'carrera_id');
+    }
 }

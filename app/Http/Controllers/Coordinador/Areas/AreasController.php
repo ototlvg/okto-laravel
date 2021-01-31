@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Coordinador\Preguntas;
+namespace App\Http\Controllers\Coordinador\Areas;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -8,8 +8,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 use App\Area;
+use App\Coordinador;
 
-class PreguntasController extends Controller
+class AreasController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,8 +19,19 @@ class PreguntasController extends Controller
      */
     public function index()
     {
-        
-        return view('coordinador.Preguntas.index');
+        $authc = Auth::guard('coordinador')->user();
+        $coordinadorid = $authc->id;
+        // dd($coordinador);
+        // return $coordinadorid;
+        $coordinador = Coordinador::where('id', $coordinadorid)->with('carrera.areas')->first();
+        // return $coordinador;
+        $areas = $coordinador->carrera->areas;
+        // return $areas;
+        // return $coordinador;
+
+        // return $coordinador->with('carrera')->first();
+        // return $coordinadorid;
+        return view('coordinador.Areas.index', compact('areas'));
     }
 
     /**
@@ -62,7 +74,8 @@ class PreguntasController extends Controller
      */
     public function edit($id)
     {
-        //
+        $areaid = $id;
+        return view('coordinador.Areas.edit', compact('areaid'));
     }
 
     /**

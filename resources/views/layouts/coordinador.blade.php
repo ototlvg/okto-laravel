@@ -9,7 +9,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet">
+    {{-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> --}}
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -27,15 +28,19 @@
         <div class="collapse navbar-collapse " id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item active">
-                    <a class="nav-link" href="{{route("coordinador.profesores.index")}}">Profesores<span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="{{route("coordinador.profesores.index")}}">Profesores</a>
                 </li>
                 
+                {{-- <li class="nav-item active">
+                    <a class="nav-link" href="{{route("coordinador.preguntas.index")}}">Preguntas</a>
+                </li> --}}
+
                 <li class="nav-item active">
-                    <a class="nav-link" href="{{route("coordinador.preguntas.index")}}">Preguntas<span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="{{route("coordinador.areas.index")}}">Areas</a>
                 </li>
 
                 <li class="nav-item active">
-                    <a class="nav-link" href="{{route("coordinador.logout")}}">Logout<span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="{{route("coordinador.logout")}}">Logout</a>
                 </li>
             </ul>
         </div>
@@ -45,7 +50,8 @@
 
 
       <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ asset('js/bootstrap.js') }}" defer></script>
+    {{-- <script src="{{ asset('js/app.js') }}" defer></script> --}}
 
     @yield('script-area')
 </body>

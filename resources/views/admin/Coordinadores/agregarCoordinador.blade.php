@@ -49,10 +49,10 @@
                             <input name="amaterno" type="text" class="form-control" id="amaterno" required>
                         @endif
                     </div>
-                    <div class="form-group">
+                    {{-- <div class="form-group">
                         <label for="email">Email</label>
                         <input name="email" type="email" class="form-control" id="email" required>
-                    </div>
+                    </div> --}}
                     <div class="form-group">
                         <label for="noempleado">No. empleado</label>
                         @if(old('noempleado'))

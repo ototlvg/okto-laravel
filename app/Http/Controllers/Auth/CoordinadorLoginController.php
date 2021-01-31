@@ -43,7 +43,7 @@ class CoordinadorLoginController extends Controller
 
         // Attempt to log the user in
         if(Auth::guard('coordinador')->attempt(['email'=>$request->email, 'password' => $request->password], $request->remember)){
-            return redirect()->intended(route('coordinador.dashboard'));
+            return redirect()->intended(route('coordinador.profesores.index'));
         }
 
         // return redirect()->back()->withInput($request->only('email')); // If unsuccesfull, the redirect to their intendet location

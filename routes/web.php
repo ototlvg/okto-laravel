@@ -52,8 +52,8 @@ Route::group(['prefix' => 'admin'], function(){
     Route::resource('alumnos', 'Admin\Alumnos\AlumnosController', [
         'as' => 'admin',
     ]);
+    Route::post('alumnos/upload', 'Admin\Alumnos\AlumnosController@readExcel')->name('admin.alumnos.excel');
 
-    Route::post('alumnos/excel', 'Admin\Alumnos\AlumnosController@readExcel')->name('admin.alumnos.excel');
 
 
     // Password resets routes
@@ -68,6 +68,10 @@ Route::group(['prefix' => 'coordinador'], function(){
     Route::post('/login', 'Auth\CoordinadorLoginController@login')->name('coordinador.login.submit');
     Route::get('/', 'Coordinador\CoordinadorController@index')->name('coordinador.dashboard');
     Route::get('/logout', 'Auth\CoordinadorLoginController@logout')->name('coordinador.logout');
+
+    Route::get('/', function () {
+        return redirect('coordinador/profesores');
+    });
     
 
     Route::resource('preguntas', 'Coordinador\Preguntas\PreguntasController', [
@@ -75,6 +79,10 @@ Route::group(['prefix' => 'coordinador'], function(){
     ]);
 
     Route::resource('profesores', 'Coordinador\Profesores\ProfesoresController', [
+        'as' => 'coordinador',
+    ]);
+
+    Route::resource('areas', 'Coordinador\Areas\AreasController', [
         'as' => 'coordinador',
     ]);
 
