@@ -1963,8 +1963,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 /* axios.defaults.baseURL = 'http://localhost:4200/api/admin' */
 
@@ -3221,29 +3219,33 @@ var render = function() {
   return _c("div", { attrs: { id: "app" } }, [
     _c("div", { staticClass: "row mt-3" }, [
       _c("div", { staticClass: "col-6" }, [
-        _vm._m(0),
+        _c("h2", { staticClass: "mb-3" }, [_vm._v("Profesores")]),
         _vm._v(" "),
-        _c("table", { staticClass: "table" }, [
-          _vm._m(1),
+        _c("table", { staticClass: "table table-bordered align-middle" }, [
+          _vm._m(0),
           _vm._v(" "),
           _vm.profesores != null
             ? _c(
                 "tbody",
                 _vm._l(_vm.filteredprofesores, function(profesor, index) {
                   return _c("tr", { key: index }, [
-                    _c("th", { attrs: { scope: "row" } }, [
-                      _vm._v(_vm._s(profesor.id))
+                    _c(
+                      "th",
+                      { staticClass: "text-center", attrs: { scope: "row" } },
+                      [_vm._v(_vm._s(profesor.id))]
+                    ),
+                    _vm._v(" "),
+                    _c("td", { staticClass: "text-center" }, [
+                      _vm._v(_vm._s(profesor.noempleado))
                     ]),
                     _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(profesor.noempleado))]),
-                    _vm._v(" "),
-                    _c("td", [
+                    _c("td", { staticClass: "text-center" }, [
                       _vm._v(
                         _vm._s(profesor.name) + " " + _vm._s(profesor.apaterno)
                       )
                     ]),
                     _vm._v(" "),
-                    _c("td", [
+                    _c("td", { staticClass: "text-center" }, [
                       _c(
                         "span",
                         {
@@ -3266,29 +3268,33 @@ var render = function() {
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "col-6" }, [
-        _vm._m(2),
+        _c("h2", { staticClass: "mb-3" }, [_vm._v("Profesores asignados")]),
         _vm._v(" "),
-        _c("table", { staticClass: "table" }, [
-          _vm._m(3),
+        _c("table", { staticClass: "table table-bordered align-middle" }, [
+          _vm._m(1),
           _vm._v(" "),
           _vm.agregados != null
             ? _c(
                 "tbody",
                 _vm._l(_vm.agregados, function(agregado, index) {
                   return _c("tr", { key: index }, [
-                    _c("th", { attrs: { scope: "row" } }, [
-                      _vm._v(_vm._s(agregado.id))
+                    _c(
+                      "th",
+                      { staticClass: "text-center", attrs: { scope: "row" } },
+                      [_vm._v(_vm._s(agregado.id))]
+                    ),
+                    _vm._v(" "),
+                    _c("td", { staticClass: "text-center" }, [
+                      _vm._v(_vm._s(agregado.noempleado))
                     ]),
                     _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(agregado.noempleado))]),
-                    _vm._v(" "),
-                    _c("td", [
+                    _c("td", { staticClass: "text-center" }, [
                       _vm._v(
                         _vm._s(agregado.name) + " " + _vm._s(agregado.apaterno)
                       )
                     ]),
                     _vm._v(" "),
-                    _c("td", [
+                    _c("td", { staticClass: "text-center" }, [
                       _c(
                         "span",
                         {
@@ -3317,33 +3323,23 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("h1", { staticClass: "mb-3" }, [
-      _c("span", { staticClass: "badge badge-primary" }, [_vm._v("Profesores")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c("thead", { staticClass: "thead-dark" }, [
       _c("tr", [
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("#")]),
+        _c("th", { staticClass: "text-center", attrs: { scope: "col" } }, [
+          _vm._v("#")
+        ]),
         _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("No. Empleado")]),
+        _c("th", { staticClass: "text-center", attrs: { scope: "col" } }, [
+          _vm._v("No. Empleado")
+        ]),
         _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Nombre")]),
+        _c("th", { staticClass: "text-center", attrs: { scope: "col" } }, [
+          _vm._v("Nombre")
+        ]),
         _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Acciones")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("h1", { staticClass: "mb-3" }, [
-      _c("span", { staticClass: "badge badge-success" }, [
-        _vm._v("Profesores asignados")
+        _c("th", { staticClass: "text-center", attrs: { scope: "col" } }, [
+          _vm._v("Acciones")
+        ])
       ])
     ])
   },
@@ -3353,13 +3349,21 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("thead", { staticClass: "thead-dark" }, [
       _c("tr", [
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("#")]),
+        _c("th", { staticClass: "text-center", attrs: { scope: "col" } }, [
+          _vm._v("#")
+        ]),
         _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("No. Empleado")]),
+        _c("th", { staticClass: "text-center", attrs: { scope: "col" } }, [
+          _vm._v("No. Empleado")
+        ]),
         _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Nombre")]),
+        _c("th", { staticClass: "text-center", attrs: { scope: "col" } }, [
+          _vm._v("Nombre")
+        ]),
         _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Acciones")])
+        _c("th", { staticClass: "text-center", attrs: { scope: "col" } }, [
+          _vm._v("Acciones")
+        ])
       ])
     ])
   }

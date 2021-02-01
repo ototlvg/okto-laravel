@@ -1,205 +1,178 @@
 <template>
-  <div>
-    <input type="text" class="question-input" placeholder="What needs to be done" v-model="newQuestion" @keyup.enter="addQuestion">
-    <transition-group name="fade" enter-active-class="animated fadeInUp" leave-active-class="animated fadeOutDown">
-    <question v-for="question in questionsFiltered" :key="question.id" :question="question" @removedQuestion="removeQuestion" @finishedEdit="finishedEdit">
-    </question>
-    </transition-group>
+    <div class="questions contenedor p-4 p-md-0 pt-lg-4">
+        <button @click="eliminar">Eliminar</button>
+        <div class="d-flex flex-wrap w-100 p-4 border mb-4">
+            <div class="col-6 d-flex justify-content-start align-items-center">
+                <p class="fs-4 fw-bold m-0">Agregar preguntas</p>
+            </div>
+            <div class="col-6 d-flex justify-content-end align-items-center">                
+                <button type="button" class="btn btn-primary" @click="addQuestion">Agregar pregunta</button>
+            </div>
+        </div>
 
-    <div class="extra-container">
-      <div><label><input type="checkbox" :checked="!anyRemaining" @change="checkAllQuestions"> Check All</label></div>
-      <div>{{ remaining }} items left</div>
+        <div class="d-flex flex-wrap w-100">
+            <div class="question w-100 border p-4 mb-4" v-for="(question,index) in preguntas" :key="index">
+                
+                <div class="row mb-4">
+                    <div class="col-6">
+                        <input type="text" name="" id="" class="form-control" :placeholder="'Pregunta ' + (index+1)" v-model="question.question">
+                    </div>
+
+                    <div class="col-4">
+                        <select class="form-select" aria-label="Default select example" @change="onChangeAnswer($event, index)">
+                            <!-- <option selected>Open this select menu</option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option> -->
+                            <option v-for="(answer,indexAnswer) in question.respuestas" :key="indexAnswer" :value="indexAnswer">{{answer.answer}}</option>
+                        </select>
+                    </div>
+
+                    <div class="col-2">
+                        <button type="button" class="btn btn-success w-100">Guardar</button>
+                    </div>
+                </div>
+
+                <div class="d-flex w-100 flex-wrap">
+                    <div class="d-flex answer w-100 mb-4" v-for="(answer,index) in question.respuestas" :key="index">
+                        <div class="d-flex pe-3 align-items-center text-secondary">
+                            <button v-if="question.id != 0" type="button" class="btn btn-success btn-sm"><i class="bi bi-file-earmark-check-fill"></i></button>
+                            <!-- <i class="bi bi-record-circle" v-else></i> -->
+                            <i class="bi bi-circle" v-else></i>
+                            <!-- <i class="bi bi-file-earmark-check-fill"></i> -->
+                        </div>
+                        <div class="d-flex flex-grow-1">
+                            <input type="text" name="" id="" class="form-control" v-model="answer.answer">
+                        </div>
+                        <div class="d-flex ps-3 align-items-center">
+                            <i class="bi bi-x-octagon-fill text-danger pointer"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex w-100 justify-content-between">
+                    <i class="bi bi-plus-square-dotted fs-5 pointer text-primary"></i>
+                    <i class="bi bi-trash-fill fs-5 pointer text-danger"></i>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- <div v-for="(question,index) in questions" :key="index">
+            <p>{{question.question}}</p>
+        </div> -->
     </div>
-
-    <div class="extra-container">
-
-      <div>
-        <transition name="fade">
-        <button v-if="showClearCompletedButton" @click="clearCompleted">Clear Completed</button>
-        </transition>
-      </div>
-
-    </div>
-  </div>
 </template>
 
 <script>
-import Question from './Question'
-
 export default {
-  name: 'questions',
-  components: {
-    Question,
-  },
-  data () {
-    return {
-      newQuestion: '',
-      idForQuestion: 3,
-      questions: [
-        {
-          'id': 1,
-          'title': 'Finish Vue Screencast',
-          'completed': false,
-          'editing': false,
+    name: 'Questions',
+    data() {
+        return {
+            key: 1,
+            preguntas: [
+                {
+                    id: 1,
+                    item: 1,
+                    question: '',
+                    correct: null,
+                    respuestas: [
+                        {
+                            item: 1,
+                            answer: 'Uno'
+                        },
+                        {
+                            item: 2,
+                            answer: 'Dos'
+                        }
+                    ] 
+                },
+                {
+                    id: 0,
+                    item: 2,
+                    question: '',
+                    correct: null,
+                    respuestas: [
+                        {
+                            item: 1,
+                            answer: 'Uno'
+                        },
+                        {
+                            item: 2,
+                            answer: 'Dos'
+                        }
+                    ] 
+                },
+                {
+                    id: 0,
+                    item: 3,
+                    question: '',
+                    correct: null,
+                    respuestas: [
+                        {
+                            item: 1,
+                            answer: 'Uno'
+                        },
+                        {
+                            item: 2,
+                            answer: 'Dos'
+                        }
+                    ] 
+                }
+            ]
+        }
+    },
+    methods: {
+        addQuestion() {
+            this.questions.unshift(
+                {
+                    id: 0,
+                    item: 1,
+                    question: '',
+                    correct: null,
+                    answers: [
+                        {
+                            item: 1,
+                            answer: 'Tres'
+                        },
+                        {
+                            item: 2,
+                            answer: 'Cuatro'
+                        },
+                        {
+                            item: 3,
+                            answer: 'Cinco'
+                        }
+                    ] 
+                }
+            )
         },
-        {
-          'id': 2,
-          'title': 'Take over world',
-          'completed': false,
-          'editing': false,
+        onChangeAnswer(event,index){
+            console.log('Energia')
+            console.log('Index de respuesta: '+ event.target.value)
+            console.log('Index de pregunta: ' + index)
         },
-      ]
-    }
-  },
-  computed: {
-    remaining() {
-      return this.questions.filter(question => !question.completed).length
+        eliminar(){
+            this.questions.splice(0,1)
+            console.log(this.questions)
+        }
     },
-    anyRemaining() {
-      return this.remaining != 0
-    },
-    questionsFiltered() {
-      if (this.filter == 'all') {
-        return this.questions
-      } else if (this.filter == 'active') {
-        return this.questions.filter(question => !question.completed)
-      } else if (this.filter == 'completed') {
-        return this.questions.filter(question => question.completed)
-      }
-
-      return this.questions
-    },
-    showClearCompletedButton() {
-      return this.questions.filter(question => question.completed).length > 0
-    }
-  },
-  methods: {
-    addQuestion() {
-      if (this.newQuestion.trim().length == 0) {
-        return
-      }
-
-      this.questions.push({
-        id: this.idForQuestion,
-        title: this.newQuestion,
-        completed: false,
-      })
-
-      this.newQuestion = ''
-      this.idForQuestion++
-    },
-    removeQuestion(id) {
-      const index = this.questions.findIndex((item) => item.id == id)
-      this.questions.splice(index, 1)
-    },
-    checkAllQuestions() {
-      this.questions.forEach((question) => question.completed = event.target.checked)
-    },
-    clearCompleted() {
-      this.questions = this.questions.filter(question => !question.completed)
-    },
-    finishedEdit(data) {
-      const index = this.questions.findIndex((item) => item.id == data.id)
-      this.questions.splice(index, 1, data)
-    }
-  }
 }
 </script>
 
-<style lang="scss">
-  @import url("https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css");
+<style>
+*{
+    box-sizing: border-box !important;
+}
+.contenedor{
+    max-width: 770px;
+    margin: 0 auto;
+    /* background-color: red; */
+}
 
-  .question-input {
-    width: 100%;
-    padding: 10px 18px;
-    font-size: 18px;
-    margin-bottom: 16px;
-
-    &:focus {
-      outline: 0;
-    }
-  }
-
-  .question {
-    margin-bottom: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    animation-duration: 0.3s;
-  }
-
-  .remove-item {
+.pointer{
     cursor: pointer;
-    margin-left: 14px;
-    &:hover {
-      color: black;
-    }
-  }
-
-  .question-left { // later
-    display: flex;
-    align-items: center;
-  }
-
-  .question-label {
-    padding: 10px;
-    border: 1px solid white;
-    margin-left: 12px;
-  }
-
-  .question-edit {
-    font-size: 24px;
-    color: #2c3e50;
-    margin-left: 12px;
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc; //override defaults
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-
-    &:focus {
-      outline: none;
-    }
-  }
-
-  .completed {
-    text-decoration: line-through;
-    color: grey;
-  }
-
-  .extra-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 16px;
-    border-top: 1px solid lightgrey;
-    padding-top: 14px;
-    margin-bottom: 14px;
-  }
-
-  .button-question{
-    font-size: 14px;
-    background-color: white;
-    appearance: none;
-
-    &:hover {
-      background: lightgreen;
-    }
-
-    &:focus {
-      outline: none;
-    }
-  }
-
-  .active {
-    background: lightgreen;
-  }
-
-  // CSS Transitions
-  .fade-enter-active, .fade-leave-active {
-    transition: opacity .2s;
-  }
-
-  .fade-enter, .fade-leave-to {
-    opacity: 0;
-  }
+}
 </style>

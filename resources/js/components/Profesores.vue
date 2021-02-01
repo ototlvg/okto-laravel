@@ -2,23 +2,22 @@
     <div id="app">
         <div class="row mt-3">
             <div class="col-6">
-                <h1 class="mb-3"><span class="badge badge-primary">Profesores</span></h1>
-                <table class="table">
+                <h2 class="mb-3">Profesores</h2>
+                <table class="table table-bordered align-middle">
                     <thead class="thead-dark">
                         <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">No. Empleado</th>
-                            <th scope="col">Nombre</th>
-                            <th scope="col">Acciones</th>
+                            <th scope="col" class="text-center">#</th>
+                            <th scope="col" class="text-center">No. Empleado</th>
+                            <th scope="col" class="text-center">Nombre</th>
+                            <th scope="col" class="text-center">Acciones</th>
                         </tr>
                     </thead>
                     <tbody v-if="profesores != null">
                         <tr v-for="(profesor,index) in filteredprofesores" :key="index">
-                        <!-- <tr v-for="(profesor,index) in profesores" :key="index"> -->
-                            <th scope="row">{{profesor.id}}</th>
-                            <td>{{profesor.noempleado}}</td>
-                            <td>{{profesor.name}} {{profesor.apaterno}}</td>
-                            <td>
+                            <th class="text-center" scope="row">{{profesor.id}}</th>
+                            <td class="text-center">{{profesor.noempleado}}</td>
+                            <td class="text-center">{{profesor.name}} {{profesor.apaterno}}</td>
+                            <td class="text-center">
                                 <span class="material-icons text-primary pointer" @click="agregar(index)">add_circle</span>
                             </td>
                         </tr>
@@ -26,23 +25,22 @@
                 </table>
             </div>
             <div class="col-6">
-                <h1 class="mb-3"><span class="badge badge-success">Profesores asignados</span></h1>
-                <table class="table">
+                <h2 class="mb-3">Profesores asignados</h2>
+                <table class="table table-bordered align-middle">
                     <thead class="thead-dark">
                         <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">No. Empleado</th>
-                            <th scope="col">Nombre</th>
-                            <th scope="col">Acciones</th>
+                            <th scope="col" class="text-center">#</th>
+                            <th scope="col" class="text-center">No. Empleado</th>
+                            <th scope="col" class="text-center">Nombre</th>
+                            <th scope="col" class="text-center">Acciones</th>
                         </tr>
                     </thead>
                     <tbody v-if="agregados != null">
                         <tr v-for="(agregado, index) in agregados" :key="index">
-                            <th scope="row">{{agregado.id}}</th>
-                            <td>{{agregado.noempleado}}</td>
-                            <td>{{agregado.name}} {{agregado.apaterno}}</td>
-
-                            <td>
+                            <th class="text-center" scope="row">{{agregado.id}}</th>
+                            <td class="text-center">{{agregado.noempleado}}</td>
+                            <td class="text-center">{{agregado.name}} {{agregado.apaterno}}</td>
+                            <td class="text-center">
                                 <span class="material-icons text-danger pointer" @click="eliminar(index)">remove_circle</span>
                             </td>
                         </tr>
