@@ -36,4 +36,8 @@ Route::group(['prefix' => 'coordinador'], function(){
     Route::get('getagregados', 'API\ProfesoresController@getAgregados')->name('coordinador.getagregados');
     Route::post('addprofesortocarrera', 'API\ProfesoresController@addProfesorToCarrera')->name('coordinador.store');
     Route::post('deletecarrerafromprofesor', 'API\ProfesoresController@deleteCarreraFromProfesor')->name('coordinador.delete');
+
+    Route::apiResource('areas/preguntas', 'API\Coordinadores\PreguntasController', [
+        'as' => 'api.coordinador',
+    ]);
 });
