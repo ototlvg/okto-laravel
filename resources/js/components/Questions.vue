@@ -20,9 +20,10 @@
                     </div>
 
                     <div class="col-4">
-                        <select class="form-select" aria-label="Default select example" @change="onChangeAnswer($event, indexQuestion)">
-                            <option :selected="true" disabled hidden>Respuesta correcta</option>
-                            <option v-for="(answer,indexAnswer) in question.respuestas" :key="indexAnswer" :value="indexAnswer">{{answer.respuesta}}</option>
+                        <select class="form-select" aria-label="Default select example" @change="onChangeAnswer($event, indexQuestion)" v-model="question.respuesta_correcta">
+                            <!-- <option :selected="true" disabled hidden>Respuesta correcta</option> -->
+                            <option :value="undefined" disabled style="display:none">Seleccione una opcion</option>
+                            <option v-for="(answer,indexAnswer) in question.respuestas" :key="indexAnswer" :value="answer">{{answer.respuesta}}</option>
                         </select>
                     </div>
 
@@ -73,48 +74,46 @@ export default {
         return {
             key: 1,
             preguntas: [
-                {
-                    id: 0,
-                    item: 1,
-                    pregunta: 'Pregunta 111',
-                    respuesta_correcta: [],
-                    respuestas: [
-                        {
-                            id: 0,
-                            item: 1,
-                            respuesta: 'Uno',
-                            pregunta_id: 0,
-                        },
-                        {
-                            id: 0,
-                            item: 2,
-                            respuesta: 'Dos',
-                            pregunta_id: 0,
-                        }
-                    ]
-                },
-                {
-                    id: 0,
-                    item: 1,
-                    pregunta: '',
-                    respuesta_correcta: [],
-                    respuestas: [
-                        {
-                            id: 0,
-                            item: 1,
-                            respuesta: 'YEYE',
-                            pregunta_id: 0,
-                        },
-                        {
-                            id: 0,
-                            item: 2,
-                            respuesta: 'YOYO',
-                            pregunta_id: 0,
-                        }
-                    ]
-                },
+                // {
+                //     id: 0,
+                //     item: 1,
+                //     pregunta: 'Pregunta 111',
+                //     respuesta_correcta: undefined,
+                //     respuestas: [
+                //         {
+                //             id: 0,
+                //             item: 1,
+                //             respuesta: 'Uno',
+                //             pregunta_id: 0,
+                //         },
+                //         {
+                //             id: 0,
+                //             item: 2,
+                //             respuesta: 'Dos',
+                //             pregunta_id: 0,
+                //         }
+                //     ]
+                // },
             ]
         }
+    },
+    created () {
+        let self = this
+        axios.get('preguntas', {
+            params: {
+                areaid: window.areaid
+            }
+        })
+        .then(function (response) {
+            console.log(response);
+            self.preguntas = response.data
+        })
+        .catch(function (error) {
+            console.log(error);
+        })
+        .then(function () {
+            // always executed
+        });
     },
     methods: {
         addQuestion() {
@@ -122,8 +121,8 @@ export default {
                 {
                     id: 0,
                     item: 1,
-                    pregunta: '',
-                    respuesta_correcta: [],
+                    pregunta: 'Pregunta 111',
+                    respuesta_correcta: undefined,
                     respuestas: [
                         {
                             id: 0,
@@ -157,7 +156,30 @@ export default {
             )
         },
         destroyAnswer(indexQuestion, indexAnswer){
-            let respuestas = this.preguntas[indexQuestion].respuestas
+            let pregunta = this.preguntas[indexQuestion]
+            let respuestas = pregunta.respuestas
+            let respuesta = respuestas[indexAnswer]
+            let respuesta_correcta = pregunta.respuesta_correcta
+
+            if(!(respuesta_correcta == undefined)){
+                console.log('hay una respuesta correcta seleccionada')
+                console.log(respuesta_correcta)
+                if(respuesta_correcta.respuesta == respuesta.respuesta){
+                    console.log('la respuesta a eliminar esta marcada como respuesta correcta')
+                    respuesta_correcta = undefined
+                }
+            }
+
+
+            // console.log(respuesta_correcta)
+
+            // if(pregunta.respuesta_correcta.length!=0){
+            //     if(respuesta_correcta.respuesta == respuesta.respuesta){
+            //         console.log('La respuesta eliminada era la que estaba como opcion correcta')
+            //         pregunta.respuesta_correcta = []
+
+            //     }
+            // }
 
             respuestas.splice(indexAnswer,1)
 
@@ -171,8 +193,14 @@ export default {
             let allAnswersReady = true
             let correctAnswerReady = true
 
+            //
+            if(question.respuestas.length<2){
+                alert('debes tener al menos dos respuestas')
+                return false
+            }
+
             // detectar que se halla escogido respuesta correcta
-            if(question.respuesta_correcta.length==0){
+            if(question.respuesta_correcta==undefined){
                 correctAnswerReady = false
                 alert('elige respuesta correcta')
                 return false
@@ -203,24 +231,45 @@ export default {
 
             alert('Podemos guardar la respuesta')
 
+            let self = this
+            axios.post('preguntas', {
+                question: question,
+                areaid: window.areaid
+            })
+            .then(function (response) {
+                console.log('respuesta a post')
+                // console.log(response.data);
+                // console.log('INDEXXX: ' + indexQuestion)
+                // console.log(question)
+                question.id = response.data.id
+
+                for (let i = 0; i < question.respuestas.length; i++) {
+                    const element = question.respuestas[i];
+
+                    element.id = response.data.respuestas[i].id
+                    
+                }
+
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
         },
 
 
 
         onChangeAnswer(event,index){
-            console.log('Energia')
-            let indexQuestion = index
-            let indexAnswer = event.target.value
-            // console.log('Index de respuesta: '+ event.target.value)
-            // console.log('Index de pregunta: ' + index)
+            // console.log('Energia')
+            // let indexQuestion = index
+            // let indexAnswer = event.target.value
 
-            console.log('Index de pregunta: ' + indexQuestion)
-            console.log('Index de respuesta: '+ indexAnswer)
-            console.log(this.preguntas[indexQuestion].respuestas[indexAnswer])
+            // console.log('Index de pregunta: ' + indexQuestion)
+            // console.log('Index de respuesta: '+ indexAnswer)
+            // console.log(this.preguntas[indexQuestion].respuestas[indexAnswer])
 
-            let respuesta_correcta = this.preguntas[indexQuestion].respuestas[indexAnswer]
+            // let respuesta_correcta = this.preguntas[indexQuestion].respuestas[indexAnswer]
 
-            this.preguntas[indexQuestion].respuesta_correcta[0] = respuesta_correcta
+            // this.preguntas[indexQuestion].respuesta_correcta = [respuesta_correcta]
 
         },
         eliminar(){

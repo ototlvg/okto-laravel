@@ -1976,6 +1976,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 axios__WEBPACK_IMPORTED_MODULE_0___default.a.defaults.baseURL = '/api/coordinador/areas/';
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -1983,48 +1984,50 @@ axios__WEBPACK_IMPORTED_MODULE_0___default.a.defaults.baseURL = '/api/coordinado
   data: function data() {
     return {
       key: 1,
-      preguntas: [{
-        id: 0,
-        item: 1,
-        pregunta: 'Pregunta 111',
-        respuesta_correcta: [],
-        respuestas: [{
-          id: 0,
-          item: 1,
-          respuesta: 'Uno',
-          pregunta_id: 0
-        }, {
-          id: 0,
-          item: 2,
-          respuesta: 'Dos',
-          pregunta_id: 0
-        }]
-      }, {
-        id: 0,
-        item: 1,
-        pregunta: '',
-        respuesta_correcta: [],
-        respuestas: [{
-          id: 0,
-          item: 1,
-          respuesta: 'YEYE',
-          pregunta_id: 0
-        }, {
-          id: 0,
-          item: 2,
-          respuesta: 'YOYO',
-          pregunta_id: 0
-        }]
-      }]
+      preguntas: [// {
+        //     id: 0,
+        //     item: 1,
+        //     pregunta: 'Pregunta 111',
+        //     respuesta_correcta: undefined,
+        //     respuestas: [
+        //         {
+        //             id: 0,
+        //             item: 1,
+        //             respuesta: 'Uno',
+        //             pregunta_id: 0,
+        //         },
+        //         {
+        //             id: 0,
+        //             item: 2,
+        //             respuesta: 'Dos',
+        //             pregunta_id: 0,
+        //         }
+        //     ]
+        // },
+      ]
     };
+  },
+  created: function created() {
+    var self = this;
+    axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('preguntas', {
+      params: {
+        areaid: window.areaid
+      }
+    }).then(function (response) {
+      console.log(response);
+      self.preguntas = response.data;
+    })["catch"](function (error) {
+      console.log(error);
+    }).then(function () {// always executed
+    });
   },
   methods: {
     addQuestion: function addQuestion() {
       this.preguntas.unshift({
         id: 0,
         item: 1,
-        pregunta: '',
-        respuesta_correcta: [],
+        pregunta: 'Pregunta 111',
+        respuesta_correcta: undefined,
         respuestas: [{
           id: 0,
           item: 1,
@@ -2051,7 +2054,28 @@ axios__WEBPACK_IMPORTED_MODULE_0___default.a.defaults.baseURL = '/api/coordinado
       });
     },
     destroyAnswer: function destroyAnswer(indexQuestion, indexAnswer) {
-      var respuestas = this.preguntas[indexQuestion].respuestas;
+      var pregunta = this.preguntas[indexQuestion];
+      var respuestas = pregunta.respuestas;
+      var respuesta = respuestas[indexAnswer];
+      var respuesta_correcta = pregunta.respuesta_correcta;
+
+      if (!(respuesta_correcta == undefined)) {
+        console.log('hay una respuesta correcta seleccionada');
+        console.log(respuesta_correcta);
+
+        if (respuesta_correcta.respuesta == respuesta.respuesta) {
+          console.log('la respuesta a eliminar esta marcada como respuesta correcta');
+          respuesta_correcta = undefined;
+        }
+      } // console.log(respuesta_correcta)
+      // if(pregunta.respuesta_correcta.length!=0){
+      //     if(respuesta_correcta.respuesta == respuesta.respuesta){
+      //         console.log('La respuesta eliminada era la que estaba como opcion correcta')
+      //         pregunta.respuesta_correcta = []
+      //     }
+      // }
+
+
       respuestas.splice(indexAnswer, 1);
     },
     storeQuestion: function storeQuestion(indexQuestion) {
@@ -2059,9 +2083,15 @@ axios__WEBPACK_IMPORTED_MODULE_0___default.a.defaults.baseURL = '/api/coordinado
       var answers = question.respuestas;
       var questionReady = true;
       var allAnswersReady = true;
-      var correctAnswerReady = true; // detectar que se halla escogido respuesta correcta
+      var correctAnswerReady = true; //
 
-      if (question.respuesta_correcta.length == 0) {
+      if (question.respuestas.length < 2) {
+        alert('debes tener al menos dos respuestas');
+        return false;
+      } // detectar que se halla escogido respuesta correcta
+
+
+      if (question.respuesta_correcta == undefined) {
         correctAnswerReady = false;
         alert('elige respuesta correcta');
         return false;
@@ -2090,18 +2120,33 @@ axios__WEBPACK_IMPORTED_MODULE_0___default.a.defaults.baseURL = '/api/coordinado
       }
 
       alert('Podemos guardar la respuesta');
-    },
-    onChangeAnswer: function onChangeAnswer(event, index) {
-      console.log('Energia');
-      var indexQuestion = index;
-      var indexAnswer = event.target.value; // console.log('Index de respuesta: '+ event.target.value)
-      // console.log('Index de pregunta: ' + index)
+      var self = this;
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('preguntas', {
+        question: question,
+        areaid: window.areaid
+      }).then(function (response) {
+        console.log('respuesta a post'); // console.log(response.data);
+        // console.log('INDEXXX: ' + indexQuestion)
+        // console.log(question)
 
-      console.log('Index de pregunta: ' + indexQuestion);
-      console.log('Index de respuesta: ' + indexAnswer);
-      console.log(this.preguntas[indexQuestion].respuestas[indexAnswer]);
-      var respuesta_correcta = this.preguntas[indexQuestion].respuestas[indexAnswer];
-      this.preguntas[indexQuestion].respuesta_correcta[0] = respuesta_correcta;
+        question.id = response.data.id;
+
+        for (var _i = 0; _i < question.respuestas.length; _i++) {
+          var _element = question.respuestas[_i];
+          _element.id = response.data.respuestas[_i].id;
+        }
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    onChangeAnswer: function onChangeAnswer(event, index) {// console.log('Energia')
+      // let indexQuestion = index
+      // let indexAnswer = event.target.value
+      // console.log('Index de pregunta: ' + indexQuestion)
+      // console.log('Index de respuesta: '+ indexAnswer)
+      // console.log(this.preguntas[indexQuestion].respuestas[indexAnswer])
+      // let respuesta_correcta = this.preguntas[indexQuestion].respuestas[indexAnswer]
+      // this.preguntas[indexQuestion].respuesta_correcta = [respuesta_correcta]
     },
     eliminar: function eliminar() {
       this.questions.splice(0, 1);
@@ -3319,28 +3364,56 @@ var render = function() {
                 _c(
                   "select",
                   {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: question.respuesta_correcta,
+                        expression: "question.respuesta_correcta"
+                      }
+                    ],
                     staticClass: "form-select",
                     attrs: { "aria-label": "Default select example" },
                     on: {
-                      change: function($event) {
-                        return _vm.onChangeAnswer($event, indexQuestion)
-                      }
+                      change: [
+                        function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.$set(
+                            question,
+                            "respuesta_correcta",
+                            $event.target.multiple
+                              ? $$selectedVal
+                              : $$selectedVal[0]
+                          )
+                        },
+                        function($event) {
+                          return _vm.onChangeAnswer($event, indexQuestion)
+                        }
+                      ]
                     }
                   },
                   [
                     _c(
                       "option",
                       {
-                        attrs: { disabled: "", hidden: "" },
-                        domProps: { selected: true }
+                        staticStyle: { display: "none" },
+                        attrs: { disabled: "" },
+                        domProps: { value: undefined }
                       },
-                      [_vm._v("Respuesta correcta")]
+                      [_vm._v("Seleccione una opcion")]
                     ),
                     _vm._v(" "),
                     _vm._l(question.respuestas, function(answer, indexAnswer) {
                       return _c(
                         "option",
-                        { key: indexAnswer, domProps: { value: indexAnswer } },
+                        { key: indexAnswer, domProps: { value: answer } },
                         [_vm._v(_vm._s(answer.respuesta))]
                       )
                     })

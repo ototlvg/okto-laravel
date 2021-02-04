@@ -37,7 +37,7 @@ Route::group(['prefix' => 'coordinador'], function(){
     Route::post('addprofesortocarrera', 'API\ProfesoresController@addProfesorToCarrera')->name('coordinador.store');
     Route::post('deletecarrerafromprofesor', 'API\ProfesoresController@deleteCarreraFromProfesor')->name('coordinador.delete');
 
-    Route::apiResource('areas/preguntas', 'API\Coordinadores\PreguntasController', [
+    Route::apiResource('areas/preguntas', 'API\Coordinadores\Areas\PreguntasController', [
         'as' => 'api.coordinador',
     ]);
 });
