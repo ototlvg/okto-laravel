@@ -24,7 +24,7 @@ class PreguntasController extends Controller
 
         // $preguntas = Pregunta::with(['respuestas','respuesta_correcta'])->where('area_id',$areaid)->get();
 
-        $preguntas = Pregunta::where('area_id',$areaid)->with(['respuestas','respuesta_correcta'])->get();
+        $preguntas = Pregunta::where('area_id',$areaid)->with(['respuestas','respuesta_correcta.respuesta'])->orderBy('id', 'DESC')->get();
 
         return $preguntas;
     }
@@ -95,6 +95,52 @@ class PreguntasController extends Controller
     public function update(Request $request, $id)
     {
         //
+    }
+
+    public function addAnswer(Request $request)
+    {
+        $areaid = $request->post('areaid');
+        $questionid = $request->post('questionid');
+        
+        // $respuesta = new Respuesta;
+
+        $maxItemValueQuestion = Respuesta::where('pregunta_id', $questionid)->orderBy('item', 'desc')->first()->item;
+
+        $respuesta = new Respuesta;
+
+        $respuesta->item = $maxItemValueQuestion+1;
+        $respuesta->respuesta = 'Modifique el texto';
+        $respuesta->pregunta_id = $questionid;
+        $respuesta->save();
+        
+
+        // $respuesta->
+
+        return $respuesta;
+    }
+
+    public function updateAnswer(Request $request)
+    {
+        $answerid = $request->post('answerid');
+        $respuesta = $request->post('answer');
+
+        $answer = Respuesta::find($answerid);
+        $answer->respuesta = $respuesta;
+        $answer->save();
+
+        return $answer;
+    }
+    
+    public function updateCorrectAnswer(Request $request)
+    {
+        $newCorrectAnswerId = $request->post('newCorrectAnswerId');
+        $questionid = $request->post('questionid');
+
+        $rc = RespuestaCorrecta::where('pregunta_id',$questionid)->first();
+        $rc->respuesta_id = $newCorrectAnswerId;
+        $rc->save();
+        // return 'lelelele';
+        return $newCorrectAnswerId;
     }
 
     /**

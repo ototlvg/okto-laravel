@@ -1977,6 +1977,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 axios__WEBPACK_IMPORTED_MODULE_0___default.a.defaults.baseURL = '/api/coordinador/areas/';
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2014,7 +2015,12 @@ axios__WEBPACK_IMPORTED_MODULE_0___default.a.defaults.baseURL = '/api/coordinado
         areaid: window.areaid
       }
     }).then(function (response) {
+      console.log('respuestas');
       console.log(response);
+      var preguntas = response.data;
+      preguntas.forEach(function (element) {
+        element.respuesta_correcta = element.respuesta_correcta.respuesta;
+      });
       self.preguntas = response.data;
     })["catch"](function (error) {
       console.log(error);
@@ -2046,11 +2052,16 @@ axios__WEBPACK_IMPORTED_MODULE_0___default.a.defaults.baseURL = '/api/coordinado
     },
     addAnswer: function addAnswer(indexQuestion) {
       var respuestas = this.preguntas[indexQuestion].respuestas;
-      respuestas.push({
-        id: 0,
-        item: respuestas.length + 1,
-        respuesta: 'Numero ' + (respuestas.length + 1),
-        pregunta_id: 0
+      var areaid = window.areaid;
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('preguntas/addanswer', {
+        areaid: window.areaid,
+        questionid: this.preguntas[indexQuestion].id
+      }).then(function (response) {
+        console.log('respuesta de agregar answer');
+        console.log(response.data);
+        respuestas.push(response.data);
+      })["catch"](function (error) {
+        console.log(error);
       });
     },
     destroyAnswer: function destroyAnswer(indexQuestion, indexAnswer) {
@@ -2059,13 +2070,19 @@ axios__WEBPACK_IMPORTED_MODULE_0___default.a.defaults.baseURL = '/api/coordinado
       var respuesta = respuestas[indexAnswer];
       var respuesta_correcta = pregunta.respuesta_correcta;
 
+      if (respuestas.length <= 1) {
+        alert('no puede haber menos de una pregunta');
+        return false;
+      }
+
       if (!(respuesta_correcta == undefined)) {
         console.log('hay una respuesta correcta seleccionada');
         console.log(respuesta_correcta);
 
         if (respuesta_correcta.respuesta == respuesta.respuesta) {
           console.log('la respuesta a eliminar esta marcada como respuesta correcta');
-          respuesta_correcta = undefined;
+          alert('la respuesta a eliminar esta marcada como respuesta correcta, primero escoja otra respuesta y despues elimine la respuesta que esta tratando de eliminar');
+          return false; // respuesta_correcta = undefined
         }
       } // console.log(respuesta_correcta)
       // if(pregunta.respuesta_correcta.length!=0){
@@ -2139,10 +2156,44 @@ axios__WEBPACK_IMPORTED_MODULE_0___default.a.defaults.baseURL = '/api/coordinado
         console.log(error);
       });
     },
-    onChangeAnswer: function onChangeAnswer(event, index) {// console.log('Energia')
-      // let indexQuestion = index
-      // let indexAnswer = event.target.value
-      // console.log('Index de pregunta: ' + indexQuestion)
+    updateAnswer: function updateAnswer(indexQuestion, indexAnswer) {
+      var question = this.preguntas[indexQuestion];
+      var answer = question.respuestas[indexAnswer]; // console.log('se imprimira la respuesta a guardar')
+      // console.log(answer)
+
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('preguntas/updateanswer', {
+        answerid: answer.id,
+        answer: answer.respuesta
+      }).then(function (response) {
+        console.log('respuesta actualizar answer');
+        console.log(response.data);
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    updateCorrectAnswer: function updateCorrectAnswer(questionid, newCorrectAnswer) {
+      console.log('se actualizara answer'); // console.log(questionid)
+      // console.log(newCorrectAnswer)
+
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('preguntas/updatecorrectanswer', {
+        questionid: questionid,
+        newCorrectAnswerId: newCorrectAnswer.id
+      }).then(function (response) {
+        console.log('respuesta actualizar answer');
+        console.log(response.data);
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    onChangeAnswer: function onChangeAnswer(event, index) {
+      // console.log('Energia')
+      var indexQuestion = index; // let indexAnswer = event.target.value
+
+      var questionid = this.preguntas[indexQuestion].id;
+      var newCorrectAnswer = this.preguntas[indexQuestion].respuesta_correcta; // let answerid = this.preguntas[indexQuestion].respuestas[indexAnswer]
+      // let newanswer = 
+
+      this.updateCorrectAnswer(questionid, newCorrectAnswer); // console.log('Index de pregunta: ' + indexQuestion)
       // console.log('Index de respuesta: '+ indexAnswer)
       // console.log(this.preguntas[indexQuestion].respuestas[indexAnswer])
       // let respuesta_correcta = this.preguntas[indexQuestion].respuestas[indexAnswer]
@@ -3423,19 +3474,28 @@ var render = function() {
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "col-2" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-success w-100",
-                    attrs: { type: "button" },
-                    on: {
-                      click: function($event) {
-                        return _vm.storeQuestion(indexQuestion)
-                      }
-                    }
-                  },
-                  [_vm._v("Guardar")]
-                )
+                question.id == 0
+                  ? _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-success w-100",
+                        attrs: { type: "button" },
+                        on: {
+                          click: function($event) {
+                            return _vm.storeQuestion(indexQuestion)
+                          }
+                        }
+                      },
+                      [_vm._v("Guardar")]
+                    )
+                  : _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-secondary w-100",
+                        attrs: { type: "button" }
+                      },
+                      [_vm._v("Guardar")]
+                    )
               ])
             ]),
             _vm._v(" "),
@@ -3454,12 +3514,20 @@ var render = function() {
                           "d-flex pe-3 align-items-center text-secondary"
                       },
                       [
-                        question.id != 0
+                        answer.id != 0
                           ? _c(
                               "button",
                               {
                                 staticClass: "btn btn-success btn-sm",
-                                attrs: { type: "button" }
+                                attrs: { type: "button" },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.updateAnswer(
+                                      indexQuestion,
+                                      indexAnswer
+                                    )
+                                  }
+                                }
                               },
                               [
                                 _c("i", {
