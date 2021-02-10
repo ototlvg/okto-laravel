@@ -22,7 +22,9 @@ class AlumnosController extends Controller
      */
     public function index()
     {
-        return view('admin.Alumnos.index');
+        $users = User::with('profile')->get();
+        // return $users;
+        return view('admin.Alumnos.index',compact('users'));
     }
 
     /**

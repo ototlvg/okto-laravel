@@ -27,24 +27,30 @@
                                 <th scope="row">{{$carrera->id}}</th>
                                 <td>{{$carrera->carrera}}</td>
                                 <td>{{$carrera->nombre}}</td>
-                                <td>
-                                    {{-- <a href="{{route("admin.deleteCarrera", $carrera->id)}}">
-                                        <span class="material-icons text-danger">delete</span>
-                                    </a> --}}
+                                <td class="align-middle">
 
+                                    
+                                    
                                     <a href="#" onclick="document.getElementById('destroy-carrera-{{ $carrera->id }}').submit()">
-                                        <span class="material-icons text-danger">delete</span>
+                                        {{-- <span class="material-icons text-danger">delete</span> --}}
+                                        <button type="button" class="btn btn-danger btn-sm">Eliminar</button>
                                     </a>
+                                    
+                                    
                                     <form class="d-none" id="destroy-carrera-{{ $carrera->id }}" action="{{ route('admin.carreras.destroy', $carrera->id) }}" method="POST">
-                                       @csrf
-                                       @method('delete')
+                                        @csrf
+                                        @method('delete')
                                     </form>
+
+
+
 
                                     {{-- <a href="{{route("admin.carreras.areas.show", $carrera->id)}}">
                                             <span class="material-icons">create</span>
                                     </a> --}}
                                     <a href="{{route("admin.carreras.areas.index", ['carreraid'=>$carrera->id])}}">
-                                        <span class="material-icons">create</span>
+                                        <button type="button" class="btn btn-primary btn-sm">Areas</button>
+                                        {{-- <span class="material-icons">create</span> --}}
                                     </a>
                                 </td>
                             </tr>

@@ -19,6 +19,7 @@
 
 </head>
 <body>
+    {{-- w-100 d-flex justify-content-lg-between flex-wrap --}}
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <a class="navbar-brand" href="#">Admin</a>
@@ -26,25 +27,30 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse " id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item active">
-                    <a class="nav-link" href="{{route("admin.carreras.index")}}">Carreras</a>
-                </li>
+            <ul class="navbar-nav w-100 d-flex justify-content-lg-between">
+                <div class="d-lg-flex">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{{route("admin.carreras.index")}}">Carreras</a>
+                    </li>
+    
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{{route("admin.coordinadores.index")}}">Coordinadores</a>
+                    </li>
+    
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{{route("admin.profesores.index")}}">Profesores</a>
+                    </li>
+    
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{{route('admin.alumnos.index')}}">Alumnos</a>
+                    </li>
+                </div>
 
-                <li class="nav-item active">
-                    <a class="nav-link" href="{{route("admin.coordinadores.index")}}">Coordinadores</a>
-                </li>
-
-                <li class="nav-item active">
-                    <a class="nav-link" href="{{route("admin.profesores.index")}}">Profesores</a>
-                </li>
-
-                <li class="nav-item active">
-                    <a class="nav-link" href="{{route('admin.alumnos.index')}}">Alumnos</a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="{{route("admin.logout")}}">Logout</a>
-                </li>
+                <div class="d-lg-flex">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{{route("admin.logout")}}">Logout</a>
+                    </li>
+                </div>
             </ul>
         </div>
     </nav>
