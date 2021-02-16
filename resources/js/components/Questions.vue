@@ -1,7 +1,12 @@
 <template>
     <div class="questions contenedor p-4 p-md-0 pt-lg-4">
-        <button @click="eliminar">Eliminar</button>
-        <button @click="check">Get</button>
+        <div class="loading" v-show="loading">
+            <div class="spinner-border text-light" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+        <!-- <button @click="eliminar">Eliminar</button>
+        <button @click="check">Get</button> -->
         <div class="d-flex flex-wrap w-100 p-4 border mb-4">
             <div class="col-6 d-flex justify-content-start align-items-center">
                 <p class="fs-4 fw-bold m-0">Agregar preguntas</p>
@@ -16,10 +21,10 @@
                 
                 <div class="row mb-4">
                     <div class="col-6">
-                        <input type="text" name="" id="" class="form-control" :placeholder="'Pregunta ' + (indexQuestion+1)" v-model="question.pregunta">
+                        <input type="text" name="" class="form-control" :placeholder="'Pregunta ' + (indexQuestion+1)" v-model="question.pregunta" @keyup.enter="updateQuestion(indexQuestion)">
                     </div>
 
-                    <div class="col-4">
+                    <div class="col">
                         <select class="form-select" aria-label="Default select example" @change="onChangeAnswer($event, indexQuestion)" v-model="question.respuesta_correcta">
                             <!-- <option :selected="true" disabled hidden>Respuesta correcta</option> -->
                             <option :value="undefined" disabled style="display:none">Seleccione una opcion</option>
@@ -27,9 +32,9 @@
                         </select>
                     </div>
 
-                    <div class="col-2">
-                        <button type="button" class="btn btn-success w-100" @click="storeQuestion(indexQuestion)" v-if="question.id==0">Guardar</button>
-                        <button type="button" class="btn btn-secondary w-100" v-else>Guardar</button>
+                    <div class="col-2" v-if="question.id==0">
+                        <button type="button" class="btn btn-success w-100" @click="storeQuestion(indexQuestion)">Guardar</button>
+                        <!-- <button type="button" class="btn btn-secondary w-100" v-else>Guardar</button> -->
                     </div>
                 </div>
 
@@ -42,7 +47,7 @@
                             <!-- <i class="bi bi-file-earmark-check-fill"></i> -->
                         </div>
                         <div class="d-flex flex-grow-1">
-                            <input type="text" name="" id="" class="form-control" v-model="answer.respuesta">
+                            <input @keyup.enter="updateAnswer(indexQuestion,indexAnswer)" type="text" name="" class="form-control" v-model="answer.respuesta"  :placeholder="'Respuesta ' + (indexAnswer+1)">
                         </div>
                         <div class="d-flex ps-3 align-items-center">
                             <i class="bi bi-x-octagon-fill text-danger pointer" @click="destroyAnswer(indexQuestion, indexAnswer)"></i>
@@ -68,12 +73,14 @@
 
 <script>
 import axios from 'axios'
+import Swal from 'sweetalert2'
 axios.defaults.baseURL = '/api/coordinador/areas/';
 export default {
     name: 'Questions',
     data() {
         return {
             key: 1,
+            loading: false,
             preguntas: [
                 // {
                 //     id: 0,
@@ -99,6 +106,7 @@ export default {
         }
     },
     created () {
+
         let self = this
         axios.get('preguntas', {
             params: {
@@ -124,24 +132,57 @@ export default {
         });
     },
     methods: {
+        updateQuestion(indexQuestion){
+            let question = this.preguntas[indexQuestion]
+            let questionid = question.id
+
+            if(questionid!=0){
+                axios.put(`preguntas/${questionid}`, {
+                    question: question.pregunta
+                })
+                .then((response) => {
+                    console.log(response);
+                    this.loading = false
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Pregunta actualizada',
+                        showConfirmButton: false,
+                        timer: 800
+                    })
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            }else{
+                console.log('el id de la pregunta es 0, por lo que no se actualiza el nombre de la pregunta')
+            }
+
+        },
+        getColSelectCorrectAnswer(questionid){
+            if(questionid==0){
+                // { "col-4": true }
+            }
+        },
+
         addQuestion() {
             this.preguntas.unshift(
                 {
                     id: 0,
                     item: 1,
-                    pregunta: 'Pregunta 111',
+                    pregunta: '',
                     respuesta_correcta: undefined,
                     respuestas: [
                         {
                             id: 0,
                             item: 1,
-                            respuesta: 'Uno',
+                            respuesta: '',
                             pregunta_id: 0,
                         },
                         {
                             id: 0,
                             item: 2,
-                            respuesta: 'Dos',
+                            respuesta: '',
                             pregunta_id: 0,
                         }
                     ]
@@ -149,64 +190,170 @@ export default {
             )
         },
         destroyQuestion(indexQuestion){
-            this.preguntas.splice(indexQuestion,1)
+            Swal.fire({
+                title: '¿Esta seguro?',
+                text: "La pregunta se eliminara permanentemente",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Eliminar'
+            }).then((result) => {
+            if (result.isConfirmed) {
+                
+                let question = this.preguntas[indexQuestion]
+                let questionid = question.id
+
+                if(questionid!=0){
+                    this.loading = true
+                    axios.delete(`preguntas/${questionid}`)
+                    .then((response) => {
+                        console.log(response)
+                        this.preguntas.splice(indexQuestion,1)
+                        this.loading = false
+                        Swal.fire(
+                            'Pregunta eliminada',
+                            'La pregunta se elimino satisfactoriamente ',
+                            'success'
+                        )
+                    })
+                    .catch((error) => {
+                        alert('error')
+                    });
+                }else{
+                    this.preguntas.splice(indexQuestion,1)
+                }
+
+            }
+            })
         },
         addAnswer(indexQuestion){
-            let respuestas = this.preguntas[indexQuestion].respuestas
-
-            let areaid = window.areaid
-
-            axios.post('preguntas/addanswer', {
-                areaid: window.areaid,
-                questionid: this.preguntas[indexQuestion].id
-            })
-            .then(function (response) {
-                console.log('respuesta de agregar answer')
-                console.log(response.data);
-                respuestas.push(response.data)
-                
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-
-
-
-        },
-        destroyAnswer(indexQuestion, indexAnswer){
             let pregunta = this.preguntas[indexQuestion]
             let respuestas = pregunta.respuestas
-            let respuesta = respuestas[indexAnswer]
-            let respuesta_correcta = pregunta.respuesta_correcta
 
-            if(respuestas.length<=1){
-                alert('no puede haber menos de una pregunta')
-                return false
-            }
+            if(pregunta.id!=0){
+                this.loading = true
+                let areaid = window.areaid
+    
 
-            if(!(respuesta_correcta == undefined)){
-                console.log('hay una respuesta correcta seleccionada')
-                console.log(respuesta_correcta)
-                if(respuesta_correcta.respuesta == respuesta.respuesta){
-                    console.log('la respuesta a eliminar esta marcada como respuesta correcta')
-                    alert('la respuesta a eliminar esta marcada como respuesta correcta, primero escoja otra respuesta y despues elimine la respuesta que esta tratando de eliminar')
-                    return false
-                    // respuesta_correcta = undefined
+                axios.post('preguntas/addanswer', {
+                    areaid: window.areaid,
+                    questionid: this.preguntas[indexQuestion].id
+                })
+                .then((response) => {
+                    console.log('respuesta de agregar answer')
+                    console.log(response.data);
+                    respuestas.push(response.data)
+                    this.loading = false
+                })
+                .catch((error) => {
+                    console.log(error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong!',
+                    })
+                });
+
+
+            }else{
+                console.log('la pregunta aun no ha sido guardada')
+                let item = respuestas[respuestas.length-1].item+1
+
+                let obj = {
+                    id: 0,
+                    item: item,
+                    respuesta: '',
+                    pregunta_id: 0,
                 }
+
+                respuestas.push(obj)
+                // console.log(item)
             }
+        },
+        destroyAnswer(indexQuestion, indexAnswer){
+            Swal.fire({
+                title: '¿Esta seguro?',
+                text: "Se eliminara la respuesta permanentemente",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Eliminar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Swal.fire(
+                    //     'Deleted!',
+                    //     'Your file has been deleted.',
+                    //     'success'
+                    // )
+                    
+
+                    let pregunta = this.preguntas[indexQuestion]
+                    let respuestas = pregunta.respuestas
+                    let respuesta = respuestas[indexAnswer]
+                    let respuesta_correcta = pregunta.respuesta_correcta
+
+                    if(respuestas.length<=2){
+                        // alert('no puede haber menos de una pregunta')
+                        
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Cantidad de respuestas',
+                            text: 'No puede haber menos de 2 respuestas',
+                        })
+                        return false
+                    }
+
+                    if(!(respuesta_correcta == undefined)){
+                        console.log('hay una respuesta correcta seleccionada: ')
+                        console.log(respuesta_correcta)
+                        if(respuesta_correcta.respuesta == respuesta.respuesta){
+                            console.log('la respuesta a eliminar esta marcada como respuesta correcta')
+                            // alert('la respuesta a eliminar esta marcada como respuesta correcta, primero escoja otra respuesta y despues elimine la respuesta que esta tratando de eliminar')
+
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Se esta intentando eliminar la respuesta correcta',
+                                text: 'La respuesta a eliminar esta marcada como respuesta correcta, primero escoja otra respuesta correcta y despues elimine la respuesta que esta tratando de eliminar',
+                            })
+
+                            return false
+                            // respuesta_correcta = undefined
+                        }
+                    }
+
+                    if(pregunta.id != 0){
+                        this.loading = true
+                        
+                        console.log('respuesta a eliminar: ')
+                        console.log(respuesta)
+    
+                        axios.delete(`preguntas/destroyAnswer/${respuesta.id}`)
+                        .then(function (response) {
+                            console.log(response);
+                            respuestas.splice(indexAnswer,1)
+                            this.loading = false
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'success',
+                                title: 'Respuesta eliminada',
+                                showConfirmButton: false,
+                                timer: 800
+                            })
+                        }.call(this))
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                    }else{
+                        respuestas.splice(indexAnswer,1)
+                    }
 
 
-            // console.log(respuesta_correcta)
+                }
+            })
 
-            // if(pregunta.respuesta_correcta.length!=0){
-            //     if(respuesta_correcta.respuesta == respuesta.respuesta){
-            //         console.log('La respuesta eliminada era la que estaba como opcion correcta')
-            //         pregunta.respuesta_correcta = []
 
-            //     }
-            // }
-
-            respuestas.splice(indexAnswer,1)
 
         },
 
@@ -224,20 +371,17 @@ export default {
                 return false
             }
 
-            // detectar que se halla escogido respuesta correcta
-            if(question.respuesta_correcta==undefined){
-                correctAnswerReady = false
-                alert('elige respuesta correcta')
-                return false
-            }
-
             // detectar que la pregunta tenga texto
             if(question.pregunta == ''){
                 questionReady = false
-                alert('contesta la pregunta')
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Campos vacios',
+                    text: 'Llene el campo de la pregunta',
+                })  
                 return false
             }
-
+                
             // Detectar si todas las respuestas tienen texto
             for (let i = 0; i < answers.length; i++) {
                 const element = answers[i];
@@ -249,19 +393,38 @@ export default {
             }
 
             if(!allAnswersReady){
-                alert('contesta todas las preguntas')
+                // alert('Llene todos los campos de las respuestas')
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Campos vacios',
+                    text: 'Llene todos los campos de las respuestas',
+                })                
                 return false
             }
 
 
-            alert('Podemos guardar la respuesta')
+            // detectar que se halla escogido respuesta correcta
+            if(question.respuesta_correcta==undefined){
+                correctAnswerReady = false
+                // alert('elige respuesta correcta')
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Respuesta correcta no seleccionada',
+                    text: 'Elija la respuesta correcta',
+                })  
+                return false
+            }
 
+
+            // alert('Podemos guardar la respuesta')
+            this.loading = true
             let self = this
+
             axios.post('preguntas', {
                 question: question,
                 areaid: window.areaid
             })
-            .then(function (response) {
+            .then((response) => {
                 console.log('respuesta a post')
                 // console.log(response.data);
                 // console.log('INDEXXX: ' + indexQuestion)
@@ -274,10 +437,18 @@ export default {
                     element.id = response.data.respuestas[i].id
                     
                 }
-
+                this.loading = false
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Pregunta creada correctamente',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
             })
-            .catch(function (error) {
+            .catch((error) => {
                 console.log(error);
+                alert('error')
             });
         },
 
@@ -293,6 +464,13 @@ export default {
             .then(function (response) {
                 console.log('respuesta actualizar answer')
                 console.log(response.data);
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Actualizado',
+                    showConfirmButton: false,
+                    timer: 800
+                })
             })
             .catch(function (error) {
                 console.log(error);
@@ -312,6 +490,13 @@ export default {
             .then(function (response) {
                 console.log('respuesta actualizar answer')
                 console.log(response.data);
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Actualizado',
+                    showConfirmButton: false,
+                    timer: 800
+                })
             })
             .catch(function (error) {
                 console.log(error);
@@ -320,27 +505,23 @@ export default {
 
 
         onChangeAnswer(event,index){
-            // console.log('Energia')
+            console.log('Energia')
+
+            let indexAnswer = event.target.value
             let indexQuestion = index
-            // let indexAnswer = event.target.value
+
+
 
             let questionid = this.preguntas[indexQuestion].id
-            let newCorrectAnswer = this.preguntas[indexQuestion].respuesta_correcta
-            // let answerid = this.preguntas[indexQuestion].respuestas[indexAnswer]
-            // let newanswer = 
-            
-
-            this.updateCorrectAnswer(questionid, newCorrectAnswer)
 
 
+            if(questionid!=0){
+                let newCorrectAnswer = this.preguntas[indexQuestion].respuesta_correcta
+                this.updateCorrectAnswer(questionid, newCorrectAnswer)
+            }else{
+                console.log('la pregunta es nueva')
+            }
 
-            // console.log('Index de pregunta: ' + indexQuestion)
-            // console.log('Index de respuesta: '+ indexAnswer)
-            // console.log(this.preguntas[indexQuestion].respuestas[indexAnswer])
-
-            // let respuesta_correcta = this.preguntas[indexQuestion].respuestas[indexAnswer]
-
-            // this.preguntas[indexQuestion].respuesta_correcta = [respuesta_correcta]
 
         },
         eliminar(){
@@ -379,5 +560,17 @@ export default {
 
 .pointer{
     cursor: pointer;
+}
+
+.loading{
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 </style>

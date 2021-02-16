@@ -42,7 +42,7 @@ Route::group(['prefix' => 'coordinador'], function(){
     ]);
     Route::post('areas/preguntas/addanswer', 'API\Coordinadores\Areas\PreguntasController@addAnswer')->name('api.coordinador.preguntas.addanswer');
     Route::post('areas/preguntas/updateanswer', 'API\Coordinadores\Areas\PreguntasController@updateAnswer')->name('api.coordinador.preguntas.updateanswer');
-    Route::post('areas/preguntas/updatecorrectanswer', 'API\Coordinadores\Areas\PreguntasController@updateCorrectAnswer')->name('api.coordinador.preguntas.updateanswer');
-    Route::delete('areas/preguntas/destroyAnswer', 'API\Coordinadores\Areas\PreguntasController@deleteAnswer')->name('api.coordinador.preguntas.deleteanswer');
+    Route::post('areas/preguntas/updatecorrectanswer', 'API\Coordinadores\Areas\PreguntasController@updateCorrectAnswer')->name('api.coordinador.preguntas.updatecorrectanswer');
+    Route::delete('areas/preguntas/destroyAnswer/{id}', 'API\Coordinadores\Areas\PreguntasController@destroyAnswer')->name('api.coordinador.preguntas.destroyanswer');
 
 });

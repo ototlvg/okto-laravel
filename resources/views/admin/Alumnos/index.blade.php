@@ -43,14 +43,20 @@
                 <div class="col">
                     <form action="{{route('admin.alumnos.excel')}}" method="post" enctype="multipart/form-data" class="w-100 d-flex">
                         @csrf
-                        {{-- <input type="file" name="file" id=""> --}}
                         <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="customFile">
+                            <input type="file" class="custom-file-input" id="customFile" name="file">
                             <label class="custom-file-label" for="customFile">Subida masiva de usuarios excel</label>
                         </div>
                           
-                        <button type="button" class="btn btn-success ml-2">Cargar</button>
+                        <button type="submit" class="btn btn-success ml-2">Cargar</button>
                     </form>
+
+                    {{-- <form action="{{route('admin.alumnos.excel')}}" method="post" enctype="multipart/form-data">
+                        @csrf
+                        <input type="file" name="file" id="">
+                        <button type="submit">Enviar</button>
+                    </form> --}}
+
                 </div>
             </div>
 

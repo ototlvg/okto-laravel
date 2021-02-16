@@ -94,7 +94,12 @@ class PreguntasController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // return $id;
+        // return $request->get('question');
+        $question = Pregunta::find($id);
+        $question->pregunta = $request->get('question');
+        $question->save();
+        return $question;
     }
 
     public function addAnswer(Request $request)
@@ -151,6 +156,17 @@ class PreguntasController extends Controller
      */
     public function destroy($id)
     {
-        //
+        // return 'shampoo';
+        $question = Pregunta::find($id);
+        $question->delete();
+        return $question;
     }
+
+    public function destroyAnswer($id)
+    {
+        $answer = Respuesta::find($id);
+        $answer->delete();
+        return $id;
+    }
+
 }

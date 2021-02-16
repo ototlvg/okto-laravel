@@ -16,7 +16,7 @@ class CreatePreguntasTable extends Migration
         Schema::create('preguntas', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('item')->nullable();
-            $table->string('pregunta');
+            $table->longText('pregunta');
             $table->unsignedBigInteger('area_id');
             $table->foreign('area_id')->references('id')->on('areas')->onDelete('cascade');
             $table->timestamps();
