@@ -9,60 +9,47 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
-
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
-
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+    <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet">
+
+    @yield('style-area')
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
-            <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
-                </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark w-100">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">Alumno</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto">
-
-                    </ul>
-
-                    <!-- Right Side Of Navbar -->
-                    {{-- <p> {{Auth::guard('admin')->user()->name}}</p> --}}
-                    <ul class="navbar-nav ml-auto">
-                        <!-- Authentication Links -->
-                        {{-- El guest no funciona correctamente si las rutas no tienen puestas los mw de seguridad --}}
-                        @guest 
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('admin.login') }}">{{ __('Admin Login') }}</a>
-                            </li>
-                            @if (Route::has('register'))
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 w-100 d-flex justify-content-lg-between">
+                        
+                        @auth('web')
+                            <div class="left d-lg-flex flex-wrap">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                    {{-- <a class="nav-link active" aria-current="page" href="#">Home</a> --}}
+                                    <a class="nav-link" href="{{route("home")}}">Home</a>
                                 </li>
-                            @endif
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{route("alumno.areas.index")}}">Areas</a>
+                                </li>
+                            </div>
                         @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }} <span class="caret"></span>
-                                </a>
-
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{route("login")}}">Iniciar sesion</a>
+                            </li>
+                        @endauth
+    
+                        <div class="right">
+                            @auth('web')
+                                <div class="nav-item">
+                                    {{-- <a class="nav-link" href="{{route("coordinador.logout")}}">Logout</a> --}}
+                                    <a class="nav-link" href="{{ route('logout') }}"
+                                        onclick="event.preventDefault();
+                                                        document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
 
@@ -70,16 +57,20 @@
                                         @csrf
                                     </form>
                                 </div>
-                            </li>
-                        @endguest
+                                
+                            @endauth
+                        </div>
+    
                     </ul>
                 </div>
             </div>
         </nav>
 
-        <main class="py-4">
+        <main class="my-4 w-100">
             @yield('content')
         </main>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js" integrity="sha384-KsvD1yqQ1/1+IA7gi3P0tyJcT3vR+NdBTt13hSJ2lnve8agRGXTTyNaBYmCR/Nwi" crossorigin="anonymous"></script>
+    <script src="{{ asset('js/bootstrap.js') }}" defer></script>
 </body>
 </html>

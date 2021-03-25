@@ -62,6 +62,10 @@ class Handler extends ExceptionHandler
             }elseif($guard == 'admin'){
                 // return redirect(route('admin.login'));
                 return redirect()->route('admin.login');
+            }elseif($guard == 'coordinador'){
+                return redirect()->route('coordinador.login');
+            }elseif($guard == 'profesor'){
+                return redirect()->route('profesor.login');
             }
         }
         return parent::render($request, $exception);

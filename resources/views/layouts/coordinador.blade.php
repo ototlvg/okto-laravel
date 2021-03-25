@@ -58,7 +58,7 @@
     
     <nav class="navbar navbar-expand-lg navbar-dark bg-danger w-100">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">Coordinador</a>
+            <a class="navbar-brand" href="{{route('coordinador.profesores.index')}}">Coordinador</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -66,21 +66,30 @@
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 w-100 d-flex justify-content-lg-between">
 
                     <div class="left d-lg-flex flex-wrap">
-                        <li class="nav-item">
-                            {{-- <a class="nav-link active" aria-current="page" href="#">Home</a> --}}
-                            <a class="nav-link" href="{{route("coordinador.profesores.index")}}">Profesores</a>
-                        </li>
-                        <li class="nav-item">
-                            {{-- <a class="nav-link" href="#">Link</a> --}}
-                            <a class="nav-link" href="{{route("coordinador.areas.index")}}">Areas</a>
-                        </li>
+                        @auth('coordinador')
+                            <li class="nav-item">
+                                {{-- <a class="nav-link active" aria-current="page" href="#">Home</a> --}}
+                                <a class="nav-link" href="{{route("coordinador.profesores.index")}}">Profesores</a>
+                            </li>
+                            <li class="nav-item">
+                                {{-- <a class="nav-link" href="#">Link</a> --}}
+                                <a class="nav-link" href="{{route("coordinador.areas.index")}}">Areas</a>
+                            </li>
+                        @else
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{route("coordinador.login")}}">Iniciar sesion</a>
+                            </li>
+                        @endauth
                     </div>
 
-                    <div class="right">
-                        <div class="nav-item">
-                            <a class="nav-link" href="{{route("coordinador.logout")}}">Logout</a>
+                    @auth('coordinador')
+                        <div class="right">
+                            <div class="nav-item">
+                                <a class="nav-link" href="{{route("coordinador.logout")}}">Logout</a>
+                            </div>
                         </div>
-                    </div>
+                    @endauth
+
 
                 </ul>
             </div>
@@ -92,6 +101,7 @@
     </main>
 
     <!-- Scripts -->
+    
     <script src="{{ asset('js/bootstrap.js') }}" defer></script>
     {{-- <script src="{{ asset('js/app.js') }}" defer></script> --}}
     @yield('script-area')

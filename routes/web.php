@@ -21,6 +21,28 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/user/logout', 'Auth\LoginController@userLogout')->name('user.logout');
 
+Route::resource('/areas', 'Alumno\Areas\AreasController', [
+    'as' => 'alumno',
+]);
+// Route::resource('/areas/survey', 'Alumno\Areas\SurveyController', [
+//     'as' => 'alumno.areas',
+// ]);
+
+Route::group(['prefix' => 'areas'], function(){
+
+    Route::resource('/survey', 'Alumno\Areas\SurveyController', [
+        'as' => 'alumno.areas',
+    ]);
+    Route::get('/survey/resultados/{areaid}/{iteration}', 'Alumno\Areas\SurveyController@results')->name('alumno.areas.survey.results');
+
+    
+    // Route::resource('/', 'Alumno\Areas\SurveyController', [
+    //     'as' => 'alumno.areas',
+    // ]);
+});
+
+// Route::get('/areas/survey/{area}', 'Alumno\Areas\SurveyController@show')->name('alumno.areas.survey');
+
 
 Route::group(['prefix' => 'admin'], function(){
     // Login
@@ -92,6 +114,19 @@ Route::group(['prefix' => 'coordinador'], function(){
 Route::group(['prefix' => 'profesor'], function(){
     Route::get('/login', 'Auth\ProfesorLoginController@showLoginForm')->name('profesor.login');
     Route::post('/login', 'Auth\ProfesorLoginController@login')->name('profesor.login.submit');
-    // Route::get('/', 'AdminController@index')->name('profesor.dashboard');
     Route::get('/logout', 'Auth\ProfesorLoginController@logout')->name('profesor.logout');
+    
+    // Route::get('/', 'AdminController@index')->name('profesor.dashboard');
+
+    Route::resource('guia', 'Profesor\Guia\GuiaController', [
+        'as' => 'profesor',
+    ]);
+
+    Route::resource('carreras', 'Profesor\Carreras\CarrerasController', [
+        'as' => 'profesor',
+    ]);
+
+    Route::resource('perfil', 'Profesor\Perfil\PerfilController', [
+        'as' => 'profesor',
+    ]);
 });

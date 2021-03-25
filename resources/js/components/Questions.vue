@@ -47,7 +47,7 @@
                             <!-- <i class="bi bi-file-earmark-check-fill"></i> -->
                         </div>
                         <div class="d-flex flex-grow-1">
-                            <input @keyup.enter="updateAnswer(indexQuestion,indexAnswer)" type="text" name="" class="form-control" v-model="answer.respuesta"  :placeholder="'Respuesta ' + (indexAnswer+1)">
+                            <input @keyup="answerTextChange(indexQuestion,indexAnswer)" @keyup.enter="updateAnswer(indexQuestion,indexAnswer)" type="text" name="" class="form-control" v-model="answer.respuesta"  :placeholder="'Respuesta ' + (indexAnswer+1)">
                         </div>
                         <div class="d-flex ps-3 align-items-center">
                             <i class="bi bi-x-octagon-fill text-danger pointer" @click="destroyAnswer(indexQuestion, indexAnswer)"></i>
@@ -132,6 +132,23 @@ export default {
         });
     },
     methods: {
+        answerTextChange(indexQuestion, indexAnswer){
+            // console.log(indexQuestion)
+            let question = this.preguntas[indexQuestion]
+
+            if(question.id != 0){
+                let answer = question.respuestas[indexAnswer]
+                // console.log(question.respuestas[indexAnswer])
+    
+                if(answer.id == question.respuesta_correcta.id){
+                    console.log('correcto')
+                    question.respuesta_correcta.respuesta = answer.respuesta
+                }
+
+            }
+
+
+        },
         updateQuestion(indexQuestion){
             let question = this.preguntas[indexQuestion]
             let questionid = question.id
@@ -158,11 +175,6 @@ export default {
                 console.log('el id de la pregunta es 0, por lo que no se actualiza el nombre de la pregunta')
             }
 
-        },
-        getColSelectCorrectAnswer(questionid){
-            if(questionid==0){
-                // { "col-4": true }
-            }
         },
 
         addQuestion() {

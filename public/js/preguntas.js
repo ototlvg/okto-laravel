@@ -2037,6 +2037,19 @@ axios__WEBPACK_IMPORTED_MODULE_0___default.a.defaults.baseURL = '/api/coordinado
     });
   },
   methods: {
+    answerTextChange: function answerTextChange(indexQuestion, indexAnswer) {
+      // console.log(indexQuestion)
+      var question = this.preguntas[indexQuestion];
+
+      if (question.id != 0) {
+        var answer = question.respuestas[indexAnswer]; // console.log(question.respuestas[indexAnswer])
+
+        if (answer.id == question.respuesta_correcta.id) {
+          console.log('correcto');
+          question.respuesta_correcta.respuesta = answer.respuesta;
+        }
+      }
+    },
     updateQuestion: function updateQuestion(indexQuestion) {
       var _this = this;
 
@@ -2061,10 +2074,6 @@ axios__WEBPACK_IMPORTED_MODULE_0___default.a.defaults.baseURL = '/api/coordinado
         });
       } else {
         console.log('el id de la pregunta es 0, por lo que no se actualiza el nombre de la pregunta');
-      }
-    },
-    getColSelectCorrectAnswer: function getColSelectCorrectAnswer(questionid) {
-      if (questionid == 0) {// { "col-4": true }
       }
     },
     addQuestion: function addQuestion() {
@@ -7403,21 +7412,32 @@ var render = function() {
                         },
                         domProps: { value: answer.respuesta },
                         on: {
-                          keyup: function($event) {
-                            if (
-                              !$event.type.indexOf("key") &&
-                              _vm._k(
-                                $event.keyCode,
-                                "enter",
-                                13,
-                                $event.key,
-                                "Enter"
+                          keyup: [
+                            function($event) {
+                              return _vm.answerTextChange(
+                                indexQuestion,
+                                indexAnswer
                               )
-                            ) {
-                              return null
+                            },
+                            function($event) {
+                              if (
+                                !$event.type.indexOf("key") &&
+                                _vm._k(
+                                  $event.keyCode,
+                                  "enter",
+                                  13,
+                                  $event.key,
+                                  "Enter"
+                                )
+                              ) {
+                                return null
+                              }
+                              return _vm.updateAnswer(
+                                indexQuestion,
+                                indexAnswer
+                              )
                             }
-                            return _vm.updateAnswer(indexQuestion, indexAnswer)
-                          },
+                          ],
                           input: function($event) {
                             if ($event.target.composing) {
                               return

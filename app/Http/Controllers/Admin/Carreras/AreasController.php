@@ -9,6 +9,11 @@ use App\Area;
 use App\Carrera;
 class AreasController extends Controller
 {
+    public function __construct(){
+        // $this->middleware('guest:admin');
+        $this->middleware('auth:admin');
+    }
+    
     /**
      * Display a listing of the resource.
      *
@@ -40,6 +45,7 @@ class AreasController extends Controller
     }
 
     public function agregarAreaACarrera($carreraid){  // Esto es un get, retornna el form para agregar un area
+        
         return view('admin.Carreras.Areas.agregarArea', compact('carreraid'));
     }
 

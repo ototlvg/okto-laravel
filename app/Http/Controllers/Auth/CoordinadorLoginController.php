@@ -17,6 +17,8 @@ class CoordinadorLoginController extends Controller
 {
     use RedirectsUsers, ThrottlesLogins; // Agregados para Limitar el numero de Intentos
 
+    protected $redirectTo = 'dasdsa';
+
     public function __construct()
     {
         $this->middleware('guest:coordinador')->except('logout');
@@ -27,10 +29,12 @@ class CoordinadorLoginController extends Controller
     }
 
     public function login(Request $request){
-
+        // $request->merge(['email' => $request->post('email').'@uabc.edu.mx']);
+        // return $request->post('email');
         // Validate the form data
         $this->validate($request, [
-            'email' => 'required|email',
+            // 'email' => 'required|email',
+            'email' => 'required',
              'password' => 'required|min:6'
          ]);
 
@@ -42,7 +46,7 @@ class CoordinadorLoginController extends Controller
         }
 
         // Attempt to log the user in
-        if(Auth::guard('coordinador')->attempt(['email'=>$request->email, 'password' => $request->password], $request->remember)){
+        if(Auth::guard('coordinador')->attempt(['noempleado'=>$request->email, 'password' => $request->password], $request->remember)){
             return redirect()->intended(route('coordinador.profesores.index'));
         }
 
@@ -71,7 +75,7 @@ class CoordinadorLoginController extends Controller
     public function logout()
     {
         Auth::guard('coordinador')->logout();
-        return redirect('/');
+        return redirect()->route('coordinador.login');
     }
 
 

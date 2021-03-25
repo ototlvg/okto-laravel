@@ -1,11 +1,11 @@
-@extends('layouts.app')
+@extends('layouts.profesor')
 
-@section('content')
+@section('container')
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Profesor Loginss</div>
+                <div class="card-header">Profesor Login</div>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('profesor.login.submit') }}">
@@ -15,7 +15,7 @@
                             <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
 
                             <div class="col-md-6">
-                                <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required autofocus>
+                                <input id="email" type="number" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required autofocus>
 
                                 @if ($errors->has('email'))
                                     <span class="invalid-feedback" role="alert">

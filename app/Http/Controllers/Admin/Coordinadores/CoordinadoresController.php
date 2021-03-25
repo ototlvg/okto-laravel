@@ -54,7 +54,7 @@ class CoordinadoresController extends Controller
             'carreraid'=>'required|numeric',
             // 'edad'=>'required',
             // 'sexo'=>'required',
-            // 'email'=>'required|email|unique:coordinadores,email,'
+            'email'=>'required|email|unique:coordinadores,email,'
         ]);
 
         $name = $request->get('name');
@@ -70,8 +70,8 @@ class CoordinadoresController extends Controller
         $coordinador->apaterno = $apaterno;
         $coordinador->amaterno = $amaterno;
         $coordinador->noempleado = $noempleado;
-        // $coordinador->email = $email;
-        $coordinador->email = $noempleado."@uabc.edu";
+        $coordinador->email = $email;
+        // $coordinador->email = $noempleado."@uabc.edu";
         $coordinador->carrera_id = $carreraid;
         $coordinador->password = Hash::make('password');
         $coordinador->save();

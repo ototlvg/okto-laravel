@@ -8,4 +8,8 @@ class UserProfile extends Model
 {
     protected $table = 'users_profile';
     public $timestamps = false;
+
+    public function carrera(){
+        return $this->hasOne('App\Carrera', 'carrera', 'carrera');
+    }
 }

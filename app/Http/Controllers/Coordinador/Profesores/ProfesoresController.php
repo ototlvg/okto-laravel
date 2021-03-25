@@ -12,6 +12,7 @@ class ProfesoresController extends Controller
 {
     public function __construct()    {
         $this->middleware('auth:coordinador');
+        $this->middleware('returnAuthVariable:coordinador');
     }
     /**
      * Display a listing of the resource.

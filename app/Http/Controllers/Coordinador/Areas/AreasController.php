@@ -12,6 +12,13 @@ use App\Coordinador;
 
 class AreasController extends Controller
 {
+    public function __construct()
+    {
+        // $this->middleware('guest')->except('logout');
+        // $this->middleware('guest');
+        $this->middleware('auth:coordinador');
+        $this->middleware('returnAuthVariable:coordinador');
+    }
     /**
      * Display a listing of the resource.
      *

@@ -17,6 +17,7 @@ class CreateUsersProfilesTable extends Migration
             $table->bigIncrements('id');
             $table->integer('matricula');
             $table->string('semestre');
+            $table->string('email')->unique()->nullable(); /// Nuevo
 
             $table->unsignedBigInteger('carrera');
             $table->foreign('carrera')->references('carrera')->on('carreras')->onDelete('cascade');

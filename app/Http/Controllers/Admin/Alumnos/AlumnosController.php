@@ -15,6 +15,11 @@ use App\UserProfile;
 use App\Carrera;
 class AlumnosController extends Controller
 {
+    public function __construct(){
+        // $this->middleware('guest:admin');
+        $this->middleware('auth:admin');
+    }
+    
     /**
      * Display a listing of the resource.
      *
@@ -163,6 +168,7 @@ class AlumnosController extends Controller
         
         // Codigo para guardar
         $duplicateStudents=[];
+        // return $students;
         foreach($students as $student ){
             // return $student;
             $user = new User;
@@ -171,8 +177,11 @@ class AlumnosController extends Controller
             $user->name = $student[1];
             $user->apaterno = $student[2];
             $user->amaterno = $student[3];
-            $user->email = $student[0].'@uabc.edu';
-            $user->password = Hash::make('password123');
+            $user->email = $student[0].'@uabc.edu.mx';
+            // $user->password = Hash::make('password123');
+            // strval($student[0])+strval($student[4])
+            // $user->password = Hash::make($student[0]+$student[4]);
+            $user->password = Hash::make(strval($student[0]).strval($student[4]));
             try{
                 $user->save();
 
@@ -180,6 +189,7 @@ class AlumnosController extends Controller
                 $userprofile->matricula = $student[0];
                 $userprofile->semestre = $student[4];
                 $userprofile->carrera = $student[5];
+                $userprofile->email = $student[6];
                 $userprofile->user_id = $user->id;
                 $userprofile->save();
             }catch(\Exception $e){
