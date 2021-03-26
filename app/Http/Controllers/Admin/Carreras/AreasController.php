@@ -118,7 +118,18 @@ class AreasController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $newname = $request->get('newname');
+        $areaid = $id;
+
+        $area = Area::find($areaid);
+        $area->nombre = $newname;
+        $area->save();
+
+
+        // return $areaid;
+
+        return redirect()->back();
+        return $request->get('newname');
     }
 
     /**
@@ -129,6 +140,8 @@ class AreasController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $area= Area::find($id)->delete();
+        // $area->save();
+        return redirect()->back();
     }
 }

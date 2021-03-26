@@ -39,7 +39,7 @@ class AlumnosController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.Alumnos.create');
     }
 
     /**

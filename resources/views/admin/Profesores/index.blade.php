@@ -33,7 +33,8 @@
                                         <span class="material-icons text-danger">delete</span>
                                     </a> --}}
 
-                                    <a href="#" onclick="document.getElementById('destroy-profesor-{{ $profesor->id }}').submit()">
+                                    {{-- <a href="#" onclick="document.getElementById('destroy-profesor-{{ $profesor->id }}').submit()"> --}}
+                                    <a href="#" onclick="deleteProfesor({{ $profesor->id }})">
                                         <span class="material-icons text-danger">delete</span>
                                     </a>
                                     <form class="d-none" id="destroy-profesor-{{ $profesor->id }}" action="{{ route('admin.profesores.destroy', $profesor->id) }}" method="POST">
@@ -55,3 +56,39 @@
         </div>
     </div>
 @endsection
+
+@push('script')
+    <script src="{{asset('js/sweetalert2.js')}}"></script>
+@endpush
+
+
+@push('script')
+    <script>
+        let deleteProfesor = (profesorid) => {
+            console.log(profesorid)
+            
+            Swal.fire(
+                {
+                    title: '¿Estas seguro?',
+                    text: "El profesor sera eliminado",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Eliminar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        let form = document.getElementById('destroy-profesor-'+profesorid)
+                        console.log(form)
+                        form.submit()
+
+                        // Swal.fire(
+                        //     'Deleted!',
+                        //     'Your file has been deleted.',
+                        //     'success'
+                        // )
+                }
+            })
+        }
+    </script>
+@endpush

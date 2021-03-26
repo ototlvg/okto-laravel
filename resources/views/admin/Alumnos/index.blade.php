@@ -3,8 +3,10 @@
 @section('container')
         <main class="container mt-3">
             <div class="row mb-3">
-                <div class="col">
-                    <div class="h3 align-items-center d-flex">Carreras</div>
+                <div class="col-12 d-flex justify-content-between">
+                    <div class="h3 align-items-center d-flex">Alumno</div>
+                    {{-- <button class="btn btn-success">Añadir alumno</button> --}}
+                    <a href="{{route("admin.alumnos.create")}}" class="btn btn-success">Añadir alumno</a>
                 </div>
             </div>
 
