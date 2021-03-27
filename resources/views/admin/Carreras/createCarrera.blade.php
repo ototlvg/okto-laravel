@@ -2,6 +2,17 @@
 
 @section('container')
     <div class="container mt-5">
+
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <div class="row d-flex justify-content-center">
             <div class="col-4">
                 <form class="w-100" method="POST" action="{{route('admin.carreras.store')}}">

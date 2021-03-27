@@ -51,11 +51,11 @@ class ProfesoresController extends Controller
             'name'=>'required',
             'apaterno'=>'required',
             'amaterno'=>'required',
-            'noempleado'=>'required|numeric',
+            'noempleado'=>'required|numeric|unique:profesores,noempleado',
             // 'carreraid'=>'required|numeric',
             // 'edad'=>'required',
             // 'sexo'=>'required',
-            'email'=>'required|email|unique:profesores,email,'
+            'email'=>'required|email|unique:profesores,email'
         ]);
 
         $name = $request->get('name');
@@ -113,16 +113,27 @@ class ProfesoresController extends Controller
     public function update(Request $request, $id)
     {
         // return 'coco';
-        $email = $request->get('email');
+        // $email = $request->get('email');
+
+        $password = $request->get('password');
+        $passwordAvailable = !empty($password);
+
+        if($passwordAvailable){
+            $this->validate($request, [
+                'password'=>'required|min:8',
+            ]);
+        }
+
+
         $this->validate($request, [
             'name'=>'required',
             'apaterno'=>'required',
             'amaterno'=>'required',
-            'noempleado'=>'required|numeric',
+            'noempleado'=>"required|numeric|unique:profesores,noempleado,{$id}",
             // 'carreraid'=>'required|numeric',
             // 'edad'=>'required',
             // 'sexo'=>'required',
-            "email'=>'required|email|unique:profesores,email,$email"
+            "email'=>'required|email|unique:profesores,email,{$id}"
         ]);
 
         $name = $request->get('name');
@@ -139,10 +150,22 @@ class ProfesoresController extends Controller
         $profesor->noempleado = $noempleado;
         $profesor->email = $email;
         // $profesor->password = Hash::make('password');
+
+        if($passwordAvailable){
+            $profesor->password = Hash::make($password);
+        }
+
         $profesor->save();
 
 
-        return redirect()->route('admin.profesores.index');
+        // return redirect()->route('admin.profesores.index');
+
+        if($passwordAvailable){
+            return redirect()->route('admin.profesores.index')->with( [ 'success-email-update' => $email, 'success-password-update' => 1] );
+        }else{
+            return redirect()->route('admin.profesores.index')->with( [ 'success-email-update' => $email ] );
+        }
+
     }
 
     /**

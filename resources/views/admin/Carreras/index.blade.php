@@ -51,7 +51,13 @@
                                     </a> --}}
                                     <a href="{{route("admin.carreras.areas.index", ['carreraid'=>$carrera->id])}}">
                                         <button type="button" class="btn btn-primary btn-sm">Areas</button>
-                                        {{-- <span class="material-icons">create</span> --}}
+                                    </a>
+
+                                    <a href="{{route('admin.carreras.edit', $carrera->id)}}">
+                                        <button type="button" class="btn btn-primary btn-sm">Editar</button>
+                                    </a>
+
+                                    
                                     </a>
                                 </td>
                             </tr>

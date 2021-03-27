@@ -21,10 +21,20 @@ class AreasController extends Controller
      */
     public function index(Request $request)
     {
+        // return 'xxxxx';
         $id = $request->get('carreraid');
         $areas = Area::where('carrera_id', $id)->get();
+        // return $areas;
+        if($areas->isEmpty()){
+            return redirect()->back();
+        }
+
         $areascount = $areas->count();
         $carrera = Carrera::find($id);
+
+        // if($carre){
+
+        // }
 
         $carreraid = $id;
 

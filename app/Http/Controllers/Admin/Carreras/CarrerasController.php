@@ -44,7 +44,7 @@ class CarrerasController extends Controller
     {
         $this->validate($request, [
             'carrera'=>'required',
-            'nocontrol'=>'required|numeric',
+            'nocontrol'=>'required|numeric|unique:carreras,carrera',
         ]);
 
         $nombre = $request->get('carrera');
@@ -64,9 +64,8 @@ class CarrerasController extends Controller
      */
     public function show($id)
     {
-        //
     }
-
+    
     /**
      * Show the form for editing the specified resource.
      *
@@ -75,6 +74,14 @@ class CarrerasController extends Controller
      */
     public function edit($id)
     {
+        $carrera = Carrera::find($id);
+
+        if(empty($carrera)){
+            return redirect()->back();
+        }
+
+    
+        return view('admin.Carreras.edit',compact(['carrera']));
         //
     }
 
@@ -87,7 +94,27 @@ class CarrerasController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'name'=> ['required', 'string']
+        ]);
+
+        $carreranum = $request->get('carrera');
+        $name = $request->get('name');
+        $carrera = Carrera::find($id);
+        $carrera->nombre = $name;
+        // $carrera->carrera = $carreranum;
+        $carrera->save();
+
+
+        // return redirect()->route( 'clients.show' )->with( [ 'id' => $id ] );
+        // in PHP
+        // $id = session()->get( 'id' );
+        // // in Blade
+        // {{ session()->get( 'id' ) }}
+        return redirect()->route('admin.carreras.index');
+        
+
+        // return $id;
     }
 
     /**

@@ -20,7 +20,7 @@ class CreateUsersProfilesTable extends Migration
             $table->string('email')->unique()->nullable(); /// Nuevo
 
             $table->unsignedBigInteger('carrera');
-            $table->foreign('carrera')->references('carrera')->on('carreras')->onDelete('cascade');
+            $table->foreign('carrera')->references('carrera')->on('carreras')->onDelete('cascade')->onUpdate('cascade');
 
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

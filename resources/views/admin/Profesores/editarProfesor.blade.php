@@ -57,6 +57,12 @@
                         <label for="email">Email</label>
                         <input name="email" type="email" class="form-control" id="email" required value="{{$profesor->email}}">
                     </div>
+
+                    <div class="form-group">
+                        <label for="password">password</label>
+                        <input name="password" type="password" class="form-control" id="password">
+                    </div>
+
                     <div class="form-group">
                         <label for="noempleado">No. empleado</label>
                         @if(old('noempleado'))

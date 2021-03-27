@@ -22,7 +22,7 @@ class CoordinadoresController extends Controller
      */
     public function index()
     {
-        $coordinadores = Coordinador::all();
+        $coordinadores = Coordinador::orderBy('id','DESC')->get();
         // return $coordinadores;
         return view('admin.Coordinadores.index', compact('coordinadores'));
     }
@@ -50,11 +50,11 @@ class CoordinadoresController extends Controller
             'name'=>'required',
             'apaterno'=>'required',
             'amaterno'=>'required',
-            'noempleado'=>'required|numeric',
+            'noempleado'=>'required|numeric|unique:coordinadores,noempleado',
             'carreraid'=>'required|numeric',
             // 'edad'=>'required',
             // 'sexo'=>'required',
-            'email'=>'required|email|unique:coordinadores,email,'
+            'email'=>'required|email|unique:coordinadores,email'
         ]);
 
         $name = $request->get('name');
@@ -77,7 +77,8 @@ class CoordinadoresController extends Controller
         $coordinador->save();
 
 
-        return redirect()->route('admin.coordinadores.index');
+        // return redirect()->route('admin.coordinadores.index');
+        return redirect()->route('admin.coordinadores.index')->with( [ 'success-email-store' => $email ] );
     }
 
     /**
@@ -88,7 +89,7 @@ class CoordinadoresController extends Controller
      */
     public function show($id)
     {
-        //
+        
     }
 
     /**
@@ -99,7 +100,16 @@ class CoordinadoresController extends Controller
      */
     public function edit($id)
     {
-        //
+        $coordinador = Coordinador::find($id);
+
+        if(empty($coordinador)){
+            return redirect()->route('admin.coordinadores.index');
+        }
+
+        $carreras = Carrera::all();
+        // return $coordinador;
+        return view('admin.Coordinadores.edit',compact(['coordinador','carreras']));
+
     }
 
     /**
@@ -111,7 +121,56 @@ class CoordinadoresController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // return $request->get('carreraid');
+        $password = $request->get('password');
+
+        $passwordAvailable = !empty($password);
+
+        if($passwordAvailable){
+            $this->validate($request, [
+                'password'=>'required|min:8',
+            ]);
+        }
+
+        // return $password;
+
+        $this->validate($request, [
+            'name'=>'required',
+            'apaterno'=>'required',
+            'amaterno'=>'required',
+            'noempleado'=>"required|numeric|unique:coordinadores,noempleado,{$id}",
+            'carreraid'=>'required|numeric',
+            // 'edad'=>'required',
+            // 'sexo'=>'required',
+            'email'=>"required|email|unique:coordinadores,email,{$id}"
+        ]);
+            
+        $name = $request->get('name');
+        $apaterno = $request->get('apaterno');
+        $amaterno = $request->get('amaterno');
+        $noempleado = $request->get('noempleado');
+        $carreraid = $request->get('carreraid');
+        $email = $request->get('email');
+            
+
+        $coordinador = Coordinador::find($id);
+        $coordinador->name = $name;
+        $coordinador->apaterno = $apaterno;
+        $coordinador->amaterno = $amaterno;
+        $coordinador->noempleado = $noempleado;
+        $coordinador->carrera_id = $carreraid;
+        $coordinador->email = $email;
+        
+        if($passwordAvailable){
+            $coordinador->password = Hash::make($password);
+        }
+
+        $coordinador->save();
+        
+
+
+        // return redirect()->route( 'clients.show' )->with( [ 'id' => $id ] );
+        return redirect()->route('admin.coordinadores.index')->with( [ 'success-email-update' => $email ] );
     }
 
     /**

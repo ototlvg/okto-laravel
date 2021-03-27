@@ -18,7 +18,7 @@ class CreateCarrerasTable extends Migration
             // $table->string('nocontrol');
             $table->string('nombre');
             $table->unsignedBigInteger('carrera');
-            $table->index('carrera');
+            $table->index('carrera')->unique();
             $table->timestamps();
         });
     }

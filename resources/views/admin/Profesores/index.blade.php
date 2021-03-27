@@ -11,6 +11,26 @@
                 <a href="{{route("admin.profesores.create")}}" class="btn btn-success">Agregar profesor</a>
             </div>
         </div>
+
+        <div class="row">
+            <div class="col">
+                @if ( session()->has( 'success-email-update' ) )
+                    El usuario con correo {{session()->get( 'success-email-update' )}} a sido modificado
+                @endif
+
+                @if ( session()->has( 'success-email-store' ) )
+                    El usuario con correo {{session()->get( 'success-email-store' )}} a sido creado
+                @endif
+                
+                @if ( session()->has( 'success-password-update' ) )
+                    {{-- El usuario con correo {{session()->get( 'success-password-update' )}} a sido creado --}}
+                    contraseña actualizada
+                @endif
+
+
+            </div>
+        </div>
+
         <div class="row mt-3">
             <div class="col">
                 <table class="table">
