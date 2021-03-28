@@ -22,21 +22,21 @@ class AreasController extends Controller
     public function index(Request $request)
     {
         // return 'xxxxx';
-        $id = $request->get('carreraid');
-        $areas = Area::where('carrera_id', $id)->get();
-        // return $areas;
-        if($areas->isEmpty()){
+        $carreraid = $request->get('carreraid');
+        $carrera = Carrera::find($carreraid);
+
+        if(empty($carrera)){
             return redirect()->back();
         }
-
+        
+        $areas = Area::where('carrera_id', $carreraid)->get();
         $areascount = $areas->count();
-        $carrera = Carrera::find($id);
 
-        // if($carre){
-
+        // return $areas;
+        // return $areas;
+        // if($areas->isEmpty()){
+        //     return redirect()->back();
         // }
-
-        $carreraid = $id;
 
         return view('admin.Carreras.Areas.areas', compact('areas', 'carreraid', 'areascount', 'carrera'));
         

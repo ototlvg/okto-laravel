@@ -15,8 +15,9 @@ class CreateUsersProfilesTable extends Migration
     {
         Schema::create('users_profile', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('matricula');
+            $table->integer('matricula')->unique();
             $table->string('semestre');
+            $table->integer('grupo')->nullable();
             $table->string('email')->unique()->nullable(); /// Nuevo
 
             $table->unsignedBigInteger('carrera');

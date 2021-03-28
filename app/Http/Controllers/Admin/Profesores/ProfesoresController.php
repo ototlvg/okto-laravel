@@ -75,7 +75,8 @@ class ProfesoresController extends Controller
         $profesor->save();
 
 
-        return redirect()->route('admin.profesores.index');
+        // return redirect()->route('admin.profesores.index');
+        return redirect()->route('admin.profesores.index')->with( [ 'success-email-store' => $email ] );
     }
 
     /**
@@ -100,6 +101,12 @@ class ProfesoresController extends Controller
         // return 'Hola';
         $profesor = Profesor::find($id);
         // return $profesor;
+
+        if(empty($profesor)){
+            return redirect()->route('admin.profesores.index');
+        }
+
+
         return view('admin.Profesores.editarProfesor', compact('profesor'));
     }
 

@@ -27,9 +27,11 @@ class AlumnosController extends Controller
      */
     public function index()
     {
-        $users = User::with('profile')->get();
+        $users = User::with('profile')->orderBy('id','DESC')->get();
+
+        
         // return $users;
-        return view('admin.Alumnos.index',compact('users'));
+        return view('admin.Alumnos.index',compact(['users']));
     }
 
     /**
@@ -39,7 +41,8 @@ class AlumnosController extends Controller
      */
     public function create()
     {
-        return view('admin.Alumnos.create');
+        $carreras = Carrera::all();
+        return view('admin.Alumnos.create',compact(['carreras']));
     }
 
     /**
@@ -50,7 +53,64 @@ class AlumnosController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+
+
+        $this->validate($request, [
+            'name'=> ['required', 'string'],
+            'apaterno'=> ['required', 'string'],
+            'amaterno'=> ['required', 'string'],
+            'matricula'=> ['required', 'numeric','unique:users_profile,matricula'],
+            'semestre'=> ['required', 'numeric'],
+            'grupo'=> ['required', 'numeric'],
+            'email'=> ['required', 'string'],
+            'carreraid'=> ['required', 'numeric']
+        ]);
+
+        // return $request->all();
+
+        $name = $request->post('name') ;
+        $apaterno = $request->post('apaterno') ;
+        $amaterno = $request->post('amaterno') ;
+        
+        $matricula = $request->post('matricula') ;
+        $semestre = $request->post('semestre') ;
+        $grupo = $request->post('grupo') ;
+        $carreraid = $request->post('carreraid') ;
+        
+        $email = $request->post('email') ;
+
+
+        $password = $matricula.$semestre ;
+
+        // return $password;
+        
+
+        $alumno = new User;
+
+        $alumno->name = $name;
+        $alumno->apaterno = $apaterno;
+        $alumno->amaterno = $amaterno;
+        $alumno->email = $matricula."@uabc.edu.mx";
+        $alumno->password = Hash::make($password);
+        $alumno->save();
+
+        // return $alumno;
+
+        $alumno_profile = new UserProfile;
+
+        $alumno_profile->matricula = $matricula;
+        $alumno_profile->semestre = $semestre;
+        $alumno_profile->email = $email;
+        $alumno_profile->carrera = $carreraid;
+        $alumno_profile->user_id = $alumno->id;
+        $alumno_profile->save();
+
+
+
+        // return $request->all();
+        // return redirect()->route( 'clients.show' )->with( [ 'id' => $id ] );
+        return redirect()->route('admin.alumnos.index')->with( [ 'success-matricula-store' => $matricula ] );
     }
 
     /**
@@ -72,7 +132,11 @@ class AlumnosController extends Controller
      */
     public function edit($id)
     {
-        //
+        $alumno = User::with('profile')->find($id);
+        $carreras = Carrera::all();
+
+
+        return view('admin.Alumnos.edit',compact(['alumno','carreras']));
     }
 
     /**
@@ -84,7 +148,53 @@ class AlumnosController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $alumno = User::with('profile')->find($id);
+        // $userprofileid = $alumno->profile->id;
+
+        // $alumno->profile->semestre = 187;
+        // $alumno->save();
+
+        // return 'lele';
+
+        // return $alumno->profile->matricula;
+
+        $this->validate($request, [
+            'name'=> ['required', 'string'],
+            'apaterno'=> ['required', 'string'],
+            'amaterno'=> ['required', 'string'],
+            // 'matricula'=> ['required', 'numeric',"unique:users_profile,matricula,71"],
+            'semestre'=> ['required', 'numeric'],
+            'grupo'=> ['required', 'numeric'],
+            'email'=> ['required', 'string'],
+            'carreraid'=> ['required', 'numeric']
+        ]);
+
+        // return 'lala';
+
+        
+
+        $name = $request->post('name') ;
+        $apaterno = $request->post('apaterno') ;
+        $amaterno = $request->post('amaterno') ;
+        
+        $matricula = $request->post('matricula') ;
+        $semestre = $request->post('semestre') ;
+        $grupo = $request->post('grupo') ;
+        $carreraid = $request->post('carreraid') ;
+        
+        $email = $request->post('email');
+
+
+        $password = $matricula.$semestre;
+
+        // $userprofile = UserProf;
+        $userprofile->matricula = $matricula;
+        $userprofile->save();
+
+        
+
+        return 'lelo';
+
     }
 
     /**
@@ -95,7 +205,18 @@ class AlumnosController extends Controller
      */
     public function destroy($id)
     {
-        //
+        // $area= Area::find($id)->delete();
+        // User::with('profile')->orderBy('id','DESC')->get();
+        $alumno = User::with('profile')->find($id);
+        $matricula = $alumno->profile->matricula;
+        // return $alumno;
+
+        // $alumno->
+
+        $alumno->delete();
+
+        return redirect()->route('admin.alumnos.index')->with( [ 'success-matricula-deleted' => $matricula ] );
+
     }
 
     public function readExcel(Request $request){
