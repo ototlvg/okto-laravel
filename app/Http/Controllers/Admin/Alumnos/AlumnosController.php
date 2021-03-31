@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Hash;
 use App\User;
 use App\UserProfile;
 use App\Carrera;
+
+Use Exception;
 class AlumnosController extends Controller
 {
     public function __construct(){
@@ -149,6 +151,14 @@ class AlumnosController extends Controller
     public function update(Request $request, $id)
     {
         $alumno = User::with('profile')->find($id);
+        $userprofile = UserProfile::where('user_id', $alumno->id)->first();
+
+        $matriculaEnDB =  $userprofile->matricula;
+        $matricula = $request->post('matricula') ;
+
+        // return $matricula == $matriculaEnDB ? 'Son iguales' : 'no son iguales';
+
+        // return 'ds';
         // $userprofileid = $alumno->profile->id;
 
         // $alumno->profile->semestre = 187;
@@ -166,34 +176,83 @@ class AlumnosController extends Controller
             'semestre'=> ['required', 'numeric'],
             'grupo'=> ['required', 'numeric'],
             'email'=> ['required', 'string'],
-            'carreraid'=> ['required', 'numeric']
+            'carrera'=> ['required', 'numeric']
         ]);
 
-        // return 'lala';
-
         
+        if(!is_null($request->post('password'))){
+            // return 'no vacio';
+            $this->validate($request, [
+                'password'=> ['required', 'min:8']
+            ]); 
+            $password = $request->post('password') ;
+        }else{
+            // return 'vacio';
+        }
+
+        // return 'lala';
 
         $name = $request->post('name') ;
         $apaterno = $request->post('apaterno') ;
         $amaterno = $request->post('amaterno') ;
+        $email = $request->post('email');
         
-        $matricula = $request->post('matricula') ;
+        $alumno->name = $name;
+        $alumno->apaterno = $apaterno;
+        $alumno->amaterno = $amaterno;
+
+        if(!is_null($request->post('password'))){
+            $alumno->password = Hash::make($password);
+        }
+
+        if( !($matricula == $matriculaEnDB) ){
+
+            $alumno->email = $matricula.'@uabc.edu.mx' ;
+            
+        }
+        
+        try
+        {
+            //write your codes here
+            $alumno->save();
+        }
+        catch(Exception $e)
+        {
+        //    dd($e->getCode());
+            return back()->withInput()->with('duplicatematricula', 'La matricula con la que esta intentando actualizar el formmulario ya se encunetra registrada');
+        }
+        // $alumno->email = $email;
+        // $alumno->password = ;
+
+
+        // $matricula = $request->post('matricula') ;
         $semestre = $request->post('semestre') ;
         $grupo = $request->post('grupo') ;
-        $carreraid = $request->post('carreraid') ;
-        
         $email = $request->post('email');
-
-
-        $password = $matricula.$semestre;
-
-        // $userprofile = UserProf;
+        $carrera = $request->post('carrera');
+        
+        
         $userprofile->matricula = $matricula;
+        $userprofile->semestre = $semestre;
+        $userprofile->email = $email;
+        $userprofile->carrera = $carrera;
         $userprofile->save();
 
+
+
+
+        // $carreraid = $request->post('carreraid') ;
         
 
-        return 'lelo';
+
+        // $password = $matricula.$semestre;
+        // $userprofile->matricula = $matricula;
+        // $userprofile->save();
+
+        
+
+        // return 'lelo';
+        return redirect()->route('admin.alumnos.edit',$alumno->id);
 
     }
 

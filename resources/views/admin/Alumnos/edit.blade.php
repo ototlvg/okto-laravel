@@ -3,6 +3,16 @@
 @section('container')
     <main class="container">
 
+        <div class="row">
+            <div class="col">
+                @if (session('duplicatematricula'))
+                    <div class="alert alert-danger">
+                        {{ session('duplicatematricula') }}
+                    </div>
+                @endif
+            </div>
+        </div>
+
         <div class="row d-flex justify-content-center">
             <div class="col-4">
                 @if ($errors->any())
@@ -74,7 +84,7 @@
                     <div class="form-group">
                         <label for="password">Password</label>
                         {{-- <input name="email" type="text" class="form-control" id="email" required value="{{old('email')}}"> --}}
-                        <input name="password" type="text" class="form-control" id="password">
+                        <input name="password" type="password" class="form-control" id="password">
                     </div>
 
                     <div class="form-group">
@@ -85,10 +95,10 @@
                                 <option value="{{$carrera->carrera}}">{{$carrera->nombre}}</option>
                             @endforeach
                         </select> --}}
-                        <select name="carreraid" id="carreraid" class="form-select" required>
-                            @if (!empty(old('carreraid')))
+                        <select name="carrera" id="carrera" class="form-select" required>
+                            @if (!empty(old('carrera')))
                                 @foreach ($carreras as $carrera)
-                                    <option value="{{$carrera->carrera}}" {{ $alumno->profile->carrera == old('carreraid') ? 'selected' : '' }}>{{$carrera->nombre}}</option>
+                                    <option value="{{$carrera->carrera}}" {{ $alumno->profile->carrera == old('carrera') ? 'selected' : '' }}>{{$carrera->nombre}}</option>
                                 @endforeach
                             @else
                                 @foreach ($carreras as $carrera)
