@@ -9,6 +9,8 @@ use App\Pregunta;
 use App\PreguntaRespuesta;
 use App\Area;
 
+use App\User;
+
 use Illuminate\Support\Facades\Auth;
 
 class SurveyController extends Controller
@@ -18,6 +20,8 @@ class SurveyController extends Controller
         // $this->middleware('guest')->except('logout');
         // $this->middleware('guest');
         $this->middleware('auth');
+        // $this->middleware('checkAlumnoAuth');
+
     }
     /**
      * Display a listing of the resource.
@@ -48,6 +52,21 @@ class SurveyController extends Controller
     public function store(Request $request)
     {
         $areaid = $request->post('areaid');
+        $area = Area::with('carrera')->find($areaid);
+
+        /////
+        $userid = Auth::id();
+        $user = User::with('profile.carrera.areas')->find($userid);
+
+        if(empty($area)){
+            return redirect()->route('alumno.areas.index')->with('areaNot',true);
+        }
+
+        if( !($area->carrera->carrera == $user->profile->carrera) ){ // Esto comprueba que el area en la que el alumno eesta inteentando entrar sea deee su carrera
+            return redirect()->route('alumno.areas.index')->with('areaNot',true);
+        }
+        //////
+        
 
         $maxItem = PreguntaRespuesta::orderBy('iteration', 'desc')->where('area_id',$areaid)->value('iteration');
 
@@ -59,7 +78,7 @@ class SurveyController extends Controller
             $iteration = $maxItem+1;
         }
 
-        $userid = Auth::id();
+        
         $preguntas = Pregunta::where('area_id',$areaid)->orderBy('id', 'ASC')->get();
 
         // return $request->post('pregunta_46');
@@ -93,11 +112,33 @@ class SurveyController extends Controller
      */
     public function show($id)
     {
-        $preguntas = Pregunta::where('area_id',$id)->orderBy('id', 'ASC')->with('respuestas')->get();
+        // return 'xxxx';
+        $userid = Auth::id();
+
+        $user = User::with('profile.carrera.areas')->find($userid);
+        // return $user->profile->carrera;
+        // return $user->profile->getRelationValue('carrera')->areas;
+
+        
         $areaid = $id;
-        $area = Area::find($areaid);
+        $area = Area::with('carrera')->find($areaid);
+
+        if(empty($area)){
+            return redirect()->route('alumno.areas.index')->with('areaNot',true);
+        }
+
+        if( !($area->carrera->carrera == $user->profile->carrera) ){ // Esto comprueba que el area en la que el alumno eesta inteentando entrar sea deee su carrera
+            return redirect()->back();
+        }
+
+
+        // return $user;
+
+        $preguntas = Pregunta::where('area_id',$id)->orderBy('id', 'ASC')->with('respuestas')->get();
+
         // return $preguntas;
-        // return 'Omega xis ' . $id;
+
+
         return view('alumno.Areas.Survey.survey', compact('preguntas','areaid','area'));
     }
 
@@ -136,15 +177,49 @@ class SurveyController extends Controller
     }
 
     public function results($areaid,$iteration){
+        // return $iteration;
         $userid = Auth::id();
 
         $area = Area::find($areaid);
 
+
+        if(empty($area)){
+            return redirect()->route('alumno.areas.index')->with('areaNot',true);
+        }
+
+
+
         $maxIteration = PreguntaRespuesta::where('user_id',$userid)->where('area_id',$areaid)->max('iteration');
+
+        if($iteration == 0){
+            $iteration = $maxIteration;
+        }
+
+        if($iteration > $maxIteration){
+            return redirect()->route('alumno.areas.index')->with('limitIteration',true);
+        }
         
         $numberOfCorrectAnswers = 0;
+
+
         $questions = Pregunta::with('respuestas','respuesta_correcta')->where('area_id',$areaid)->orderBy('id','ASC')->get();
-        $results = PreguntaRespuesta::where('user_id',$userid)->where('area_id',$areaid)->where('iteration',$iteration)->orderBy('id','ASC')->get();
+
+        // $posts = Pregunta::whereHas('preguntas', function (Builder $query) {
+        //     $query->where('content', 'like', 'foo%');
+        // })->get();
+
+
+        // Los resultados DE ESE ALUMNO
+        $results = PreguntaRespuesta::with('question.respuestas','question.respuesta_correcta')->where('user_id',$userid)->where('area_id',$areaid)->where('iteration',$iteration)->orderBy('id','ASC')->get();
+
+
+
+        $questions = [];
+        foreach($results as $result){
+            array_push($questions,$result->question);
+        }
+
+        // return $questions;
 
         for ($i=0; $i < count($questions); $i++) { 
             $question = $questions[$i];
@@ -159,10 +234,6 @@ class SurveyController extends Controller
             }else{
                 $correctAnswer = false;
             }
-
-            // $obj = (object) ['status' => $correctAnswer, 'respuesta_id' => $question->respuesta_correcta->respuesta_id];
-
-            // $question->correct_answer = $obj;
 
             if($correctAnswer){
                 foreach ($question->respuestas as $respuesta) {
@@ -189,9 +260,6 @@ class SurveyController extends Controller
                 }
 
             }
-
-            // $question->respuesta_alumno = $results[$i];
-            // $question->respuesta_correcta = $question->respuesta_correcta->respuesta_id;
         }
         
 
@@ -206,30 +274,5 @@ class SurveyController extends Controller
         // return $preguntas;
 
         return view('alumno.Areas.Survey.resultados', compact(['preguntas', 'puntaje', 'maxIteration','area']));
-
-
-        
-        // $final = [];
-        // $results = PreguntaRespuesta::with('question.respuesta_correcta.respuesta')->where('user_id',$userid)->where('area_id',$areaid)->where('iteration',$iteration)->get();
-        // $numberOfCorrectAnswers = 0;
-        
-        // foreach ($results as $result) {
-        //     $correct = $result->respuesta_id == $result->question->respuesta_correcta->respuesta_id;
-
-        //     if($correct){
-        //         $numberOfCorrectAnswers++;
-        //     }
-
-
-        //     $pregunta = $result->question->pregunta;
-        //     $respuesta = $result->question->respuesta_correcta->respuesta->respuesta;
-        //     array_push($final, $object = (object) ['pregunta' => $pregunta, 'respuesta'=>$respuesta, 'correcto' => $correct]);
-        // }
-
-        // $puntaje = $numberOfCorrectAnswers . '/' . count($results);
-
-        // return view('alumno.Areas.Survey.resultados', compact(['final', 'puntaje']));
-
-        // return $puntaje;
     }
 }

@@ -29,6 +29,7 @@ class CoordinadorLoginController extends Controller
     }
 
     public function login(Request $request){
+        // return 'xxx';
         // $request->merge(['email' => $request->post('email').'@uabc.edu.mx']);
         // return $request->post('email');
         // Validate the form data

@@ -13,14 +13,46 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
     <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet">
 
+    <style>
+        .bg-uabc{
+            background-color: #00873c !important;
+        }
+
+        img{
+            max-width: 100%;
+        }
+
+        .logo-uabc{
+            max-width: 100%;
+        }
+
+        .container-logo{
+            width: 45%;
+            margin-right: 0.8em;
+        }
+
+
+            @media (min-width: 980px) {
+                .container-logo{
+                    width: 14%;
+                }
+            }
+
+    </style>
+
     @yield('style-area')
 </head>
 <body>
     <div id="app">
 
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark w-100">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-uabc text-white w-100">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#">Alumno</a>
+                <div class="container-logo">
+                    <a class="navbar-brand" href="#">
+                        <img class="logo-uabc" src="{{asset('assets/img/uabc-logo-gray')}}" alt="">
+                    </a>
+
+                </div>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -31,15 +63,18 @@
                             <div class="left d-lg-flex flex-wrap">
                                 <li class="nav-item">
                                     {{-- <a class="nav-link active" aria-current="page" href="#">Home</a> --}}
-                                    <a class="nav-link" href="{{route("home")}}">Home</a>
+                                    <a class="nav-link active" href="{{route("home")}}">Home</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{route("alumno.areas.index")}}">Areas</a>
+                                    <a class="nav-link active" href="{{route("alumno.areas.index")}}">Areas</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="{{route("alumno.perfil.index")}}">Perfil</a>
                                 </li>
                             </div>
                         @else
                             <li class="nav-item">
-                                <a class="nav-link" href="{{route("login")}}">Iniciar sesion</a>
+                                <a class="nav-link active" href="{{route("login")}}">Iniciar sesion</a>
                             </li>
                         @endauth
     
@@ -47,7 +82,7 @@
                             @auth('web')
                                 <div class="nav-item">
                                     {{-- <a class="nav-link" href="{{route("coordinador.logout")}}">Logout</a> --}}
-                                    <a class="nav-link" href="{{ route('logout') }}"
+                                    <a class="nav-link active" href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
                                                         document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}

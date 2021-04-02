@@ -1,23 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\Alumno\Areas;
+namespace App\Http\Controllers\Alumno\Perfil;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+use App\User;
+
 use Illuminate\Support\Facades\Auth;
 
-use App\User;
-use App\Area;
-class AreasController extends Controller
+class PerfilController extends Controller
 {
-    public function __construct()
-    {
-        // $this->middleware('guest')->except('logout');
-        // $this->middleware('guest');
-        $this->middleware('auth');
-        // $this->middleware('checkAlumnoAuth');
-    }
     /**
      * Display a listing of the resource.
      *
@@ -25,20 +18,12 @@ class AreasController extends Controller
      */
     public function index()
     {
-        // return 'hola';
-        // $auth = Auth::guard('web')->user();
         $userid = Auth::id();
+        $user = User::with('profile.career')->find($userid);
 
-        $user = (object) User::with('profile.carrera')->find($userid);
+        // return $user;
 
-        $carreraid =  $user->profile->getRelationValue('carrera')->id;
-
-        $areas = Area::where('carrera_id',$carreraid)->get();
-        
-
-        // return $areas;
-
-        return view('alumno.Areas.index', compact('areas'));
+        return view('alumno.Perfil.index',compact('user'));
     }
 
     /**

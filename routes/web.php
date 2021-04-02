@@ -18,6 +18,12 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/perfil', 'Alumno\Perfil\PerfilController@index')->name('perfil');
+
+// Route::resource('alumno.perfil', 'Alumno\Perfil\PerfilController');
+Route::resource('/perfil', 'Alumno\Perfil\PerfilController', [
+    'as' => 'alumno',
+]);
 
 Route::get('/user/logout', 'Auth\LoginController@userLogout')->name('user.logout');
 

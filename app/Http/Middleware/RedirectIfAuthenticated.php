@@ -28,7 +28,9 @@ class RedirectIfAuthenticated
             }else if($guard == 'coordinador'){
                 // return 'Profesor ya esta logueado';
                 // return redirect('/home');
-                dd('Profesor ya esta logueado');
+                // dd('Coordinador ya esta logueado');
+                return redirect()->route('coordinador.profesores.index');
+
             }else{
                 return redirect()->route('home');
                 // return redirect('/home');

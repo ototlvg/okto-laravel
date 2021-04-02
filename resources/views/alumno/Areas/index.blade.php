@@ -31,7 +31,7 @@
 
                             <div class="d-flex flex-column flex-wrap w-100 align-items-center">
                                 <a href="{{route('alumno.areas.survey.show',$area->id)}}" class="btn btn-primary mb-3">Realizar examen</a>
-                                <a href="{{route('alumno.areas.survey.results',['areaid'=>$area->id,'iteration'=>1])}}" class="btn btn-success mb-3">Ver resultados</a>
+                                <a href="{{route('alumno.areas.survey.results',['areaid'=>$area->id,'iteration'=>0])}}" class="btn btn-success mb-3">Ver resultados</a>
                                 <a href="#" class="btn btn-secondary">Ver guia de estudios</a>
                             </div>
                         </div>
