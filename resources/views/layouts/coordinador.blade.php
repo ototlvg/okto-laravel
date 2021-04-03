@@ -16,6 +16,49 @@
         .body{
             min-height: 100vh;
         }
+        .bg-uabc{
+            background-color: #00873c !important;
+        }
+        
+        .bg-uabc-sec{
+            background-color: #f1a631 !important;
+        }
+
+        img{
+            max-width: 100%;
+        }
+
+        .logo-uabc{
+            max-width: 100%;
+        }
+
+        #Capa_1{
+            max-width: 100%;
+            fill: white;
+            /* width: 50%; */
+            width: 150px;
+
+        }
+
+        .container-logo{
+            /* width: 45%; */
+            /* padding: 0.2em; */
+            margin-right: 0.8em;
+            display: flex;
+            align-content: center;
+        }
+        .subtitle{
+            font-size: 9px;
+            margin: 0;
+            margin-top: 2px;
+            letter-spacing: 12px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .navbar{
+            border-bottom: 5px solid #f1a631;
+        }
     </style>
     {{-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> --}}
 
@@ -27,41 +70,26 @@
 </head>
 <body class="d-flex flex-column body">
 
-    {{-- <nav class="navbar navbar-expand-lg navbar-dark bg-danger">
-        <a class="navbar-brand" href="#">Coordinador</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse " id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item active">
-                    <a class="nav-link" href="{{route("coordinador.profesores.index")}}">Profesores</a>
-                </li>
-                
-                <li class="nav-item active">
-                    <a class="nav-link" href="{{route("coordinador.preguntas.index")}}">Preguntas</a>
-                </li>
-
-                <li class="nav-item active">
-                    <a class="nav-link" href="{{route("coordinador.areas.index")}}">Areas</a>
-                </li>
-
-                <li class="nav-item active">
-                    <a class="nav-link" href="{{route("coordinador.logout")}}">Logout</a>
-                </li>
-            </ul>
-        </div>
-    </nav> --}}
-
-    
-    
-    
-    <nav class="navbar navbar-expand-lg navbar-dark bg-danger w-100">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-uabc w-100">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{{route('coordinador.profesores.index')}}">Coordinador</a>
+
+            <div class="container-logo">
+                <a class="navbar-brand m-0" href="{{route('home')}}">
+                    @include('svg.logo')
+                    {{-- <p class="m-0 fs-5">CENEVAL</p> --}}
+                    <p class="subtitle">COORD</p>
+                    {{-- <img class="logo-uabc" src="{{asset('assets/img/uabc-logo-gray')}}" alt=""> --}}
+                </a>
+            </div>
+
+
+
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
+
+
+
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 w-100 d-flex justify-content-lg-between">
 

@@ -1,7 +1,20 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
+    <div class="container px-4">
+
+        <div class="row mb-4">
+            <div class="col-12">
+                <h1 class="m-0">Areas</h1>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{route('alumno.areas.index')}}">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Simulador</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+
         <div class="row">
             <p>Area - {{$area->nombre}}</p>
         </div>

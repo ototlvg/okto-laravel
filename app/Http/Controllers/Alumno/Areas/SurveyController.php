@@ -273,6 +273,6 @@ class SurveyController extends Controller
 
         // return $preguntas;
 
-        return view('alumno.Areas.Survey.resultados', compact(['preguntas', 'puntaje', 'maxIteration','area']));
+        return view('alumno.Areas.Survey.resultados', compact(['preguntas', 'puntaje', 'maxIteration','area', 'iteration']));
     }
 }
