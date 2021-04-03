@@ -69,7 +69,7 @@ class AlumnosController extends Controller
             'carreraid'=> ['required', 'numeric']
         ]);
 
-        // return $request->all();
+        return $request->all();
 
         $name = $request->post('name') ;
         $apaterno = $request->post('apaterno') ;
@@ -287,15 +287,25 @@ class AlumnosController extends Controller
         // return $students;
         array_shift($students); // Quitar la cabezera
 
+
+        $notAddedBecauseWrongType = [];
         $originalStudentsCount = count($students);
         for ($i=0; $i < $originalStudentsCount ; $i++) { 
             $student = $students[$i];
             if(is_null($student[0])){
                 unset($students[$i]);
             }else{
+                return $student;
                 // Aqui pon codigo para validad si la matricula y el semestre sean numeros
+                
+                if( !is_numeric($student[0]) || !is_numeric($student[4]) || !is_numeric($student[5]) || !is_numeric($student[7]) ){
+                    array_push($notAddedBecauseWrongType, $student);
+                    unset($students[$i]);
+                }
             }
         }
+
+        return $notAddedBecauseWrongType;
 
         $students = array_values($students);
 
@@ -370,6 +380,7 @@ class AlumnosController extends Controller
                 $userprofile->semestre = $student[4];
                 $userprofile->carrera = $student[5];
                 $userprofile->email = $student[6];
+                $userprofile->grupo = $student[7];
                 $userprofile->user_id = $user->id;
                 $userprofile->save();
             }catch(\Exception $e){
