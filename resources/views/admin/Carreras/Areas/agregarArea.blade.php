@@ -8,8 +8,8 @@
     </style>
 @endsection
 
-@section('container')
-    <div class="container mt-5">
+@section('body')
+    
         <div class="row d-flex justify-content-center">
             <div class="col-4">
                 <form class="w-100" method="POST" action="{{route('admin.carreras.areas.store')}}">
@@ -24,5 +24,5 @@
                 </form>
             </div>
         </div>
-    </div>
+        
 @endsection

@@ -119,6 +119,7 @@ class ProfesoresController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // return $request->all();
         // return 'coco';
         // $email = $request->get('email');
 
@@ -140,8 +141,10 @@ class ProfesoresController extends Controller
             // 'carreraid'=>'required|numeric',
             // 'edad'=>'required',
             // 'sexo'=>'required',
-            "email'=>'required|email|unique:profesores,email,{$id}"
+            "email" => "required|email|unique:profesores,email,{$id}"
         ]);
+
+        // return 'paso';
 
         $name = $request->get('name');
         $apaterno = $request->get('apaterno');

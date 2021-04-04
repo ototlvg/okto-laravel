@@ -69,7 +69,7 @@ class AlumnosController extends Controller
             'carreraid'=> ['required', 'numeric']
         ]);
 
-        return $request->all();
+        // return $request->all();
 
         $name = $request->post('name') ;
         $apaterno = $request->post('apaterno') ;
@@ -219,7 +219,7 @@ class AlumnosController extends Controller
         catch(Exception $e)
         {
         //    dd($e->getCode());
-            return back()->withInput()->with('duplicatematricula', 'La matricula con la que esta intentando actualizar el formmulario ya se encunetra registrada');
+            return back()->withInput()->with('duplicatematricula', "La matricula {$matricula}  con la que esta intentando actualizar el formmulario ya se encunetra registrada");
         }
         // $alumno->email = $email;
         // $alumno->password = ;
@@ -236,6 +236,7 @@ class AlumnosController extends Controller
         $userprofile->semestre = $semestre;
         $userprofile->email = $email;
         $userprofile->carrera = $carrera;
+        $userprofile->grupo = $grupo;
         $userprofile->save();
 
 
@@ -279,6 +280,12 @@ class AlumnosController extends Controller
     }
 
     public function readExcel(Request $request){
+        $this->validate($request, [
+            'file'=> ['required', 'file', 'mimes:xlsx'],
+        ]);
+
+        // return 'hola';
+
         // $x = 'nenennex';
         // return redirect()->route('admin.alumnos.index', compact('x'));
         // return $request->file('file')->getRealPath();
@@ -295,7 +302,7 @@ class AlumnosController extends Controller
             if(is_null($student[0])){
                 unset($students[$i]);
             }else{
-                return $student;
+                // return $student;
                 // Aqui pon codigo para validad si la matricula y el semestre sean numeros
                 
                 if( !is_numeric($student[0]) || !is_numeric($student[4]) || !is_numeric($student[5]) || !is_numeric($student[7]) ){
@@ -305,7 +312,7 @@ class AlumnosController extends Controller
             }
         }
 
-        return $notAddedBecauseWrongType;
+        // return $notAddedBecauseWrongType;
 
         $students = array_values($students);
 
@@ -402,7 +409,7 @@ class AlumnosController extends Controller
         // return $duplicateStudents;
         // return $students;
 
-        return redirect()->back()->with(['status' => 'Alumnos agregados correctamente', 'duplicateStudents'=> $duplicateStudents]);
+        return redirect()->back()->with(['status' => count($students)-count($duplicateStudents), 'duplicateStudents'=> $duplicateStudents, 'notAddedBecauseWrongType' => $notAddedBecauseWrongType, 'final' => true]);
 
         // $x->move('/home/oto/Documents/salvar','keke.xlsx');
         // sleep(8);

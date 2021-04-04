@@ -1,17 +1,42 @@
 @extends('layouts.admin')
 
+@section('header')
+    
+<div class="row">
 
-@section('container')
-<div class="container">
-    {{-- <h1>{{$areascount}}</h1> --}}
-    <div class="row">
+    <div class="col-12 d-flex justify-content-between align-items-center">
+
+        <div>
+            <h1 class="m-0">Areas</h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb  m-0">
+                    <li class="breadcrumb-item"><a href="{{route('admin.carreras.index')}}">Carreras</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Areas</li>
+                    <li class="breadcrumb-item active" aria-current="page">{{$carrera->nombre}}</li>
+                </ol>
+            </nav>
+        </div>
+
+        {{-- <div>
+            <a href="{{route("admin.carreras.create")}}" class="btn btn-success">Agregar carrera</a>
+        </div> --}}
+
+    </div>
+
+</div>
+
+@endsection
+
+
+@section('body')
+
+    {{-- <div class="row">
 
         <div class="col-12">
-            <h2 class="row m-0 mt-3 mb-3">
+            <h2 class="row">
                 <div class="col pl-0">Areas - {{$carrera->nombre}}</div>
                 @if ($areascount < 3)
                     <div class="col d-flex justify-content-end pr-0">
-                        {{-- <a href="{{route('admin.carreras.area.agregar', $carreraid)}}" class="btn btn-success m0">Agregar area</a> --}}
                         <a href="{{route('admin.carreras.areas.create', ['carreraid' => $carreraid])}}" class="btn btn-success m0">Agregar area</a>
                     </div>
                 @endif
@@ -19,7 +44,8 @@
 
         </div>
 
-    </div>
+    </div> --}}
+
     <div class="row">
         <div class="col-12">
             <table class="table">
@@ -67,7 +93,7 @@
         </div>
     </div>
     
-</div>
+
 @endsection
 
 @push('script')

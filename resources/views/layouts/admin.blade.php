@@ -16,55 +16,136 @@
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
+    <style>
+        .bg-uabc{
+            background-color: #00873c !important;
+        }
+
+        img{
+            max-width: 100%;
+        }
+
+        .logo-uabc{
+            max-width: 100%;
+        }
+
+        #Capa_1{
+            max-width: 100%;
+            fill: white;
+            /* width: 50%; */
+            width: 150px;
+
+        }
+
+        .container-logo{
+            /* width: 45%; */
+            /* padding: 0.2em; */
+            margin-right: 0.8em;
+            display: flex;
+            align-content: center;
+        }
+        .subtitle{
+            font-size: 9px;
+            margin: 0;
+            margin-top: 2px;
+            letter-spacing: 12px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .navbar{
+            border-bottom: 5px solid #f1a631;
+        }
+        
+        body{
+            background-color: #f2f2f0
+        }
+    </style>
+
     @yield('style-area')
 
 </head>
 <body>
     {{-- w-100 d-flex justify-content-lg-between flex-wrap --}}
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <a class="navbar-brand" href="{{route("admin.carreras.index")}}">Admin</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse " id="navbarNav">
-            <ul class="navbar-nav w-100 d-flex justify-content-lg-between">
-                <div class="d-lg-flex">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-uabc text-white w-100">
+        <div class="container-fluid p-0 px-3">
+
+
+            <div class="container-logo">
+                <a class="navbar-brand m-0" href="{{route('admin.carreras.index')}}">
+                    @include('svg.logo')
+                    {{-- <p class="m-0 fs-5">CENEVAL</p> --}}
+                    <p class="subtitle">CENEVAL</p>
+                    {{-- <img class="logo-uabc" src="{{asset('assets/img/uabc-logo-gray')}}" alt=""> --}}
+                </a>
+            </div>
+
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 w-100 d-flex justify-content-lg-between">
+                    
+                    
+
                     @auth('admin')
-                        <li class="nav-item active">
-                            <a class="nav-link" href="{{route("admin.carreras.index")}}">Carreras</a>
-                        </li>
-        
-                        <li class="nav-item active">
-                            <a class="nav-link" href="{{route("admin.coordinadores.index")}}">Coordinadores</a>
-                        </li>
-        
-                        <li class="nav-item active">
-                            <a class="nav-link" href="{{route("admin.profesores.index")}}">Profesores</a>
-                        </li>
-        
-                        <li class="nav-item active">
-                            <a class="nav-link" href="{{route('admin.alumnos.index')}}">Alumnos</a>
-                        </li>
+                        <div class="left d-lg-flex flex-wrap">
+                            <li class="nav-item active">
+                                <a class="nav-link" href="{{route("admin.carreras.index")}}">Carreras</a>
+                            </li>
+            
+                            <li class="nav-item active">
+                                <a class="nav-link" href="{{route("admin.coordinadores.index")}}">Coordinadores</a>
+                            </li>
+            
+                            <li class="nav-item active">
+                                <a class="nav-link" href="{{route("admin.profesores.index")}}">Profesores</a>
+                            </li>
+            
+                            <li class="nav-item active">
+                                <a class="nav-link" href="{{route('admin.alumnos.index')}}">Alumnos</a>
+                            </li>
+                        </div>
                     @else
                         <li class="nav-item active">
                             <a class="nav-link" href="{{route('admin.login')}}">Iniciar sesion</a>
                         </li>
                     @endauth
-                </div>
 
-                <div class="d-lg-flex">
-                    @auth('admin')
-                        <li class="nav-item active">
-                            <a class="nav-link" href="{{route("admin.logout")}}">Logout</a>
-                        </li>
-                    @endauth
-                </div>
-            </ul>
+                    <div class="right">
+                        @auth('web')
+                            <div class="nav-item">
+                                {{-- <a class="nav-link" href="{{route("coordinador.logout")}}">Logout</a> --}}
+                                <a class="nav-link active" href="{{ route('logout') }}"
+                                    onclick="event.preventDefault();
+                                                    document.getElementById('logout-form').submit();">
+                                    {{ __('Logout') }}
+                                </a>
+
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    @csrf
+                                </form>
+                            </div>
+                            
+                        @endauth
+                    </div>
+
+                </ul>
+            </div>
         </div>
     </nav>
 
-    @yield('container')
+    <main class="container pt-4">
+        <div class="w-100 mb-4">
+            @yield('header')
+        </div>
+        <div class="w-100 bg-white border p-4">
+            @yield('body')
+        </div>
+        {{-- @yield('body-manual') --}}
+    </main>
 
 
       <!-- Scripts -->

@@ -1,10 +1,8 @@
 @extends('layouts.admin')
 
-@section('container')
-    <div class="container">
-        <div id="app">
+@section('body')
+    <div id="app">
 
-        </div>
     </div>
 @endsection
 

@@ -1,8 +1,25 @@
 @extends('layouts.admin')
 
-@section('container')
-    <main class="container">
+@section('header')
+    
+<div class="row">
 
+    <div class="col-12">
+        <h1 class="m-0">Agregar alumno</h1>
+    </div>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{route('admin.alumnos.index')}}">Alumnos</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Agregar</li>
+        </ol>
+    </nav>
+
+</div>
+
+@endsection
+
+@section('body')
+        
         <div class="row d-flex justify-content-center">
             <div class="col-4">
                 @if ($errors->any())
@@ -84,5 +101,5 @@
 
             </div>
         </div>
-    </main>
+        
 @endsection

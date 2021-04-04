@@ -1,7 +1,33 @@
 @extends('../../layouts.admin')
 
-@section('container')
-    <div class="container mt-5">
+@section('header')
+    
+<div class="row">
+
+    <div class="col-12 d-flex justify-content-between align-items-center">
+
+        <div>
+            <h1 class="m-0">Agregar carrera</h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb  m-0">
+                    <li class="breadcrumb-item"><a href="{{route('admin.carreras.index')}}">Carreras</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Agregar</li>
+                </ol>
+            </nav>
+        </div>
+
+        {{-- <div>
+            <a href="{{route("admin.carreras.create")}}" class="btn btn-success">Agregar carrera</a>
+        </div> --}}
+
+    </div>
+
+</div>
+
+@endsection
+
+@section('body')
+    
 
         @if ($errors->any())
             <div class="alert alert-danger">
@@ -34,5 +60,5 @@
         </div>
         
 
-    </div>
+    
 @endsection

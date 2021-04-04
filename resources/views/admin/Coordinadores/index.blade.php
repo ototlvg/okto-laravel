@@ -1,15 +1,36 @@
 @extends('layouts.admin')
 
-@section('container')
-    <div class="container">
+
+@section('header')
+    
+<div class="row">
+
+    <div class="col-12 d-flex justify-content-between align-items-center">
+
+        <div>
+            <h1 class="m-0">Coordinadores</h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb  m-0">
+                    {{-- <li class="breadcrumb-item"><a href="{{route('admin.alumnos.index')}}">Alumnos</a></li> --}}
+                    <li class="breadcrumb-item active" aria-current="page">Coordinadores</li>
+                </ol>
+            </nav>
+        </div>
+
+        <div>
+            <a href="{{route("admin.coordinadores.create")}}" class="btn btn-success">Agregar coordinador</a>
+        </div>
+
+    </div>
+
+</div>
+
+@endsection
+
+@section('body')
+    
 
     
-        <div class="row mt-3">
-            <div class="h3 col align-items-center d-flex">Coordinadores</div>
-            <div class="col justify-content-end d-flex">
-                <a href="{{route("admin.coordinadores.create")}}" class="btn btn-success">Agregar coordinador</a>
-            </div>
-        </div>
 
         <div class="row">
             <div class="col">
@@ -27,7 +48,7 @@
 
         <div class="row mt-3">
             <div class="col">
-                <table class="table">
+                <table class="table table-borderless table-hover">
                     <thead class="thead-dark">
                         <tr>
                             <th scope="col">#</th>
@@ -67,7 +88,7 @@
                 </table>
             </div>
         </div>
-    </div>
+    
 @endsection
 
 @push('script')
