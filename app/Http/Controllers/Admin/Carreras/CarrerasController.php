@@ -53,7 +53,7 @@ class CarrerasController extends Controller
         $c->nombre = $nombre;
         $c->carrera = $nocontrol;
         $c->save();
-        return redirect()->route('admin.carreras.index');
+        return redirect()->route('admin.carreras.index')->with([ 'created' => $nombre ]);
     }
 
     /**

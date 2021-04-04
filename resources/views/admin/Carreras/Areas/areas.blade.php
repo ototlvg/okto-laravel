@@ -17,9 +17,11 @@
             </nav>
         </div>
 
-        {{-- <div>
-            <a href="{{route("admin.carreras.create")}}" class="btn btn-success">Agregar carrera</a>
-        </div> --}}
+        <div>
+            @if ($areascount < 3)
+                <a href="{{route('admin.carreras.areas.create', ['carreraid' => $carreraid])}}" class="btn btn-success">Agregar area</a>        
+            @endif
+        </div>
 
     </div>
 
@@ -48,7 +50,7 @@
 
     <div class="row">
         <div class="col-12">
-            <table class="table">
+            <table class="table table-borderless table-hover">
                 <thead class="thead-dark">
                     <tr>
                         <th scope="col">#</th>

@@ -24,12 +24,27 @@
 
 </div>
 
+@if (Session::has('created'))
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <div>
+                    <h4><strong>Carrera agregada</strong></h4>
+                    <p>Carrera "{{Session::get('created')}}" agregada</p>
+                </div>
+
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+@endif
+
 @endsection
 
 @section('body')
         <div class="row mt-3">
             <div class="col">
-                <table class="table">
+                <table class="table table-hover table-borderless">
                     <thead class="thead-dark">
                         <tr>
                             <th scope="col">#</th>

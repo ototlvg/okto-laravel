@@ -22,32 +22,30 @@
 
 </div>
 
+
+@if ($errors->any())
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <div>
+                    <h4><strong>Problemas encontrados</strong></h4>
+                    {{-- <p>Los alumnos con las siguientes matriculas no han sido agregados:</p> --}}
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>       
+                </div>
+
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+@endif
+
 @endsection
 
 @section('body')
-
-
-        @if ($errors->any())
-            <div class="row">
-                <div class="col-12">
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <div>
-                            <h4><strong>Problemas encontrados</strong></h4>
-                            {{-- <p>Los alumnos con las siguientes matriculas no han sido agregados:</p> --}}
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>       
-                        </div>
-        
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                </div>
-            </div>
-        @endif
-    
-
         <div class="row">
             <div class="col-12">
                 {{-- <form class="w-100" method="POST" action="{{route('profesorescrud.store')}}"> --}}

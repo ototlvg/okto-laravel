@@ -50,11 +50,21 @@ class AreasController extends Controller
     public function create(Request $request)
     {
         $carreraid = $request->get('carreraid');
+        
+        $areas = Area::where('carrera_id', $carreraid)->get();
+        $areascount = $areas->count();
+
+        if($areascount == 3){
+            return redirect()->route('admin.carreras.areas.index');
+        }
+
+        // return $carreraid;
         // return view('admin.Carreras.Areas.agregarArea');
         return view('admin.Carreras.Areas.agregarArea', compact('carreraid'));
     }
 
-    public function agregarAreaACarrera($carreraid){  // Esto es un get, retornna el form para agregar un area
+    public function agregarAreaACarrera($carreraid)
+    {  // Esto es un get, retornna el form para agregar un area
         
         return view('admin.Carreras.Areas.agregarArea', compact('carreraid'));
     }
@@ -76,6 +86,10 @@ class AreasController extends Controller
         $carreraid= $request->get('carreraid');
 
         $areascount = Area::where('carrera_id', $carreraid)->count();
+
+        if($areascount == 3){
+            return redirect()->route('admin.carreras.areas.index');
+        }
 
         // return $areascount;
 

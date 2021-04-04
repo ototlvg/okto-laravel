@@ -76,7 +76,7 @@
                 <a class="navbar-brand m-0" href="{{route('admin.carreras.index')}}">
                     @include('svg.logo')
                     {{-- <p class="m-0 fs-5">CENEVAL</p> --}}
-                    <p class="subtitle">CENEVAL</p>
+                    <p class="subtitle">ADMIN</p>
                     {{-- <img class="logo-uabc" src="{{asset('assets/img/uabc-logo-gray')}}" alt=""> --}}
                 </a>
             </div>
@@ -141,7 +141,7 @@
         <div class="w-100 mb-4">
             @yield('header')
         </div>
-        <div class="w-100 bg-white border p-4">
+        <div class="w-100 bg-white border p-4 admin_container_body">
             @yield('body')
         </div>
         {{-- @yield('body-manual') --}}
