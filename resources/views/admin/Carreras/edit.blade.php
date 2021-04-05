@@ -1,5 +1,13 @@
 @extends('layouts.admin')
 
+@push('style')
+    <style>
+        .container{
+            max-width: 500px !important;
+        }
+    </style>
+@endpush
+
 @section('header')
 
     
@@ -49,7 +57,7 @@
                     @method('put')
                     <input required type="text" name="name" id="" class="form-control mb-4" value="{{ empty( old('name') ) ? $carrera->nombre : old('name') }}">
                     <input required type="number" name="carrera" id="" class="form-control d-none" value="{{ empty( old('carrera') ) ? $carrera->carrera : old('carrera') }}">
-                    <button type="submit" class="btn btn-primary w-100 p-3">Guardar</button>
+                    <button type="submit" class="btn btn-primary w-100 p-2">Guardar</button>
                 </form>
 
             </div>

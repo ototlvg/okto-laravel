@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Carrera;
 use App\Area;
 use App\Post;
+use App\Profesor;
 
 class GuiaController extends Controller
 {
@@ -18,6 +19,32 @@ class GuiaController extends Controller
         $this->middleware('auth:profesor');
         // $this->middleware('returnAuthVariable:profesor');
     }
+
+    public function canEditDeletePost($profesor,$post)
+    {
+        if($profesor->id != $post->profesor_id){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    public function canSeePost($profesor,$post){
+        $post->area->carrera_id;
+
+        // return $profesor;
+        $carrerasid = [];
+        foreach($profesor->carreras as $carrera){
+            array_push($carrerasid,$carrera->id);
+        }
+
+        if(in_array($post->area->carrera_id,$carrerasid)){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -30,8 +57,8 @@ class GuiaController extends Controller
 
         // return $area;
 
-        $posts = Post::where('area_id',$areaid)->orderBy('id','DESC')->get();
-
+        $posts = Post::with('profesor')->where('area_id',$areaid)->orderBy('id','DESC')->get();
+        // return $posts[0]->profesor;
         // $carrera = Carrera::find($carreraid);
 
         // return $area;
@@ -92,7 +119,23 @@ class GuiaController extends Controller
      */
     public function show($id)
     {
-        //
+        // return 'hola';
+        $profesorid = Auth::guard('profesor')->id();
+        $profesor = Profesor::with('carreras')->find($profesorid);
+
+        $post = Post::with('area')->find($id);
+
+        
+        if(empty($post)){
+            return 'El post no existe';
+        }
+
+        if(!$this->canSeePost($profesor,$post)){
+            return 'Este post pertenece a una carrera la cual no esta adjunto , por lo que no puedes verlo, comuniquese con el coordinador de la carrera para que lo agregue';
+        }
+
+        // return $post;
+        return view('profesor.Guia.show',compact(['post']));
     }
 
     /**
@@ -103,7 +146,17 @@ class GuiaController extends Controller
      */
     public function edit($id)
     {
+        $profesor = Auth::guard('profesor')->user();
         $post = Post::with('area.carrera')->find($id);
+
+        if(empty($post)){
+            return 'El post no existe';
+        }
+        
+        if(!$this->canEditDeletePost($profesor,$post)){
+            return 'Este post no ha sido creado por usted, por lo que no puedes eliminarlo';
+        }
+
         // return $post;
         return view('profesor.Guia.edit',compact(['post']));
     }
@@ -117,12 +170,17 @@ class GuiaController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $profesor = Auth::guard('profesor')->user();
+        $post = Post::with('area')->find($id);
+
+        if(empty($post)){
+            return 'El post no existe';
+        }
+        
+        if(!$this->canEditDeletePost($profesor,$post)){
+            return 'Este post no ha sido creado por usted, por lo que no puedes eliminarlo';
+        }
         // return 'lolo';
-        $postid = $id;
-
-        $post = Post::with('area')->find($postid);
-
-        // return $post;
 
         $tema = $request->post('tema');
         $descripcion = $request->post('descripcion');
@@ -144,8 +202,21 @@ class GuiaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id) // destruye un post
     {
-        //
+        $profesor = Auth::guard('profesor')->user();
+        $post = Post::find($id);
+
+        if(empty($post)){
+            return 'El post no existe';
+        }
+        
+        if(!$this->canEditDeletePost($profesor,$post)){
+            return 'Este post no ha sido creado por usted, por lo que no puedes eliminarlo';
+        }
+
+        $post->delete();
+
+        return redirect()->route('profesor.guia.index',['area'=> $post->area_id])->with(['deletedPost'=>$post->tema]);
     }
 }

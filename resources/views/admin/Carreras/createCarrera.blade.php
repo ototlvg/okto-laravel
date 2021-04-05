@@ -1,5 +1,13 @@
 @extends('../../layouts.admin')
 
+@push('style')
+    <style>
+        .container{
+            max-width: 500px !important;
+        }
+    </style>
+@endpush
+
 @section('header')
     
 <div class="row">
@@ -58,12 +66,12 @@
                     </div>
                     <div class="form-group mb-4">
                         <label for="exampleInputPassword1" class="mb-2">Numero de Control</label>
-                        <input name="nocontrol" type="text" class="form-control" id="exampleInputPassword1" placeholder="Ingresa numero de control" required>
+                        <input name="nocontrol" type="number" class="form-control" id="exampleInputPassword1" placeholder="Ingresa numero de control" required>
                         @if ($errors->any())
                             <p>{{$errors->all()[0]}}</p>
                         @endif
                     </div>
-                    <button type="submit" class="btn btn-success w-100 p-3">Guardar</button>
+                    <button type="submit" class="btn btn-success w-100 p-2">Guardar</button>
                 </form>
             </div>
         </div>

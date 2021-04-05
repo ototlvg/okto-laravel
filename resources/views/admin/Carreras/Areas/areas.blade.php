@@ -61,25 +61,36 @@
                 <tbody>
                     @foreach ($areas as $area)
                         <tr>
-                            <th scope="row">{{$area->id}}</th>
-                            <td>{{$area->nombre}}</td>
-                            <td>
-                                <a href="#" onclick="deleteArea({{$area->id}})">
+                            <th class="align-middle" scope="row">{{$area->id}}</th>
+                            <td class="align-middle">{{$area->nombre}}</td>
+                            <td class="align-middle">
+                                {{-- <a href="#" onclick="deleteArea({{$area->id}})">
                                     <span class="material-icons text-danger pointer">remove_circle</span>
-                                </a>
+                                </a> --}}
+                                <span>
+                                    <button type="button" class="btn btn-danger" onclick="deleteArea({{$area->id}})">
+                                        <i class="bi bi-trash-fill"></i>
+                                        Eliminar
+                                    </button>
+                                </span>
                                 <form onclick="" class="d-none" action="{{route('admin.carreras.areas.destroy',$area->id)}}" id="area_delete_{{$area->id}}" method="POST">
                                     @method('delete')
                                     @csrf
-                                    {{-- <input type="number" name="areaid" value="{{$area->id}}"> --}}
+                                    {{-- <input type="number" name="areaid" value="{{$a rea->id}}"> --}}
                                 </form>
 
 
+                                <span>
+                                    <button type="button" class="btn btn-primary" onclick="updateName({{$area->id}},'{{$area->nombre}}')">
+                                        <i class="bi bi-pencil-square"></i>
+                                        Editar
+                                    </button>
+                                </span>
 
 
-
-                                <a href="#">
+                                {{-- <a href="#">
                                     <span class="material-icons edit pointer" onclick="updateName({{$area->id}},'{{$area->nombre}}')">remove_circle</span>
-                                </a>
+                                </a> --}}
                                 {{-- <p>{{$area->id}}</p> --}}
                                 <form class="d-none" action="{{route('admin.carreras.areas.update',$area->id)}}" id="area_{{$area->id}}" method="POST">
                                     @method('put')

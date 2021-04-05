@@ -25,6 +25,36 @@
 
 </div>
 
+@if (Session::has('success-email-store'))
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <div>
+                    <h4><strong>coordinador Agregado</strong></h4>
+                    <p>Se agrego el nombre de la carrera "{{Session::get('success-email-store')}}"</p>
+                </div>
+
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+@endif
+
+@if (Session::has('success-email-update'))
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <div>
+                    <h4><strong>coordinador modificado</strong></h4>
+                    <p>Se amodifico el nombre de la carrera "{{Session::get('success-email-update')}}"</p>
+                </div>
+
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+@endif
+
 @endsection
 
 @section('body')
@@ -32,7 +62,7 @@
 
     
 
-        <div class="row">
+        {{-- <div class="row">
             <div class="col">
                 @if ( session()->has( 'success-email-update' ) )
                     El usuario con correo {{session()->get( 'success-email-update' )}} a sido modificado
@@ -44,7 +74,7 @@
 
 
             </div>
-        </div>
+        </div> --}}
 
         <div class="row mt-3">
             <div class="col">
@@ -55,29 +85,42 @@
                             <th scope="col">Nombre</th>
                             <th scope="col">Apellidos</th>
                             <th scope="col">Carrera</th>
+                            <th scope="col">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($coordinadores as $coordinador)
                             <tr>
                                 <th scope="row">{{$coordinador->id}}</th>
-                                <td>{{$coordinador->name}}</td>
-                            <td>{{$coordinador->apaterno}} {{$coordinador->amaterno}}</td>
-                                <td>
+                                <td class="align-middle">{{$coordinador->name}}</td>
+                                <td class="align-middle">{{$coordinador->apaterno}} {{$coordinador->amaterno}}</td>
+                                <td class="align-middle">{{$coordinador->carrera->nombre}}</td>
+                                <td class="align-middle">
                                     {{-- <a href="{{route("admin.delete.coordinador", $coordinador->id)}}">
                                         <span class="material-icons text-danger">delete</span>
                                     </a> --}}
                                     {{-- <a href="#" onclick="document.getElementById('destroy-coordinador-{{ $coordinador->id }}').submit()"> --}}
-                                    <a href="#" onclick="deleteCoordinador({{$coordinador->id}})">
+                                    {{-- <a href="#" onclick="deleteCoordinador({{$coordinador->id}})">
                                         <span class="material-icons text-danger">delete</span>
-                                    </a>
+                                    </a> --}}
+
+                                    <span>
+                                        <button type="button" class="btn btn-danger" onclick="deleteCoordinador({{$coordinador->id}})">
+                                            <i class="bi bi-trash-fill"></i>
+                                            Eliminar
+                                        </button>
+                                    </span>
+
                                     <form class="d-none" id="destroy-coordinador-{{ $coordinador->id }}" action="{{ route('admin.coordinadores.destroy', $coordinador->id) }}" method="POST">
                                        @csrf
                                        @method('delete')
                                     </form>
 
                                     <a href="{{route('admin.coordinadores.edit',$coordinador->id)}}">
-                                        <span class="material-icons">create</span>
+                                        <button type="button" class="btn btn-primary">
+                                            <i class="bi bi-pencil-square"></i>
+                                            Editar
+                                        </button>
                                     </a>
 
                                 </td>

@@ -101,7 +101,10 @@ class CarrerasController extends Controller
         $carreranum = $request->get('carrera');
         $name = $request->get('name');
         $carrera = Carrera::find($id);
+        $oldname = $carrera->nombre;
         $carrera->nombre = $name;
+
+
         // $carrera->carrera = $carreranum;
         $carrera->save();
 
@@ -111,7 +114,7 @@ class CarrerasController extends Controller
         // $id = session()->get( 'id' );
         // // in Blade
         // {{ session()->get( 'id' ) }}
-        return redirect()->route('admin.carreras.index');
+        return redirect()->route('admin.carreras.index')->with(['edited'=> [$oldname,$name] ]);
         
 
         // return $id;

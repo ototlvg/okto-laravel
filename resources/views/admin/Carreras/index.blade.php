@@ -39,6 +39,21 @@
     </div>
 @endif
 
+@if (Session::has('edited'))
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <div>
+                    <h4><strong>Carrera modificada</strong></h4>
+                    <p>Se cambio el nombre de la carrera "{{Session::get('edited')[0]}}" a "{{Session::get('edited')[1]}}"</p>
+                </div>
+
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+@endif
+
 @endsection
 
 @section('body')
@@ -56,18 +71,21 @@
                     <tbody>
                         @foreach ($carreras as $carrera)
                             <tr>
-                                <th scope="row">{{$carrera->id}}</th>
-                                <td>{{$carrera->carrera}}</td>
-                                <td>{{$carrera->nombre}}</td>
+                                <th class="align-middle" scope="row">{{$carrera->id}}</th>
+                                <td class="align-middle">{{$carrera->carrera}}</td>
+                                <td class="align-middle">{{$carrera->nombre}}</td>
                                 <td class="align-middle">
 
                                     
                                     
-                                    {{-- <a href="#" onclick="document.getElementById('destroy-carrera-{{ $carrera->id }}').submit()"> --}}
-                                    <a href="#" onclick="destroyCarrera({{ $carrera->id }})">
-                                        {{-- <span class="material-icons text-danger">delete</span> --}}
-                                        <button type="button" class="btn btn-danger btn-sm">Eliminar</button>
-                                    </a>
+                                    
+                                    
+                                    <span>
+                                        <button type="button" class="btn btn-danger" onclick="destroyCarrera({{ $carrera->id }})">
+                                            <i class="bi bi-trash-fill"></i>
+                                            Eliminar
+                                        </button>
+                                    </span>
                                     
                                     
                                     <form class="d-none" id="destroy-carrera-{{ $carrera->id }}" action="{{ route('admin.carreras.destroy', $carrera->id) }}" method="POST">
@@ -82,11 +100,17 @@
                                             <span class="material-icons">create</span>
                                     </a> --}}
                                     <a href="{{route("admin.carreras.areas.index", ['carreraid'=>$carrera->id])}}">
-                                        <button type="button" class="btn btn-primary btn-sm">Areas</button>
+                                        <button type="button" class="btn btn-primary">
+                                            <i class="bi bi-briefcase-fill"></i>
+                                            Areas
+                                        </button>
                                     </a>
 
                                     <a href="{{route('admin.carreras.edit', $carrera->id)}}">
-                                        <button type="button" class="btn btn-primary btn-sm">Editar</button>
+                                        <button type="button" class="btn btn-primary">
+                                            <i class="bi bi-pencil-square"></i>
+                                            Editar
+                                        </button>
                                     </a>
 
                                     

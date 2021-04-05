@@ -76,7 +76,7 @@ class ProfesoresController extends Controller
 
 
         // return redirect()->route('admin.profesores.index');
-        return redirect()->route('admin.profesores.index')->with( [ 'success-email-store' => $email ] );
+        return redirect()->route('admin.profesores.index')->with( [ 'success-noemplado-store' => $noempleado ] );
     }
 
     /**
@@ -171,9 +171,9 @@ class ProfesoresController extends Controller
         // return redirect()->route('admin.profesores.index');
 
         if($passwordAvailable){
-            return redirect()->route('admin.profesores.index')->with( [ 'success-email-update' => $email, 'success-password-update' => 1] );
+            return redirect()->route('admin.profesores.index')->with( [ 'success-noempleado-update' => $noempleado, 'success-password-update' => 1] );
         }else{
-            return redirect()->route('admin.profesores.index')->with( [ 'success-email-update' => $email ] );
+            return redirect()->route('admin.profesores.index')->with( [ 'success-noempleado-update' => $noempleado ] );
         }
 
     }
@@ -191,6 +191,6 @@ class ProfesoresController extends Controller
         $profesor = Profesor::find($id);
         // return $profesor;
         $profesor->delete();
-        return redirect()->route('admin.profesores.index');
+        return redirect()->route('admin.profesores.index')->with(['deleted' => $profesor->noempleado]);
     }
 }

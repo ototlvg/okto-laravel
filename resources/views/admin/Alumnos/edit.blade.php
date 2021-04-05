@@ -1,5 +1,13 @@
 @extends('layouts.admin')
 
+@push('style')
+    <style>
+        .container{
+            max-width: 500px !important;
+        }
+    </style>
+@endpush
+
 @section('header')
     
 <div class="row">
@@ -141,7 +149,7 @@
                         @endif --}}
                     </div>
 
-                    <button class="btn btn-primary w-100 p-3">Guardar</button>
+                    <button class="btn btn-primary w-100 p-2">Guardar</button>
                 </form>
 
             </div>

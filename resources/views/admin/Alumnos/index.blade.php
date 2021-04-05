@@ -62,6 +62,11 @@
                         <p>Ningun alumno de los que se acaban de tratar de subir a sido registrado</p>
                         {{-- <p>{{$errors->get('carreraInExcelButNotInDatabase')[0]}}</p> --}}
                     @endif
+
+                    @if ($errors->has('file'))
+                        <h4><strong>Archivo no valido</strong></h4>
+                        <p>Se debe de subir un archivo de hoja de calculos (excel) con el formato especificado</p>
+                    @endif
                 </div>
 
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -88,13 +93,13 @@
     </div>
 @endif
 
-@if (Session::has('duplicateStudents'))
+@if (Session::has('duplicateStudents') && count(Session::get('duplicateStudents'))!=0)
     <div class="row mt-4">
         <div class="col">
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 <div>
                     <h4><strong>Alumnos duplicados</strong></h4>
-                    <p>Los alumnos con las siguientes matriculas no han sido agregados:</p>
+                    <p>Los alumnos con las siguientes matriculas ya se encuentran registrados en la base de datos:</p>
                     <ul>
                         @foreach (Session::get('duplicateStudents') as $item)
                             {{-- <p class="m-0">Los siguientes alumnos no fueron agregados, ya existen en la base de datos</p>
@@ -167,14 +172,13 @@
                 </div>
             </div> --}}
 
-            <div class="row d-flex justify-content-center">
+            {{-- <div class="row d-flex justify-content-center">
                 <div class="col-4">
                     @if ($errors->has('file'))
                         <p>Debes de subir un archivo</p>
                     @endif
-    
                 </div>
-            </div>
+            </div> --}}
 
             <div class="row">
                 <div class="col">
@@ -237,24 +241,30 @@
                         <tbody>
                             @foreach ($users as $user)
                                 <tr>
-                                    <th scope="row" class="d-none d-lg-table-cell">{{$user->id}}</th>
-                                    <td class="d-none d-lg-table-cell">{{$user->name}}</td>
-                                    <td class="d-none d-lg-table-cell">{{$user->apaterno}}</td>
-                                    <td class="d-none d-lg-table-cell">{{$user->amaterno}}</td>
-                                    <td>{{$user->profile->semestre}}</td>
-                                    <td>{{$user->profile->carrera}}</td>
-                                    <td>{{$user->profile->matricula}}</td>
-                                    <td>
-                                        <a href="#">
-                                            <span class="material-icons text-danger" onclick="deleteAlumno({{$user->id}})">delete</span>
-                                        </a>
+                                    <th scope="row" class="d-none d-lg-table-cell align-middle">{{$user->id}}</th>
+                                    <td class="d-none d-lg-table-cell align-middle">{{$user->name}}</td>
+                                    <td class="d-none d-lg-table-cell align-middle">{{$user->apaterno}}</td>
+                                    <td class="d-none d-lg-table-cell align-middle">{{$user->amaterno}}</td>
+                                    <td class="align-middle">{{$user->profile->semestre}}</td>
+                                    <td class="align-middle">{{$user->profile->carrera}}</td>
+                                    <td class="align-middle">{{$user->profile->matricula}}</td>
+                                    <td class="align-middle">
+                                        <span>
+                                            <button type="button" class="btn btn-danger" onclick="deleteAlumno({{$user->id}})">
+                                                <i class="bi bi-trash-fill"></i>
+                                                Eliminar
+                                            </button>
+                                        </span>
                                         <form class="d-none" id="alumno-delete-{{$user->id}}" action="{{route('admin.alumnos.destroy',$user->id)}}" method="POST">
                                             @csrf
                                             @method('delete')
                                         </form>
 
                                         <a href="{{route('admin.alumnos.edit',$user->id)}}">
-                                            <span class="material-icons">create</span>
+                                            <button type="button" class="btn btn-primary">
+                                                <i class="bi bi-pencil-square"></i>
+                                                Editar
+                                            </button>
                                         </a>
 
                                     </td>

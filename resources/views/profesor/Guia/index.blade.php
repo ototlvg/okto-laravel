@@ -3,7 +3,7 @@
 @section('style-area')
     <style>
         .container{
-            max-width: 700px !important;
+            /* padding: 2em; */
         }
         .formatear{
             margin: 0;
@@ -17,9 +17,9 @@
 @endsection
 
 @section('container')
-    <div class="container">
+    {{-- <div class="container"> --}}
 
-        <div class="row mt-3">
+        <div class="row">
             <div class="col">
                 <p class="mb-0 text-center fw-bold">Guia</p>
             </div>
@@ -30,6 +30,21 @@
                 <p>{{$area->carrera->nombre}} - {{$area->nombre}}</p>
             </div>
         </div>
+
+        @if(Session::has('deletedPost'))
+            <div class="row mt-3">
+                <div class="col-12">
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <div>
+                            <h4><strong>Post eliminado</strong></h4>
+                            <p>El post "{{Session::get('deletedPost')}}" ha sido eliminado</p>
+                        </div>
+        
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+        @endif
 
         <div class="row mb-3">
             <div class="col">
@@ -68,19 +83,35 @@
         <div class="row">
             <div class="col">
                 @foreach ($posts as $post)
-                <div class="card mb-3">
+                    <div class="card mb-3">
                         <div class="card-header bg-secondary text-light">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="d-flex flex-wrap flex-column">
                                     <strong>{{$post->tema}}</strong>
+                                    <p class="m-0">{{$post->profesor->name}} {{$post->profesor->apaterno}}</p>
                                     <p class="m-0 fs-s">{{ date('d-M-y', strtotime($post->updated_at)) }}</p>
-                                    
                                 </div>
                                 <div class="d-flex">
-                                    {{-- <button type="button" class="btn btn-primary btn-sm me-1"><i class="bi bi-pencil-square text-light"></i></button> --}}
-                                    {{-- <a class="btn btn-primary btn-sm me-1" href="{{route('profesor.guia.edit',[$post->id,'coco'=>8.2])}}" role="button"><i class="bi bi-pencil-square text-light"></i></a> --}}
-                                    <a class="btn btn-primary btn-sm me-1" href="{{route('profesor.guia.edit',$post->id)}}" role="button"><i class="bi bi-pencil-square text-light"></i></a>
-                                    <button type="button" class="btn btn-danger btn-sm"><i class="bi bi-trash-fill"></i></button>
+                                    {{-- <a class="btn btn-primary btn-sm me-1" href="{{route('profesor.guia.edit',$post->id)}}" role="button"><i class="bi bi-pencil-square text-light"></i></a> --}}
+                                    <a class="btn btn-primary btn-sm me-1" href="{{route('profesor.guia.show',$post->id)}}" role="button"> <i class="bi bi-eye-fill"></i> </a>
+                                    <a class="btn btn-primary btn-sm me-1" href="{{route('profesor.guia.edit',$post->id)}}" role="button"> <i class="bi bi-pencil-square"></i> </a>
+
+
+
+                                    <span>
+                                        <button type="button" class="btn btn-danger btn-sm me-1" onclick="destroyPost({{ $post->id }})">
+                                            <i class="bi bi-trash-fill"></i>
+                                            {{-- Eliminar --}}
+                                        </button>
+                                    </span>
+                                    
+                                    
+                                    <form class="d-none" id="destroy-post-{{ $post->id }}" action="{{ route('profesor.guia.destroy', $post->id) }}" method="POST">
+                                        @csrf
+                                        @method('delete')
+                                    </form>
+
+                                    {{-- <button type="button" class="btn btn-danger btn-sm"><i class="bi bi-trash-fill"></i></button> --}}
                                 </div>
                             </div>
                             {{-- Featured --}}
@@ -94,5 +125,37 @@
                 @endforeach
             </div>
         </div>
-    </div>
+    {{-- </div> --}}
 @endsection
+
+@push('script')
+    <script src="{{asset('js/sweetalert2.js')}}"></script>
+@endpush
+
+@push('script')
+    <script>
+        let destroyPost = (postid) => {
+            console.log(postid)
+            let form = document.getElementById(`destroy-post-${postid}`)
+
+            // Swal.fire('Any fool can use a computer')
+            Swal.fire({
+                title: '¿Eliminar post?',
+                // showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: `Eliminar`,
+                // denyButtonText: `Don't save`,
+            }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                form.submit()
+                // Swal.fire('Saved!', '', 'success')
+            } else if (result.isDenied) {
+                Swal.fire('Changes are not saved', '', 'info')
+            }
+            })
+
+            // console.log(form)
+        }
+    </script>
+@endpush

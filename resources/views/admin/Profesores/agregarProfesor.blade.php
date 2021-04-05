@@ -1,5 +1,13 @@
 @extends('layouts.admin')
 
+@push('style')
+    <style>
+        .container{
+            max-width: 500px !important;
+        }
+    </style>
+@endpush
+
 @section('header')
     
 <div class="row">
@@ -101,7 +109,7 @@
                             </div>
                         @endif
                     </div> --}}
-                    <button type="submit" class="btn btn-success w-100 p-3">Guardar</button>
+                    <button type="submit" class="btn btn-success w-100 p-2">Guardar</button>
                 </form>
             </div>
         </div>

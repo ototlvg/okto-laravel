@@ -37,6 +37,10 @@
             background-color: #20639B;
         }
 
+        .card--area{
+            max-width: 350px;
+        }
+
     </style>
 @endsection
 
@@ -59,7 +63,7 @@
             @foreach ($areas as $area)
                 <div class="col">
 
-                    <div class="card w-100 mb-5 p-3" style="width: 18rem;">
+                    <div class="card w-100 mb-5 p-3 card--area" style="width: 18rem;">
                         <div class="card-header w-100 d-flex justify-content-center border-0">
 
                             <div class="circle d-flex align-items-center justify-content-center">

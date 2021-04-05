@@ -115,10 +115,12 @@
                         </span>
                     @enderror
                 </div>
-                {{-- <div class="mb-3 form-check">
-                  <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                  <label class="form-check-label" for="exampleCheck1">Check me out</label>
-                </div> --}}
+                <div class="mb-3 form-check">
+                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                    <label class="form-check-label" for="remember">
+                      {{ __('Recuerdame') }}
+                    </label>
+                </div>
                 <button type="submit" class="btn btn-primary">Ingresar</button>
             </form>
         </div>
