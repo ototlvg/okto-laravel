@@ -128,6 +128,12 @@ Route::group(['prefix' => 'profesor'], function(){
         'as' => 'profesor',
     ]);
 
+    // Route::post('/guia/comentario', 'Profesor\Guia\GuiaController@storeComentario')->name('profesor.guia.comentario.store');
+
+    Route::resource('comentario', 'Profesor\Guia\ComentariosController', [
+        'as' => 'profesor.guia',
+    ]);
+
     Route::resource('carreras', 'Profesor\Carreras\CarrerasController', [
         'as' => 'profesor',
     ]);

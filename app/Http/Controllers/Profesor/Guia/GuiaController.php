@@ -219,4 +219,11 @@ class GuiaController extends Controller
 
         return redirect()->route('profesor.guia.index',['area'=> $post->area_id])->with(['deletedPost'=>$post->tema]);
     }
+
+
+
+    public function storeComentario($id){
+
+    }
+
 }

@@ -10,6 +10,20 @@
             margin: 0;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         }
+
+        .profile-icon{
+            width: 40px;
+            height: 40px;
+            background-color: tomato;
+            display: flex;
+            border-radius: 50%;
+            flex-grow: 0;
+            flex-shrink: 0;
+            justify-content: center;
+            align-items: center;
+            margin-right: 10px;
+        }
+        
     </style>
 @endpush
 
@@ -39,4 +53,24 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col">
+            <form action="{{route('profesor.guia.comentario.store')}}" class="d-flex" method="POST">
+                @csrf
+                {{-- <div class="profile-icon">
+                    <span>P</span>
+                </div> --}}
+                <input type="number" name="postid" value="{{$post->id}}" class="d-none">
+                <textarea name="comment" class="form-control" name="" id="" cols="30" rows="1" required></textarea>
+                <button type="submit" class="btn btn-success ms-3">Guardar</button>
+            </form>
+            
+        </div>
+    </div>
 @endsection
+
+@push('script')
+    <script>
+        
+    </script>
+@endpush
