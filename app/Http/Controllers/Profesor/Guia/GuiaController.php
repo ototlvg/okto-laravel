@@ -154,7 +154,7 @@ class GuiaController extends Controller
         }
         
         if(!$this->canEditDeletePost($profesor,$post)){
-            return 'Este post no ha sido creado por usted, por lo que no puedes eliminarlo';
+            return 'Este post no ha sido creado por usted, por lo que no puedes editarlo';
         }
 
         // return $post;
@@ -178,7 +178,7 @@ class GuiaController extends Controller
         }
         
         if(!$this->canEditDeletePost($profesor,$post)){
-            return 'Este post no ha sido creado por usted, por lo que no puedes eliminarlo';
+            return 'Este post no ha sido creado por usted, por lo que no puedes actualizarlo';
         }
         // return 'lolo';
 
@@ -192,7 +192,8 @@ class GuiaController extends Controller
         $post->descripcion = $descripcion;
         $post->save();
 
-        return redirect()->route('profesor.guia.index', ['area' => $post->area->id]);
+        // return redirect()->route('profesor.guia.index', ['area' => $post->area->id]);
+        return redirect()->route('profesor.guia.show', $post->id);
         
     }
 

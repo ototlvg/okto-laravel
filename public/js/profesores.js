@@ -1963,6 +1963,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* axios.defaults.baseURL = 'http://localhost:4200/api/admin' */
 
@@ -1976,7 +1989,8 @@ __webpack_require__.r(__webpack_exports__);
     return {
       sidebarOpen: false,
       profesores: null,
-      agregados: []
+      agregados: [],
+      loading: false
     };
   },
   methods: {
@@ -2025,43 +2039,50 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     agregar: function agregar(index) {
+      var self = this;
       var removed = this.profesores.splice(index, 1);
       console.log(removed);
+      self.loading = true;
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/api/coordinador/addprofesortocarrera', {
         profesorid: removed[0].id,
         carreraid: window.carreraid
       }).then(function (response) {
         console.log(response);
+        self.loading = false;
       })["catch"](function (error) {
         console.log(error);
+        self.loading = false;
       });
-      this.agregados.push(removed[0]); // console.log(removed[0])
+      self.agregados.push(removed[0]); // console.log(removed[0])
     },
     eliminar: function eliminar(index) {
       var elementForRemove = this.agregados[index];
       var removedCarrera;
-      var este = this; // console.log(elementForRemove)
+      var self = this; // console.log(elementForRemove)
 
+      self.loading = true;
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/api/coordinador/deletecarrerafromprofesor', {
         profesorid: elementForRemove.id,
         carreraid: window.carreraid
       }).then(function (response) {
         console.log('Retorno: ' + response.data);
         var i = 0;
-        este.agregados.forEach(function (element) {
+        self.agregados.forEach(function (element) {
           console.log(element);
 
           if (element.id == response.data) {
             console.log('Encontrado: ' + i);
-            var removedProfesor = este.agregados.splice(i, 1); // este.getProfesores()
+            var removedProfesor = self.agregados.splice(i, 1); // self.getProfesores()
 
-            este.profesores.push(removedProfesor[0]);
+            self.profesores.push(removedProfesor[0]);
           }
 
           i++;
         });
       })["catch"](function (error) {
         console.log(error);
+      }).then(function () {
+        self.loading = false;
       });
     }
   },
@@ -2100,7 +2121,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.pointer{\n    cursor: pointer;\n}\n", ""]);
+exports.push([module.i, "\n.pointer{\n    cursor: pointer;\n}\n.loading{\n    position: fixed;\n    top: 0;\n    bottom: 0;\n    left: 0;\n    right: 0;\n    background-color: rgba(0, 0, 0, 0.5);\n    display: flex;\n    justify-content: center;\n    align-items: center;\n}\n", ""]);
 
 // exports
 
@@ -3217,108 +3238,161 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { attrs: { id: "app" } }, [
+    _c(
+      "div",
+      {
+        directives: [
+          {
+            name: "show",
+            rawName: "v-show",
+            value: _vm.loading,
+            expression: "loading"
+          }
+        ],
+        staticClass: "loading"
+      },
+      [_vm._m(0)]
+    ),
+    _vm._v(" "),
     _c("div", { staticClass: "row mt-3" }, [
       _c("div", { staticClass: "col-6" }, [
         _c("h2", { staticClass: "mb-3" }, [_vm._v("Profesores")]),
         _vm._v(" "),
-        _c("table", { staticClass: "table table-bordered align-middle" }, [
-          _vm._m(0),
-          _vm._v(" "),
-          _vm.profesores != null
-            ? _c(
-                "tbody",
-                _vm._l(_vm.filteredprofesores, function(profesor, index) {
-                  return _c("tr", { key: index }, [
-                    _c(
-                      "th",
-                      { staticClass: "text-center", attrs: { scope: "row" } },
-                      [_vm._v(_vm._s(profesor.id))]
-                    ),
-                    _vm._v(" "),
-                    _c("td", { staticClass: "text-center" }, [
-                      _vm._v(_vm._s(profesor.noempleado))
-                    ]),
-                    _vm._v(" "),
-                    _c("td", { staticClass: "text-center" }, [
-                      _vm._v(
-                        _vm._s(profesor.name) + " " + _vm._s(profesor.apaterno)
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("td", { staticClass: "text-center" }, [
+        _c(
+          "table",
+          {
+            staticClass:
+              "table table-bordered align-middle bg-white table-hover"
+          },
+          [
+            _vm._m(1),
+            _vm._v(" "),
+            _vm.profesores != null
+              ? _c(
+                  "tbody",
+                  _vm._l(_vm.filteredprofesores, function(profesor, index) {
+                    return _c("tr", { key: index }, [
                       _c(
-                        "span",
-                        {
-                          staticClass: "material-icons text-primary pointer",
-                          on: {
-                            click: function($event) {
-                              return _vm.agregar(index)
+                        "th",
+                        { staticClass: "text-center", attrs: { scope: "row" } },
+                        [_vm._v(_vm._s(profesor.id))]
+                      ),
+                      _vm._v(" "),
+                      _c("td", { staticClass: "text-center" }, [
+                        _vm._v(_vm._s(profesor.noempleado))
+                      ]),
+                      _vm._v(" "),
+                      _c("td", { staticClass: "text-center" }, [
+                        _vm._v(
+                          _vm._s(profesor.name) +
+                            " " +
+                            _vm._s(profesor.apaterno)
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("td", { staticClass: "text-center" }, [
+                        _c(
+                          "span",
+                          {
+                            staticClass: "material-icons text-primary pointer",
+                            on: {
+                              click: function($event) {
+                                return _vm.agregar(index)
+                              }
                             }
-                          }
-                        },
-                        [_vm._v("add_circle")]
-                      )
+                          },
+                          [_vm._v("add_circle")]
+                        )
+                      ])
                     ])
-                  ])
-                }),
-                0
-              )
-            : _vm._e()
-        ])
+                  }),
+                  0
+                )
+              : _vm._e()
+          ]
+        ),
+        _vm._v(" "),
+        _vm.profesores.length == 0
+          ? _c("div", { staticClass: "w-100 text-center" }, [
+              _c("p", [_vm._v("Sin profesores para agregar")])
+            ])
+          : _vm._e()
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "col-6" }, [
         _c("h2", { staticClass: "mb-3" }, [_vm._v("Profesores asignados")]),
         _vm._v(" "),
-        _c("table", { staticClass: "table table-bordered align-middle" }, [
-          _vm._m(1),
-          _vm._v(" "),
-          _vm.agregados != null
-            ? _c(
-                "tbody",
-                _vm._l(_vm.agregados, function(agregado, index) {
-                  return _c("tr", { key: index }, [
-                    _c(
-                      "th",
-                      { staticClass: "text-center", attrs: { scope: "row" } },
-                      [_vm._v(_vm._s(agregado.id))]
-                    ),
-                    _vm._v(" "),
-                    _c("td", { staticClass: "text-center" }, [
-                      _vm._v(_vm._s(agregado.noempleado))
-                    ]),
-                    _vm._v(" "),
-                    _c("td", { staticClass: "text-center" }, [
-                      _vm._v(
-                        _vm._s(agregado.name) + " " + _vm._s(agregado.apaterno)
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("td", { staticClass: "text-center" }, [
+        _c(
+          "table",
+          { staticClass: "table table-bordered align-middle bg-white" },
+          [
+            _vm._m(2),
+            _vm._v(" "),
+            _vm.agregados != null
+              ? _c(
+                  "tbody",
+                  _vm._l(_vm.agregados, function(agregado, index) {
+                    return _c("tr", { key: index }, [
                       _c(
-                        "span",
-                        {
-                          staticClass: "material-icons text-danger pointer",
-                          on: {
-                            click: function($event) {
-                              return _vm.eliminar(index)
+                        "th",
+                        { staticClass: "text-center", attrs: { scope: "row" } },
+                        [_vm._v(_vm._s(agregado.id))]
+                      ),
+                      _vm._v(" "),
+                      _c("td", { staticClass: "text-center" }, [
+                        _vm._v(_vm._s(agregado.noempleado))
+                      ]),
+                      _vm._v(" "),
+                      _c("td", { staticClass: "text-center" }, [
+                        _vm._v(
+                          _vm._s(agregado.name) +
+                            " " +
+                            _vm._s(agregado.apaterno)
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("td", { staticClass: "text-center" }, [
+                        _c(
+                          "span",
+                          {
+                            staticClass: "material-icons text-danger pointer",
+                            on: {
+                              click: function($event) {
+                                return _vm.eliminar(index)
+                              }
                             }
-                          }
-                        },
-                        [_vm._v("remove_circle")]
-                      )
+                          },
+                          [_vm._v("remove_circle")]
+                        )
+                      ])
                     ])
-                  ])
-                }),
-                0
-              )
-            : _vm._e()
-        ])
+                  }),
+                  0
+                )
+              : _vm._e()
+          ]
+        ),
+        _vm._v(" "),
+        _vm.agregados.length == 0
+          ? _c("div", { staticClass: "w-100 text-center" }, [
+              _c("p", [_vm._v("Sin profesores agregados")])
+            ])
+          : _vm._e()
       ])
     ])
   ])
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "spinner-border text-light", attrs: { role: "status" } },
+      [_c("span", { staticClass: "visually-hidden" }, [_vm._v("Loading...")])]
+    )
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement

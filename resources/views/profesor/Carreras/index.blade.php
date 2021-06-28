@@ -2,19 +2,43 @@
 
 @section('style-area')
     <style>
-        .container{
-            max-width: 600px;
-        }
+        
     </style>
 @endsection
 
 @section('container')
     <div class="container">
-        <div class="row mt-3 mb-3">
-            <div class="col text-center">
-                <p class="mb-0 fw-bold">Carreras</p>
+
+        {{-- <div class="d-flex justify-content-between align-items-center bg-white mb-4">
+            <div>
+                <h5 class="card-title fs-3">Carreras</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Lista de carreras disponibles</h6>
+            </div>
+
+            <div>
+                <a href="http://corvus.com/empresa/users/create">
+                    <button type="button" class="btn btn-success">Añadir</button>
+                </a>
+            </div>
+        </div> --}}
+
+
+
+        <div class="row mb-4">
+            <div class="col">
+                <div>
+                    <h5 class="card-title fs-3">Carreras</h5>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                          <li class="breadcrumb-item active" aria-current="page">Lista de carreras disponibles</li>
+                        </ol>
+                      </nav>
+                </div>
             </div>
         </div>
+
+
+
         <div class="row">
             <div class="col">
 

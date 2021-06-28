@@ -83,7 +83,7 @@
                 <a class="navbar-brand m-0" href="{{route('home')}}">
                     @include('svg.logo')
                     {{-- <p class="m-0 fs-5">CENEVAL</p> --}}
-                    <p class="subtitle">PROFE</p>
+                    <p class="subtitle">PROFESOR</p>
                     {{-- <img class="logo-uabc" src="{{asset('assets/img/uabc-logo-gray')}}" alt=""> --}}
                 </a>
             </div>
@@ -125,7 +125,7 @@
         </div>
     </nav>
 
-    <main class="main flex-grow-1 container mt-5 border bg-white p-4">
+    <main class="main flex-grow-1 container my-5 border bg-white p-5">
         @yield('container')
     </main>
 

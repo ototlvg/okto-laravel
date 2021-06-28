@@ -1,9 +1,16 @@
 <template>
     <div id="app">
+
+        <div class="loading" v-show="loading">
+            <div class="spinner-border text-light" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+
         <div class="row mt-3">
             <div class="col-6">
                 <h2 class="mb-3">Profesores</h2>
-                <table class="table table-bordered align-middle">
+                <table class="table table-bordered align-middle bg-white table-hover">
                     <thead class="thead-dark">
                         <tr>
                             <th scope="col" class="text-center">#</th>
@@ -23,10 +30,13 @@
                         </tr>
                     </tbody>
                 </table>
+                <div class="w-100 text-center" v-if="profesores.length==0">
+                    <p>Sin profesores para agregar</p>
+                </div>
             </div>
             <div class="col-6">
                 <h2 class="mb-3">Profesores asignados</h2>
-                <table class="table table-bordered align-middle">
+                <table class="table table-bordered align-middle bg-white">
                     <thead class="thead-dark">
                         <tr>
                             <th scope="col" class="text-center">#</th>
@@ -46,6 +56,9 @@
                         </tr>
                     </tbody>
                 </table>
+                <div class="w-100 text-center" v-if="agregados.length==0">
+                    <p>Sin profesores agregados</p>
+                </div>
             </div>
         </div>
     </div>
@@ -59,15 +72,13 @@ export default {
     created(){
         /* console.log('Exitos') */
         this.getProfesores()
-        
-
-        
     },
     data(){
         return {
             sidebarOpen: false,
             profesores: null,
-            agregados: []
+            agregados: [],
+            loading: false
         }
     },
     methods: {
@@ -120,22 +131,27 @@ export default {
             }
         },
         agregar(index){
-
+            let self = this
             var removed = this.profesores.splice(index,1);
 
             console.log(removed)
+
+            self.loading = true
             axios.post('/api/coordinador/addprofesortocarrera', {
                 profesorid: removed[0].id,
                 carreraid: window.carreraid
             })
             .then(function (response) {
                 console.log(response);
+                self.loading = false
+
             })
             .catch(function (error) {
                 console.log(error);
+                self.loading = false
             });
             
-            this.agregados.push(removed[0])
+            self.agregados.push(removed[0])
 
 
 
@@ -144,9 +160,10 @@ export default {
         eliminar(index){
             let elementForRemove = this.agregados[index]
             let removedCarrera
-            let este = this
+            let self = this
             // console.log(elementForRemove)
 
+            self.loading = true
             axios.post('/api/coordinador/deletecarrerafromprofesor', {
                 profesorid: elementForRemove.id,
                 carreraid: window.carreraid
@@ -155,24 +172,27 @@ export default {
 
                 console.log('Retorno: ' + response.data);
                 let i = 0
-                este.agregados.forEach(element => {
+                self.agregados.forEach(element => {
                     console.log(element)
                     if(element.id == response.data){
                         console.log('Encontrado: ' + i)
 
-                        let removedProfesor = este.agregados.splice(i,1)
+                        let removedProfesor = self.agregados.splice(i,1)
                         
                         
                         
-                        // este.getProfesores()
-                        este.profesores.push(removedProfesor[0])
+                        // self.getProfesores()
+                        self.profesores.push(removedProfesor[0])
                     }
                     i++;
                 });
             })
             .catch(function (error) {
                 console.log(error);
-            });
+            })
+            .then( () => {
+                self.loading = false
+            })
         },
     },
     computed:{
@@ -204,5 +224,17 @@ export default {
 <style>
     .pointer{
         cursor: pointer;
+    }
+
+    .loading{
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 </style>

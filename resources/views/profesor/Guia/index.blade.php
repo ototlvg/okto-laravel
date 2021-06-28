@@ -2,9 +2,7 @@
 
 @section('style-area')
     <style>
-        .container{
-            /* padding: 2em; */
-        }
+        
         .formatear{
             margin: 0;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
@@ -17,17 +15,26 @@
 @endsection
 
 @section('container')
-    {{-- <div class="container"> --}}
+    <div class="container">
 
-        <div class="row">
-            <div class="col">
-                <p class="mb-0 text-center fw-bold">Guia</p>
+        {{-- <div class="d-flex justify-content-between align-items-center bg-white mb-4">
+            <div>
+                <h5 class="card-title fs-3">Carreras</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Lista de carreras disponibles</h6>
             </div>
-        </div>
+        </div> --}}
 
-        <div class="row">
-            <div class="col text-center">
-                <p>{{$area->carrera->nombre}} - {{$area->nombre}}</p>
+        <div class="row mb-4">
+            <div class="col">
+                <div>
+                    <h5 class="card-title fs-3">Guia</h5>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{{route('profesor.carreras.index')}}">{{$area->carrera->nombre}}</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">{{$area->nombre}}</li>
+                        </ol>
+                    </nav>
+                </div>
             </div>
         </div>
 
@@ -76,7 +83,7 @@
 
         <div class="row mt-3">
             <div class="col">
-                <p>Comentarios</p>
+                <p class="fw-bold">Guias publicadas</p>
             </div>
         </div>
 
@@ -125,7 +132,7 @@
                 @endforeach
             </div>
         </div>
-    {{-- </div> --}}
+    </div>
 @endsection
 
 @push('script')

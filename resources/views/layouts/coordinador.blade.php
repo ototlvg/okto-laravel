@@ -59,6 +59,10 @@
         .navbar{
             border-bottom: 5px solid #f1a631;
         }
+
+        .main{
+            background-color: #f2f2f2;
+        }
     </style>
     {{-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> --}}
 

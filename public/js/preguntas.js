@@ -1985,6 +1985,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 axios__WEBPACK_IMPORTED_MODULE_0___default.a.defaults.baseURL = '/api/coordinador/areas/';
@@ -7207,296 +7216,340 @@ var render = function() {
       [_vm._m(0)]
     ),
     _vm._v(" "),
-    _c("div", { staticClass: "d-flex flex-wrap w-100 p-4 border mb-4" }, [
-      _vm._m(1),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "col-6 d-flex justify-content-end align-items-center" },
-        [
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-primary",
-              attrs: { type: "button" },
-              on: { click: _vm.addQuestion }
-            },
-            [_vm._v("Agregar pregunta")]
-          )
-        ]
-      )
-    ]),
-    _vm._v(" "),
     _c(
       "div",
-      { staticClass: "d-flex flex-wrap w-100" },
-      _vm._l(_vm.preguntas, function(question, indexQuestion) {
-        return _c(
+      { staticClass: "d-flex flex-wrap w-100 p-4 border mb-4 bg-white" },
+      [
+        _vm._m(1),
+        _vm._v(" "),
+        _c(
           "div",
-          { key: indexQuestion, staticClass: "question w-100 border p-4 mb-4" },
+          {
+            staticClass: "col-6 d-flex justify-content-end align-items-center"
+          },
           [
-            _c("div", { staticClass: "row mb-4" }, [
-              _c("div", { staticClass: "col-6" }, [
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: question.pregunta,
-                      expression: "question.pregunta"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  attrs: {
-                    type: "text",
-                    name: "",
-                    placeholder: "Pregunta " + (indexQuestion + 1)
-                  },
-                  domProps: { value: question.pregunta },
-                  on: {
-                    keyup: function($event) {
-                      if (
-                        !$event.type.indexOf("key") &&
-                        _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
-                      ) {
-                        return null
-                      }
-                      return _vm.updateQuestion(indexQuestion)
-                    },
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(question, "pregunta", $event.target.value)
-                    }
-                  }
-                })
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col" }, [
-                _c(
-                  "select",
-                  {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: question.respuesta_correcta,
-                        expression: "question.respuesta_correcta"
-                      }
-                    ],
-                    staticClass: "form-select",
-                    attrs: { "aria-label": "Default select example" },
-                    on: {
-                      change: [
-                        function($event) {
-                          var $$selectedVal = Array.prototype.filter
-                            .call($event.target.options, function(o) {
-                              return o.selected
-                            })
-                            .map(function(o) {
-                              var val = "_value" in o ? o._value : o.value
-                              return val
-                            })
-                          _vm.$set(
-                            question,
-                            "respuesta_correcta",
-                            $event.target.multiple
-                              ? $$selectedVal
-                              : $$selectedVal[0]
-                          )
-                        },
-                        function($event) {
-                          return _vm.onChangeAnswer($event, indexQuestion)
-                        }
-                      ]
-                    }
-                  },
-                  [
-                    _c(
-                      "option",
-                      {
-                        staticStyle: { display: "none" },
-                        attrs: { disabled: "" },
-                        domProps: { value: undefined }
-                      },
-                      [_vm._v("Seleccione una opcion")]
-                    ),
-                    _vm._v(" "),
-                    _vm._l(question.respuestas, function(answer, indexAnswer) {
-                      return _c(
-                        "option",
-                        { key: indexAnswer, domProps: { value: answer } },
-                        [_vm._v(_vm._s(answer.respuesta))]
-                      )
-                    })
-                  ],
-                  2
-                )
-              ]),
-              _vm._v(" "),
-              question.id == 0
-                ? _c("div", { staticClass: "col-2" }, [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-success w-100",
-                        attrs: { type: "button" },
-                        on: {
-                          click: function($event) {
-                            return _vm.storeQuestion(indexQuestion)
-                          }
-                        }
-                      },
-                      [_vm._v("Guardar")]
-                    )
-                  ])
-                : _vm._e()
-            ]),
-            _vm._v(" "),
             _c(
+              "button",
+              {
+                staticClass: "btn btn-primary",
+                attrs: { type: "button" },
+                on: { click: _vm.addQuestion }
+              },
+              [_vm._v("Agregar pregunta")]
+            )
+          ]
+        )
+      ]
+    ),
+    _vm._v(" "),
+    _vm.preguntas.length != 0
+      ? _c(
+          "div",
+          { staticClass: "d-flex flex-wrap w-100" },
+          _vm._l(_vm.preguntas, function(question, indexQuestion) {
+            return _c(
               "div",
-              { staticClass: "d-flex w-100 flex-wrap" },
-              _vm._l(question.respuestas, function(answer, indexAnswer) {
-                return _c(
-                  "div",
-                  { key: indexAnswer, staticClass: "d-flex answer w-100 mb-4" },
-                  [
-                    _c(
-                      "div",
-                      {
-                        staticClass:
-                          "d-flex pe-3 align-items-center text-secondary"
+              {
+                key: indexQuestion,
+                staticClass: "question w-100 border p-4 mb-4 bg-white"
+              },
+              [
+                _c("div", { staticClass: "row mb-4" }, [
+                  _c("div", { staticClass: "col-6" }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: question.pregunta,
+                          expression: "question.pregunta"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        type: "text",
+                        name: "",
+                        placeholder: "Pregunta"
                       },
-                      [
-                        answer.id != 0
-                          ? _c(
-                              "button",
-                              {
-                                staticClass: "btn btn-success btn-sm",
-                                attrs: { type: "button" },
-                                on: {
-                                  click: function($event) {
-                                    return _vm.updateAnswer(
-                                      indexQuestion,
-                                      indexAnswer
-                                    )
-                                  }
-                                }
-                              },
-                              [
-                                _c("i", {
-                                  staticClass: "bi bi-file-earmark-check-fill"
-                                })
-                              ]
+                      domProps: { value: question.pregunta },
+                      on: {
+                        keyup: function($event) {
+                          if (
+                            !$event.type.indexOf("key") &&
+                            _vm._k(
+                              $event.keyCode,
+                              "enter",
+                              13,
+                              $event.key,
+                              "Enter"
                             )
-                          : _c("i", { staticClass: "bi bi-circle" })
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "d-flex flex-grow-1" }, [
-                      _c("input", {
+                          ) {
+                            return null
+                          }
+                          return _vm.updateQuestion(indexQuestion)
+                        },
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(question, "pregunta", $event.target.value)
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col" }, [
+                    _c(
+                      "select",
+                      {
                         directives: [
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: answer.respuesta,
-                            expression: "answer.respuesta"
+                            value: question.respuesta_correcta,
+                            expression: "question.respuesta_correcta"
                           }
                         ],
-                        staticClass: "form-control",
-                        attrs: {
-                          type: "text",
-                          name: "",
-                          placeholder: "Respuesta " + (indexAnswer + 1)
-                        },
-                        domProps: { value: answer.respuesta },
+                        staticClass: "form-select",
+                        attrs: { "aria-label": "Default select example" },
                         on: {
-                          keyup: [
+                          change: [
                             function($event) {
-                              return _vm.answerTextChange(
-                                indexQuestion,
-                                indexAnswer
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.$set(
+                                question,
+                                "respuesta_correcta",
+                                $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
                               )
                             },
                             function($event) {
-                              if (
-                                !$event.type.indexOf("key") &&
-                                _vm._k(
-                                  $event.keyCode,
-                                  "enter",
-                                  13,
-                                  $event.key,
-                                  "Enter"
-                                )
-                              ) {
-                                return null
-                              }
-                              return _vm.updateAnswer(
-                                indexQuestion,
-                                indexAnswer
-                              )
+                              return _vm.onChangeAnswer($event, indexQuestion)
                             }
-                          ],
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(answer, "respuesta", $event.target.value)
-                          }
+                          ]
                         }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "d-flex ps-3 align-items-center" },
+                      },
                       [
-                        _c("i", {
-                          staticClass:
-                            "bi bi-x-octagon-fill text-danger pointer",
-                          on: {
-                            click: function($event) {
-                              return _vm.destroyAnswer(
-                                indexQuestion,
-                                indexAnswer
-                              )
-                            }
-                          }
+                        _c(
+                          "option",
+                          {
+                            staticStyle: { display: "none" },
+                            attrs: { disabled: "" },
+                            domProps: { value: undefined }
+                          },
+                          [_vm._v("Seleccione una opcion")]
+                        ),
+                        _vm._v(" "),
+                        _vm._l(question.respuestas, function(
+                          answer,
+                          indexAnswer
+                        ) {
+                          return _c(
+                            "option",
+                            { key: indexAnswer, domProps: { value: answer } },
+                            [
+                              answer.respuesta != ""
+                                ? _c("span", [_vm._v(_vm._s(answer.respuesta))])
+                                : _c("span", [
+                                    _vm._v(
+                                      "Respuesta " + _vm._s(indexAnswer + 1)
+                                    )
+                                  ])
+                            ]
+                          )
                         })
+                      ],
+                      2
+                    )
+                  ]),
+                  _vm._v(" "),
+                  question.id == 0
+                    ? _c("div", { staticClass: "col-2" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-success w-100",
+                            attrs: { type: "button" },
+                            on: {
+                              click: function($event) {
+                                return _vm.storeQuestion(indexQuestion)
+                              }
+                            }
+                          },
+                          [_vm._v("Guardar")]
+                        )
+                      ])
+                    : _vm._e()
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "d-flex w-100 flex-wrap" },
+                  _vm._l(question.respuestas, function(answer, indexAnswer) {
+                    return _c(
+                      "div",
+                      {
+                        key: indexAnswer,
+                        staticClass: "d-flex answer w-100 mb-4"
+                      },
+                      [
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "d-flex pe-3 align-items-center text-secondary"
+                          },
+                          [
+                            answer.id != 0
+                              ? _c(
+                                  "button",
+                                  {
+                                    staticClass: "btn btn-success btn-sm",
+                                    attrs: { type: "button" },
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.updateAnswer(
+                                          indexQuestion,
+                                          indexAnswer
+                                        )
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _c("i", {
+                                      staticClass:
+                                        "bi bi-file-earmark-check-fill"
+                                    })
+                                  ]
+                                )
+                              : _c("i", { staticClass: "bi bi-circle" })
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "d-flex flex-grow-1" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: answer.respuesta,
+                                expression: "answer.respuesta"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              type: "text",
+                              name: "",
+                              placeholder: "Respuesta " + (indexAnswer + 1)
+                            },
+                            domProps: { value: answer.respuesta },
+                            on: {
+                              keyup: [
+                                function($event) {
+                                  return _vm.answerTextChange(
+                                    indexQuestion,
+                                    indexAnswer
+                                  )
+                                },
+                                function($event) {
+                                  if (
+                                    !$event.type.indexOf("key") &&
+                                    _vm._k(
+                                      $event.keyCode,
+                                      "enter",
+                                      13,
+                                      $event.key,
+                                      "Enter"
+                                    )
+                                  ) {
+                                    return null
+                                  }
+                                  return _vm.updateAnswer(
+                                    indexQuestion,
+                                    indexAnswer
+                                  )
+                                }
+                              ],
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  answer,
+                                  "respuesta",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "d-flex ps-3 align-items-center" },
+                          [
+                            _c("i", {
+                              staticClass:
+                                "bi bi-x-octagon-fill text-danger pointer",
+                              on: {
+                                click: function($event) {
+                                  return _vm.destroyAnswer(
+                                    indexQuestion,
+                                    indexAnswer
+                                  )
+                                }
+                              }
+                            })
+                          ]
+                        )
                       ]
                     )
+                  }),
+                  0
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "d-flex w-100 justify-content-between" },
+                  [
+                    _c("i", {
+                      staticClass:
+                        "bi bi-plus-square-dotted fs-5 pointer text-primary",
+                      on: {
+                        click: function($event) {
+                          return _vm.addAnswer(indexQuestion)
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("i", {
+                      staticClass: "bi bi-trash-fill fs-5 pointer text-danger",
+                      on: {
+                        click: function($event) {
+                          return _vm.destroyQuestion(indexQuestion)
+                        }
+                      }
+                    })
                   ]
                 )
-              }),
-              0
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "d-flex w-100 justify-content-between" }, [
-              _c("i", {
-                staticClass:
-                  "bi bi-plus-square-dotted fs-5 pointer text-primary",
-                on: {
-                  click: function($event) {
-                    return _vm.addAnswer(indexQuestion)
-                  }
-                }
-              }),
-              _vm._v(" "),
-              _c("i", {
-                staticClass: "bi bi-trash-fill fs-5 pointer text-danger",
-                on: {
-                  click: function($event) {
-                    return _vm.destroyQuestion(indexQuestion)
-                  }
-                }
-              })
-            ])
-          ]
+              ]
+            )
+          }),
+          0
         )
-      }),
-      0
-    )
+      : _c("div", { staticClass: "d-flex flex-wrap w-100" }, [
+          _c("p", { staticClass: "w-100 text-center" }, [
+            _vm._v("Sin niguna pregunta registrada")
+          ])
+        ])
   ])
 }
 var staticRenderFns = [

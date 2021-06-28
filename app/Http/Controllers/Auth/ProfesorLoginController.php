@@ -26,7 +26,6 @@ class ProfesorLoginController extends Controller
     }
 
     public function login(Request $request){
-
         // Validate the form data
         $this->validate($request, [
             // 'email' => 'required|email',
@@ -44,7 +43,8 @@ class ProfesorLoginController extends Controller
         // Attempt to log the user in
         if(Auth::guard('profesor')->attempt(['noempleado'=>$request->email, 'password' => $request->password], $request->remember)){
             // return 'Has accedo como profesor';
-            return redirect()->intended(route('profesor.carreras.index'));
+            // return redirect()->intended(route('profesor.carreras.index'));
+            return redirect()->route('profesor.carreras.index');
         }
 
         // return redirect()->back()->withInput($request->only('email')); // If unsuccesfull, the redirect to their intendet location

@@ -7,7 +7,7 @@
         </div>
         <!-- <button @click="eliminar">Eliminar</button>
         <button @click="check">Get</button> -->
-        <div class="d-flex flex-wrap w-100 p-4 border mb-4">
+        <div class="d-flex flex-wrap w-100 p-4 border mb-4 bg-white">
             <div class="col-6 d-flex justify-content-start align-items-center">
                 <p class="fs-4 fw-bold m-0">Agregar preguntas</p>
             </div>
@@ -16,19 +16,24 @@
             </div>
         </div>
 
-        <div class="d-flex flex-wrap w-100">
-            <div class="question w-100 border p-4 mb-4" v-for="(question,indexQuestion) in preguntas" :key="indexQuestion">
+        <div class="d-flex flex-wrap w-100" v-if="preguntas.length!=0">
+
+            <div class="question w-100 border p-4 mb-4 bg-white" v-for="(question,indexQuestion) in preguntas" :key="indexQuestion">
                 
                 <div class="row mb-4">
                     <div class="col-6">
-                        <input type="text" name="" class="form-control" :placeholder="'Pregunta ' + (indexQuestion+1)" v-model="question.pregunta" @keyup.enter="updateQuestion(indexQuestion)">
+                        <!-- <input type="text" name="" class="form-control" :placeholder="'Pregunta ' + (indexQuestion+1)" v-model="question.pregunta" @keyup.enter="updateQuestion(indexQuestion)"> -->
+                        <input type="text" name="" class="form-control" placeholder="Pregunta" v-model="question.pregunta" @keyup.enter="updateQuestion(indexQuestion)">
                     </div>
 
                     <div class="col">
                         <select class="form-select" aria-label="Default select example" @change="onChangeAnswer($event, indexQuestion)" v-model="question.respuesta_correcta">
                             <!-- <option :selected="true" disabled hidden>Respuesta correcta</option> -->
                             <option :value="undefined" disabled style="display:none">Seleccione una opcion</option>
-                            <option v-for="(answer,indexAnswer) in question.respuestas" :key="indexAnswer" :value="answer">{{answer.respuesta}}</option>
+                            <option v-for="(answer,indexAnswer) in question.respuestas" :key="indexAnswer" :value="answer">
+                                <span v-if="answer.respuesta != ''">{{answer.respuesta}}</span>
+                                <span v-else>Respuesta {{indexAnswer+1}}</span>
+                            </option>
                         </select>
                     </div>
 
@@ -62,6 +67,10 @@
 
             </div>
 
+        </div>
+
+        <div class="d-flex flex-wrap w-100" v-else>
+            <p class="w-100 text-center">Sin niguna pregunta registrada</p>
         </div>
 
 
